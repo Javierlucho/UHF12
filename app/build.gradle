@@ -2,6 +2,11 @@ plugins {
     id 'com.android.application'
 }
 
+//repositories {
+//    maven {
+//        url "https://repo.eclipse.org/content/repositories/paho-snapshots/"
+//    }
+//}
 android {
     compileSdkVersion 28
     buildToolsVersion "30.0.2"
@@ -12,6 +17,7 @@ android {
         versionCode 36
         versionName "3.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
 
     applicationVariants.all { variant ->
@@ -68,5 +74,23 @@ dependencies {
     implementation 'net.sourceforge.jexcelapi:jxl:2.6.12'
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+//    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
+//    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation("androidx.multidex:multidex:2.0.1")
+    implementation("io.reactivex.rxjava3:rxandroid:3.0.0") // For RxJava threading
+    implementation("io.reactivex.rxjava3:rxjava:3.1.5")
+
+    def room_version = "2.6.1"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    // optional - RxJava3 support for Room
+    implementation "androidx.room:room-rxjava3:$room_version"
+    // To use Kotlin annotation processing tool (kapt)
+    //kapt "androidx.room:room-compiler:$room_version"
+    // To use Kotlin Symbol Processing (KSP)
+    //ksp "androidx.room:room-compiler:$room_version"
 
 }

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.handheld.uhfr.UHFRManager;
+import com.pda.uhf_g.service.TestService;
 import com.pda.uhf_g.util.LogUtil;
 import com.pda.uhf_g.util.ScanUtil;
 import com.pda.uhf_g.util.SharedUtil;
@@ -29,8 +30,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity implements NavigationView. OnNavigationItemSelectedListener{
 
@@ -47,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView. O
     public static int type=-1;
     private TextView tvDeviceInfo ;
     public NavController navController ;
+
+    private CompositeDisposable disposables = new CompositeDisposable();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,15 +90,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView. O
                 LogUtil.e("destination = " + destination.getNavigatorName());
             }
         });
+
+        disposables.add(
+                Single.fromCallable(() -> TestService.main("").execute())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(response -> {
+                            if (response.isSuccessful()) {
+                                // Fetch and print a list of the contributors to the library.
+                                List<TestService.Contributor> contributors = response.body();
+                                assert contributors != null;
+                                for (TestService.Contributor contributor : contributors) {
+                                    Log.d("TestService", contributor.login + " (" + contributor.contributions + ")");
+                                }
+                                //YourDataModel data = response.body();
+
+                            } else {
+                                // Handle error
+                            }
+                        }, error -> {
+                            // Handle network or other exceptions
+                        })
+        );
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        //
         initModule();
-        setScanKeyDisable() ;
+        setScanKeyDisable();
+
+
     }
+
+
 
     @Override
     protected void onStop() {
@@ -208,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView. O
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        disposables.clear(); // Dispose of subscriptions to prevent leaks
     }
 
     @Override
