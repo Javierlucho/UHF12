@@ -16,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.pda.serialport.Tools;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import me.weyye.hipermission.HiPermission;
 import me.weyye.hipermission.PermissionCallback;
 import me.weyye.hipermission.PermissionItem;
@@ -43,6 +44,13 @@ import com.pda.uhf_g.MainActivity;
 import com.pda.uhf_g.R;
 import com.pda.uhf_g.adapter.EPCListViewAdapter;
 import com.pda.uhf_g.adapter.RecycleViewAdapter;
+import com.pda.uhf_g.data.local.AppDatabase;
+import com.pda.uhf_g.data.local.ItemsLocalDataSource;
+import com.pda.uhf_g.data.local.dao.TagItemDao;
+import com.pda.uhf_g.data.local.entities.ItemSightingEntity;
+import com.pda.uhf_g.data.local.entities.TagItemEntity;
+import com.pda.uhf_g.data.remote.ItemsRemoteDataSource;
+import com.pda.uhf_g.data.repository.ItemsRepository;
 import com.pda.uhf_g.entity.TagInfo;
 import com.pda.uhf_g.ui.base.BaseFragment;
 import com.pda.uhf_g.util.CheckCommunication;
@@ -118,6 +126,9 @@ public class InventoryFragment extends BaseFragment {
 
     private final int MSG_INVENROTY_TIME = 1001 ;
 
+
+    private ItemsRepository itemsRepository;
+
     private long lastCount = 0 ;//
     private long speed = 0 ;
     private Handler handler = new Handler(){
@@ -187,6 +198,9 @@ public class InventoryFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         mainActivity = (MainActivity) getActivity();
 
+        ItemsLocalDataSource local = new ItemsLocalDataSource(getContext());
+        ItemsRemoteDataSource remote = new ItemsRemoteDataSource();
+        itemsRepository = new ItemsRepository(remote, local);
     }
 
     @Override
@@ -345,6 +359,20 @@ public class InventoryFragment extends BaseFragment {
         mainActivity.listEPC.clear();
     }
 
+    public void saveInDatabase(){
+        TagInfo tag_info = new TagInfo(1L, "1", "1", "1", "1");
+        itemsRepository.insertItem(tag_info)
+                // Switch to main thread for UI updates (if needed)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    // Handle successful insertion (e.g., update UI)
+
+                    showToast("save success");
+                }, error -> {
+                    // Handle insertion error
+                    showToast("save failed");
+                });
+    }
 
     @OnClick(R.id.button_inventory)
     public void invenroty() {
@@ -354,6 +382,8 @@ public class InventoryFragment extends BaseFragment {
             return ;
         }
         if (!isReader) {
+
+            saveInDatabase();
             inventoryEPC();
         }else{
             stopInventory() ;

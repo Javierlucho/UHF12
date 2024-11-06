@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    //id 'com.google.dagger.hilt.android'
 }
 
 //repositories {
@@ -18,10 +19,16 @@ android {
         versionName "3.6"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
 
-    applicationVariants.all { variant ->
-        variant.outputs.all {
+    applicationVariants.configureEach { variant ->
+        variant.outputs.configureEach {
             def fileName = "uhfg_v${defaultConfig.versionName}.apk"
             outputFileName = fileName
         }
@@ -82,12 +89,16 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxandroid:3.0.0") // For RxJava threading
     implementation("io.reactivex.rxjava3:rxjava:3.1.5")
 
-    def room_version = "2.6.1"
+    def room_version = "2.2.6"
 
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+
     // optional - RxJava3 support for Room
-    implementation "androidx.room:room-rxjava3:$room_version"
+    implementation("androidx.room:room-rxjava2:2.2.6") // RxJava 2 adapter for Room
+    implementation("io.reactivex.rxjava3:rxjava:3.1.5") // RxJava 3
+    implementation("com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0") // RxJava 3 adapter for Retrofit (if using Retrofit)
+    //implementation 'androidx.room:room-rxjava3:2.5.0'
     // To use Kotlin annotation processing tool (kapt)
     //kapt "androidx.room:room-compiler:$room_version"
     // To use Kotlin Symbol Processing (KSP)
