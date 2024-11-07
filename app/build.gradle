@@ -13,7 +13,7 @@ android {
     buildToolsVersion "30.0.2"
     defaultConfig {
         applicationId "com.siemav.uhf_g"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 36
         versionName "3.6"
@@ -73,6 +73,7 @@ dependencies {
     implementation files('libs\\DeviceAPIver20150204.jar')
     implementation files('libs\\logutil-1.5.1.1.jar')
     implementation files('libs\\UHF67_v3.6.jar')
+    //implementation 'com.google.android.gms:play-services-location:21.0.1'
     //implementation files('libs\\UHF67_v1.0.15.jar')
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

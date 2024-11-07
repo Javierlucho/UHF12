@@ -1,8 +1,14 @@
 package com.pda.uhf_g;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -13,7 +19,10 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.handheld.uhfr.UHFRManager;
+import com.pda.uhf_g.data.gps.IBaseGpsListener;
+import com.pda.uhf_g.entity.GPSInfo;
 import com.pda.uhf_g.service.TestService;
+import com.pda.uhf_g.ui.viewmodel.InventoryViewModel;
 import com.pda.uhf_g.util.LogUtil;
 import com.pda.uhf_g.util.ScanUtil;
 import com.pda.uhf_g.util.SharedUtil;
@@ -21,6 +30,9 @@ import com.uhf.api.cls.Reader;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -39,7 +51,13 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity implements NavigationView. OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements IBaseGpsListener, NavigationView. OnNavigationItemSelectedListener{
+
+    private InventoryViewModel viewModel;
+    private static final int PERMISSION_LOCATION = 1000;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+
+//    FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);;
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -52,10 +70,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView. O
 
     public List<String> listEPC = new ArrayList<>();//epc数据
     public static int type=-1;
-    private TextView tvDeviceInfo ;
     public NavController navController ;
 
-    private CompositeDisposable disposables = new CompositeDisposable();
+
+    //############################## Location ###################################
+//    LocationCallback locationCallback = new LocationCallback() {
+//        @Override
+//        public void onLocationResult(@NonNull LocationResult locationResult) {
+//            for (Location location : locationResult.getLocations()) {
+//                // Handle location updates here
+//                double latitude = location.getLatitude();
+//                double longitude = location.getLongitude();
+//
+//            }
+//        }
+//    };
+    //############################## Location End ###################################
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Location permission granted, proceed with location updates
+                showLocation();
+            } else {
+                // Location permission denied, handle accordingly (e.g., display a message)
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void showLocation(){
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        try {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        } catch (Exception e){
+            e.printStackTrace();
+            Toast.makeText(this, "定位失败", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,12 +121,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView. O
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         View view =  navigationView.getHeaderView(0);
-        tvDeviceInfo = view.findViewById(R.id.textView_deviceinfo) ;
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         mSharedPreferences = this.getSharedPreferences("UHF", MODE_PRIVATE);
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            // Permissions are granted, proceed with location updates
 
-
+        } else {
+            // Permissions are not granted, request them
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                    LOCATION_PERMISSION_REQUEST_CODE); // Define a request code
+        }
+        //############################## Location ###################################
+//        LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
+//                .setWaitForAccurateLocation(false) // Optional: Wait for a more accurate location
+//                .setMinUpdateIntervalMillis(5000) // Optional: Minimum update interval
+//                .setMaxUpdateDelayMillis(15000) // Optional: Maximum update delay
+//                .setDurationMillis(60000) // Optional: Duration for which location updates are requested
+//                .build();
+//
+//        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+        //############################## Location End ###################################
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 navController.getGraph())
@@ -91,27 +162,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView. O
             }
         });
 
-        disposables.add(
-                Single.fromCallable(() -> TestService.main("").execute())
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(response -> {
-                            if (response.isSuccessful()) {
-                                // Fetch and print a list of the contributors to the library.
-                                List<TestService.Contributor> contributors = response.body();
-                                assert contributors != null;
-                                for (TestService.Contributor contributor : contributors) {
-                                    Log.d("TestService", contributor.login + " (" + contributor.contributions + ")");
-                                }
-                                //YourDataModel data = response.body();
 
-                            } else {
-                                // Handle error
-                            }
-                        }, error -> {
-                            // Handle network or other exceptions
-                        })
-        );
+        viewModel = new ViewModelProvider(this).get(InventoryViewModel.class);
     }
 
     @Override
@@ -119,8 +171,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView. O
         super.onStart();
         initModule();
         setScanKeyDisable();
-
-
     }
 
 
@@ -242,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView. O
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        disposables.clear(); // Dispose of subscriptions to prevent leaks
+        //fusedLocationClient.removeLocationUpdates(locationCallback);
     }
 
     @Override
@@ -255,6 +305,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView. O
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.nav_inventory_ipsp:
+                navController.navigate(R.id.nav_inventory_ipsp);
+                break ;
             case R.id.nav_inventory:
                 navController.navigate(R.id.nav_inventory);
                 break ;
@@ -313,4 +366,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView. O
         Log.e("pang", "item = " + item.getItemId());
         return false;
     }
+
+    // ############################## Location ###################################
+    @Override
+    public void onGpsStatusChanged(int i) {
+        // nothing
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        if (location != null) {
+            // Handle location updates here
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+            GPSInfo gpsInfo = new GPSInfo(latitude, longitude);
+            viewModel.setCurrentLocation(gpsInfo);
+            Log.d("Location", "longitude" + longitude + "latitude" + latitude);
+        }
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+        // nothing
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        // nothing
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        // nothing
+    }
+
 }

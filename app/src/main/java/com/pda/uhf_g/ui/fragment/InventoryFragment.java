@@ -243,12 +243,16 @@ public class InventoryFragment extends BaseFragment {
             List<Reader.TAGINFO> listTag = null;
             //6C
             if (isMulti) {
+                Log.d("Bug", "Is Multi running");
                 listTag = mainActivity.mUhfrManager.tagInventoryRealTime();
             }else{
                 if (checkBoxTid.isChecked()) {
+                    Log.d("Bug", "checkBoxTid is checked");
                     //
                     listTag = mainActivity.mUhfrManager.tagEpcTidInventoryByTimer((short) 50) ;
                 }else{
+                    Log.d("Bug", "checkBoxTid is not checked");
+
                     listTag = mainActivity.mUhfrManager.tagInventoryByTimer((short) 50); ;
                 }
             }
@@ -256,6 +260,7 @@ public class InventoryFragment extends BaseFragment {
                 LogUtil.e("listTag = null");
                 //
                 if(checkBoxMultiTag.isChecked()){
+                    Log.d("Bug", "Async running");
                     mainActivity.mUhfrManager.asyncStopReading();
                     mainActivity.mUhfrManager.asyncStartReading();
                 }
@@ -288,8 +293,10 @@ public class InventoryFragment extends BaseFragment {
             }
             //
             if (checkBoxLoop.isChecked()) {
+                Log.d("Bug", "checkbox loop");
                 handler.postDelayed(invenrotyThread, 0) ;
             }else{
+                Log.d("Bug", "Timer loop");
                 if(timer != null){
                     timer.cancel();
                     timer = null ;
@@ -337,7 +344,7 @@ public class InventoryFragment extends BaseFragment {
             tag.setIndex(index);
             tag.setType("6C");
             tag.setEpc(Tools.Bytes2HexString(info.EpcId, info.EpcId.length));
-            tag.setCount(1l);
+            tag.setCount(1L);
             tag.setIsShowTid(checkBoxTid.isChecked());
             if (info.EmbededData != null && info.EmbededDatalen > 0) {
                 tag.setTid(Tools.Bytes2HexString(info.EmbededData, info.EmbededDatalen));

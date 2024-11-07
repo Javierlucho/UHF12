@@ -38,7 +38,9 @@ public class ItemsLocalDataSource {
     }
 
     public void insertItem(TagInfo item) {
-        TagItemEntity entity = new TagItemEntity("1", "1", "1");
+        TagItemEntity entity = new TagItemEntity("1", "1", item.getTid());
+        entity.setCreatedTimestamp(System.currentTimeMillis());
+
         TagItemDao.insertItem(entity);
     }
 
@@ -47,12 +49,12 @@ public class ItemsLocalDataSource {
     }
 
     public void updateItem(TagInfo item) {
-
+        TagItemEntity entity = new TagItemEntity("1", "1", item.getTid());
+        entity.setCreatedTimestamp(System.currentTimeMillis());
     }
 
     public TagInfo getItemByTid(String tid) {
         return null;
     }
 
-    // ... other CRUD operations using the DAO
 }

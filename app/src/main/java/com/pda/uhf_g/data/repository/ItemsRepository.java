@@ -1,6 +1,5 @@
 package com.pda.uhf_g.data.repository;
 
-import com.pda.uhf_g.data.local.AppDatabase;
 import com.pda.uhf_g.data.local.ItemsLocalDataSource;
 import com.pda.uhf_g.data.remote.ItemsRemoteDataSource;
 import com.pda.uhf_g.entity.TagData;
@@ -12,8 +11,9 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ItemsRepository {
-    private ItemsRemoteDataSource itemsRemoteDataSource; // network
-    private ItemsLocalDataSource itemsLocalDataSource; // database
+    private final ItemsRemoteDataSource itemsRemoteDataSource; // network
+    private final ItemsLocalDataSource itemsLocalDataSource; // database
+    private List<TagInfo> tagInfoList;
 
     // Add a constructor
     public ItemsRepository(ItemsRemoteDataSource itemsRemoteDataSource, ItemsLocalDataSource itemsLocalDataSource) {
@@ -44,7 +44,17 @@ public class ItemsRepository {
         itemsLocalDataSource.deleteItem(item);
     }
 
+    public void setTagInfoList(List<TagInfo> tagInfoList) {
+        this.tagInfoList = tagInfoList;
+    }
 
+    public TagInfo getLatestTag() {
+        if (tagInfoList != null && !tagInfoList.isEmpty()) {
+            return tagInfoList.get(0);
+        } else {
+            return null;
+        }
+    }
     void syncWithServer(){
         try {
             List<TagData> localItems = itemsLocalDataSource.getAllItems();
@@ -56,4 +66,5 @@ public class ItemsRepository {
             // Handle network or other errors
         }
     }
+
 }

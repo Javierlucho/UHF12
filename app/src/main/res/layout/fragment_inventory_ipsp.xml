@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/tv_afid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AFID"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_tid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="TID"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_cid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="CID"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_seen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="seen"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_lat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="lat"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_lon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="lon"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/button_inventory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:layout_weight="1"
+        android:minHeight="@dimen/min_height_60dp"
+        android:text="@string/start_inventory"
+        android:textSize="@dimen/text_size_18sp"
+        />
+
+
+</LinearLayout>
