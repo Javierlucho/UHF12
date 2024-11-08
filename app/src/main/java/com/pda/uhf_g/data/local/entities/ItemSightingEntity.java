@@ -27,13 +27,37 @@ public class ItemSightingEntity {
 
 
     @NonNull
-    public long tagged_time; // Timestamp of when the item was seen
+    private long tagged_time; // Timestamp of when the item was seen
 
-    public String latitude; // Latitude
-    public String longitude; // Longitude
+    private String latitude; // Latitude
+    private String longitude; // Longitude
 
     public ItemSightingEntity(String cid, long tagged_time) {
         this.cid = cid;
+        this.setTagged_time(tagged_time);
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public long getTagged_time() {
+        return tagged_time;
+    }
+
+    public void setTagged_time(long tagged_time) {
         this.tagged_time = tagged_time;
     }
 

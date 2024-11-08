@@ -14,9 +14,10 @@ public class TagItemEntity {
     
     public long created_timestamp; // Timestamp
     public long updated_timestamp; // Timestamp
+    private String name;
+    private String description;
 
-    // TODO: Add expected location fields (Latitude, Longitude) 
-    
+
     public TagItemEntity(@NonNull String cid, String afid, String tid) {
         this.cid = cid;
         this.afid = afid;
@@ -60,5 +61,24 @@ public class TagItemEntity {
         this.updated_timestamp = updated_timestamp;
     }
 
+    public long getUpdatedTimestamp() {
+        return updated_timestamp;
+    }
 
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

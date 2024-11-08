@@ -58,15 +58,25 @@ public class InventoryIPSPFragment extends BaseFragment {
     TextView tvLon;
 
     @BindView(R.id.tv_tid)
-    TextView tvTid;;
+    TextView tvTid;
 
+    @BindView(R.id.tv_description)
+    TextView tvDescription;
 
-    private final Map<String, TagInfo> tagInfoMap = new LinkedHashMap<String, TagInfo>();//
-    private final List<TagInfo> tagInfoList = new ArrayList<TagInfo>();//
+    @BindView(R.id.tv_name)
+    TextView tvName;
+
+    @BindView(R.id.tv_afid)
+    TextView tvAfid;
+
+    @BindView(R.id.tv_cid)
+    TextView tvCid;
+
+    private final Map<String, TagInfo> tagInfoMap = new LinkedHashMap<>();//
+    private final List<TagInfo> tagInfoList = new ArrayList<>();//
     private MainActivity mainActivity ;
 
     private Long index = 1L;//
-    private final Handler soundHandler = new Handler();
     private int time = 0;
     private boolean isReader = false;
     private Timer timer ;
@@ -130,8 +140,13 @@ public class InventoryIPSPFragment extends BaseFragment {
             tvLat.setText(String.valueOf(location.getLatitude()));
             tvLon.setText(String.valueOf(location.getLongitude()));
         });
-        viewModel.getCurrentTag().observe(getViewLifecycleOwner(), tagInfo -> {
-            tvTid.setText(tagInfo.getTid());
+        viewModel.getCurrentTag().observe(getViewLifecycleOwner(), tagData -> {
+            tvAfid.setText(tagData.getAfid());
+            tvTid.setText(tagData.getTid());
+            tvCid.setText(tagData.getCid());
+            tvName.setText(tagData.getName());
+            tvDescription.setText(tagData.getDescription());
+            stopInventory();
         });
     }
 
@@ -180,7 +195,7 @@ public class InventoryIPSPFragment extends BaseFragment {
                     //mainActivity.listEPC.clear();
                     //mainActivity.listEPC.addAll(infoMap.keySet());
                     // TODO: Send to ViewModel
-                    viewModel.setTagInfoList(tagInfoList);
+                    viewModel.updateScanning(tagInfoList);
                 }
                 handler.sendEmptyMessage(MSG_inventory);
             }else{

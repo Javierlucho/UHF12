@@ -10,7 +10,13 @@ import com.pda.uhf_g.data.local.dao.TagItemDao;
 import com.pda.uhf_g.data.local.entities.ItemSightingEntity;
 import com.pda.uhf_g.data.local.entities.TagItemEntity;
 
-@Database(entities = {TagItemEntity.class, ItemSightingEntity.class}, version = 2)
+@Database(
+        entities = {
+            TagItemEntity.class,
+            ItemSightingEntity.class
+        },
+        version = 3
+)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract TagItemDao TagItemDao();
 

@@ -366,21 +366,6 @@ public class InventoryFragment extends BaseFragment {
         mainActivity.listEPC.clear();
     }
 
-    public void saveInDatabase(){
-        TagInfo tag_info = new TagInfo(1L, "1", "1", "1", "1");
-        itemsRepository.insertItem(tag_info)
-                // Switch to main thread for UI updates (if needed)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
-                    // Handle successful insertion (e.g., update UI)
-
-                    showToast("save success");
-                }, error -> {
-                    // Handle insertion error
-                    showToast("save failed");
-                });
-    }
-
     @OnClick(R.id.button_inventory)
     public void invenroty() {
         //操作之前判定模块是否正常初始化
@@ -389,8 +374,6 @@ public class InventoryFragment extends BaseFragment {
             return ;
         }
         if (!isReader) {
-
-            saveInDatabase();
             inventoryEPC();
         }else{
             stopInventory() ;
