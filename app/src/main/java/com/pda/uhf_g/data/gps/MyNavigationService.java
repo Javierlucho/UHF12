@@ -16,7 +16,7 @@ import androidx.core.app.NotificationCompat;
 import com.pda.uhf_g.R;
 
 public class MyNavigationService  extends Service {
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+//    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
 
     private void createNotificationChannel() {
@@ -32,13 +32,14 @@ public class MyNavigationService  extends Service {
     }
 
     private Notification buildNotification() {
-        Notification notification = new NotificationCompat.Builder(this, "channel_id")
+        // Replace with your icon
+        // Make the notification ongoing (non-dismissible)
+        return new NotificationCompat.Builder(this, "channel_id")
                 .setContentTitle("My Navigation Service")
                 .setContentText("Location tracking is active")
                 .setSmallIcon(R.mipmap.logo) // Replace with your icon
-                .setOngoing(true) // Make the notification ongoing (non-dismissable)
+                .setOngoing(true) // Make the notification ongoing (non-dismissible)
                 .build();
-        return notification;
     }
 
 
