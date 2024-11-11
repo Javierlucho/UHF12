@@ -194,7 +194,6 @@ public class InventoryIPSPFragment extends BaseFragment {
                     tagInfoList.addAll(infoMap.values());
                     //mainActivity.listEPC.clear();
                     //mainActivity.listEPC.addAll(infoMap.keySet());
-                    // TODO: Send to ViewModel
                     viewModel.updateScanning(tagInfoList);
                 }
                 handler.sendEmptyMessage(MSG_inventory);
