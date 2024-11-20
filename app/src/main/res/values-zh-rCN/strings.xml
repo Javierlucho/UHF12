@@ -36,6 +36,8 @@
     <string name="speed">速度:</string>
     <string name="time">时间:</string>
     <string name="start_inventory">开始盘存</string>
+    <string name="select_item">Asociar</string>
+    <string name="save_inventory">Save</string>
     <string name="stop_inventory">停止盘存</string>
     <string name="cus_read">Cus读</string>
     <string name="excel_export">excel导出</string>
@@ -311,4 +313,5 @@ User（用户）四个独立的存储区块（Bank）。\n
 		永久锁定：RESERVER区永久锁定后，使用密码000000FF可读，不可写；其他区域（TID除外）永久锁定后使用密码00000000或000000FF可读，不可写\n
 		解锁定：将暂时锁定的区域解锁，变成未锁定状态；永久锁定的区域无法被解锁\n
     </string>
+    <string name="set_location">Ubicar</string>
 </resources>

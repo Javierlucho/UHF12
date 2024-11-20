@@ -1,4 +1,4 @@
-package com.pda.uhf_g.entity;
+package com.pda.uhf_g.data.gps;
 
 public class GPSInfo {
     private final double latitude;

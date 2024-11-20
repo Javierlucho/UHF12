@@ -2,8 +2,7 @@ package com.pda.uhf_g.data.remote;
 
 import android.util.Log;
 
-import com.pda.uhf_g.entity.TagData;
-import com.pda.uhf_g.entity.TagInfo;
+import com.pda.uhf_g.data.local.entities.TagData;
 import com.pda.uhf_g.service.TestService;
 
 import java.util.ArrayList;

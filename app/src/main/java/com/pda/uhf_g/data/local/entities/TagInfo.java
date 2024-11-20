@@ -1,4 +1,4 @@
-package com.pda.uhf_g.entity;
+package com.pda.uhf_g.data.local.entities;
 
 import java.io.Serializable;
 

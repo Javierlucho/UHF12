@@ -6,14 +6,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.pda.serialport.Tools;
 
 import android.os.Handler;
-import android.os.strictmode.DiskReadViolation;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -28,7 +26,6 @@ import com.handheld.uhfr.Reader;
 import com.pda.uhf_g.MainActivity;
 import com.pda.uhf_g.R;
 import com.pda.uhf_g.adapter.TempTagListViewAdapter;
-import com.pda.uhf_g.entity.TagInfo;
 import com.pda.uhf_g.ui.base.BaseFragment;
 import com.pda.uhf_g.util.LogUtil;
 import com.pda.uhf_g.util.UtilSound;

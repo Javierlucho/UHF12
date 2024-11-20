@@ -1,10 +1,13 @@
 package com.pda.uhf_g.ui.fragment;
 
+import static com.pda.uhf_g.ui.base.NavHostFragment.findNavController;
+
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,12 +21,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pda.uhf_g.MainActivity;
 import com.pda.uhf_g.R;
 
-import com.pda.uhf_g.entity.TagInfo;
+import com.pda.uhf_g.data.local.entities.TagInfo;
 import com.pda.uhf_g.ui.base.BaseFragment;
 import com.pda.uhf_g.ui.viewmodel.InventoryViewModel;
 import com.pda.uhf_g.util.LogUtil;
@@ -49,10 +54,16 @@ public class InventoryIPSPFragment extends BaseFragment {
 
     private InventoryViewModel viewModel;
     @BindView(R.id.button_inventory)
-    Button btnInventory ;
+    FloatingActionButton btnInventory ;
+
+    @BindView(R.id.button_location)
+    Button btnLocation;
+
+    @BindView(R.id.button_catalog)
+    Button btnCatalog;
 
     @BindView(R.id.tv_lat)
-    TextView tvLat ;
+    TextView tvLat;
 
     @BindView(R.id.tv_lon)
     TextView tvLon;
@@ -60,8 +71,6 @@ public class InventoryIPSPFragment extends BaseFragment {
     @BindView(R.id.tv_tid)
     TextView tvTid;
 
-    @BindView(R.id.tv_description)
-    TextView tvDescription;
 
     @BindView(R.id.tv_name)
     TextView tvName;
@@ -69,8 +78,6 @@ public class InventoryIPSPFragment extends BaseFragment {
     @BindView(R.id.tv_afid)
     TextView tvAfid;
 
-    @BindView(R.id.tv_cid)
-    TextView tvCid;
 
     private final Map<String, TagInfo> tagInfoMap = new LinkedHashMap<>();//
     private final List<TagInfo> tagInfoList = new ArrayList<>();//
@@ -85,7 +92,7 @@ public class InventoryIPSPFragment extends BaseFragment {
     private final SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
     private KeyReceiver keyReceiver;
     SharedUtil sharedUtil ;
-    private boolean isMulti = false;// multi mode flag
+    private boolean isMulti = false; // multi mode flag
     private final int MSG_inventory = 1 ;
     private final int MSG_inventory_TIME = 1001 ;
 
@@ -125,7 +132,6 @@ public class InventoryIPSPFragment extends BaseFragment {
         return readCount;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,11 +149,16 @@ public class InventoryIPSPFragment extends BaseFragment {
         viewModel.getCurrentTag().observe(getViewLifecycleOwner(), tagData -> {
             tvAfid.setText(tagData.getAfid());
             tvTid.setText(tagData.getTid());
-            tvCid.setText(tagData.getCid());
             tvName.setText(tagData.getName());
-            tvDescription.setText(tagData.getDescription());
             stopInventory();
         });
+        btnLocation.setOnClickListener( v -> {
+            findNavController(this).navigate(R.id.action_inventoryIPSPFragment_to_locationFragment);
+        });
+        btnCatalog.setOnClickListener( v -> {
+            findNavController(this).navigate(R.id.action_inventoryIPSPFragment_to_catalogFragment);
+        });
+
     }
 
     @Override
@@ -266,7 +277,9 @@ public class InventoryIPSPFragment extends BaseFragment {
 
     private void inventoryEPC() {
         isReader = true ;
-        btnInventory.setText(R.string.stop_inventory);
+        //btnInventory.setText(R.string.stop_inventory);
+        Drawable icon = ContextCompat.getDrawable(getContext(), R.drawable.ic_arrow);
+        btnInventory.setImageDrawable(icon);
         showToast(R.string.start_inventory);
         if(mainActivity.mUhfrManager.getGen2session()!=3){
             mainActivity.mUhfrManager.setGen2session(isMulti);
@@ -298,7 +311,9 @@ public class InventoryIPSPFragment extends BaseFragment {
                     timer.cancel();
                     timer = null ;
                 }
-                btnInventory.setText(R.string.start_inventory);
+//                btnInventory.setText(R.string.start_inventory);
+                Drawable icon = ContextCompat.getDrawable(getContext(), R.drawable.ic_barcode);
+                btnInventory.setImageDrawable(icon);
             }
         } else {
             showToast(R.string.communication_timeout);

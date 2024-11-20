@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 
 import com.pda.uhf_g.R;
-import com.pda.uhf_g.entity.TagInfo;
+import com.pda.uhf_g.data.local.entities.TagInfo;
 import com.pda.uhf_g.util.LogUtil;
 
 import java.math.RoundingMode;

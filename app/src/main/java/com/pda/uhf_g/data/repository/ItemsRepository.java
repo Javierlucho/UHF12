@@ -1,6 +1,5 @@
 package com.pda.uhf_g.data.repository;
 
-import android.annotation.SuppressLint;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -8,13 +7,11 @@ import androidx.lifecycle.LiveData;
 import com.pda.uhf_g.data.local.ItemsLocalDataSource;
 import com.pda.uhf_g.data.local.entities.TagItemEntity;
 import com.pda.uhf_g.data.remote.ItemsRemoteDataSource;
-import com.pda.uhf_g.entity.TagData;
-import com.pda.uhf_g.entity.TagInfo;
+import com.pda.uhf_g.data.local.entities.TagData;
 
 import java.util.List;
 import java.util.Objects;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -82,6 +79,14 @@ public class ItemsRepository {
             Log.d("db","Save failed "  + e);
         }
     }
+
+
+    // Serialize to JSON
+    // Gson gson = new Gson();
+    // String jsonString = gson.toJson(myDataObject);
+
+    // Deserialize from JSON
+    // MyDataObject myDataObject = gson.fromJson(jsonString, MyDataObject.class);
 
     public void saveToDatabase(LiveData<TagData> currentTag){
         // Get read tag data

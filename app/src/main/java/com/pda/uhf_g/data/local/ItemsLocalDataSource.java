@@ -1,19 +1,15 @@
 package com.pda.uhf_g.data.local;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.pda.uhf_g.data.local.entities.ItemSightingEntity;
 import com.pda.uhf_g.data.local.entities.TagItemEntity;
-import com.pda.uhf_g.entity.TagData;
-import com.pda.uhf_g.entity.TagInfo;
+import com.pda.uhf_g.data.local.entities.TagData;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class ItemsLocalDataSource {
 

@@ -8,20 +8,17 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.Menu;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.handheld.uhfr.UHFRManager;
 import com.pda.uhf_g.data.gps.IBaseGpsListener;
-import com.pda.uhf_g.entity.GPSInfo;
-import com.pda.uhf_g.service.TestService;
+import com.pda.uhf_g.data.gps.GPSInfo;
 import com.pda.uhf_g.ui.viewmodel.InventoryViewModel;
 import com.pda.uhf_g.util.LogUtil;
 import com.pda.uhf_g.util.ScanUtil;
@@ -42,14 +39,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Single;
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity implements IBaseGpsListener, NavigationView. OnNavigationItemSelectedListener{
 
@@ -279,8 +270,6 @@ public class MainActivity extends AppCompatActivity implements IBaseGpsListener,
             int i = mUhfrManager.setRrJgDwell(jgTime, dwell);
         }
     }
-
-
 
     private void closeModule() {
         if (mUhfrManager != null) {//close uhf module

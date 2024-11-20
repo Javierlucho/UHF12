@@ -35,7 +35,10 @@
     <string name="all_tags">Tag:</string>
     <string name="speed">Speed:</string>
     <string name="time">Time:</string>
-    <string name="start_inventory">Start</string>
+    <string name="start_inventory">Leer Tag</string>
+    <string name="set_location">Ubicar</string>
+    <string name="select_item">Asociar</string>
+    <string name="save_inventory">Guardar</string>
     <string name="stop_inventory">Stop</string>
     <string name="cus_read">Cus read</string>
     <string name="excel_export">Excel export</string>
@@ -133,6 +136,10 @@
     <string name="strrb4">Custom</string>
     <string name="getstr">Get</string>
     <string name="setstr">Set</string>
+    <string name="zona">Zona</string>
+    <string name="megazona">Mega Zona</string>
+    <string name="sector">Sector</string>
+    <string name="piscina">Piscina</string>
 
     <string-array name="temp_manufacturer">
         <item>Yuehe tag</item>
@@ -269,5 +276,11 @@
         <item></item>
         <item></item>
         <item></item>
+    </string-array>
+
+    <string-array name="zona_array">
+        <item>Option 1</item>
+        <item>Option 2</item>
+        <item>Option 3</item>
     </string-array>
 </resources>

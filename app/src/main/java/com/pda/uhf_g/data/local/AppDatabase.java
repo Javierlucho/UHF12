@@ -7,15 +7,19 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.pda.uhf_g.data.local.dao.TagItemDao;
+import com.pda.uhf_g.data.local.entities.CatalogoEntity;
 import com.pda.uhf_g.data.local.entities.ItemSightingEntity;
+import com.pda.uhf_g.data.local.entities.PosicionamientoEntity;
 import com.pda.uhf_g.data.local.entities.TagItemEntity;
 
 @Database(
         entities = {
             TagItemEntity.class,
-            ItemSightingEntity.class
+            ItemSightingEntity.class,
+            PosicionamientoEntity.class,
+            CatalogoEntity.class,
         },
-        version = 3
+        version = 4
 )
 public abstract class AppDatabase extends RoomDatabase {
     public abstract TagItemDao TagItemDao();

@@ -11,15 +11,14 @@ import androidx.lifecycle.LiveData;
 
 import com.pda.uhf_g.data.local.ItemsLocalDataSource;
 import com.pda.uhf_g.data.remote.ItemsRemoteDataSource;
-import com.pda.uhf_g.entity.GPSInfo;
-import com.pda.uhf_g.entity.TagData;
-import com.pda.uhf_g.entity.TagInfo;
+import com.pda.uhf_g.data.gps.GPSInfo;
+import com.pda.uhf_g.data.local.entities.TagData;
+import com.pda.uhf_g.data.local.entities.TagInfo;
 import com.pda.uhf_g.data.repository.ItemsRepository;
 
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class InventoryViewModel extends AndroidViewModel {
     private final MutableLiveData<GPSInfo> currentLocation = new MutableLiveData<GPSInfo>();
