@@ -5,7 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
@@ -16,7 +17,6 @@ import com.pda.uhf_g.ui.base.BaseFragment;
 import com.pda.uhf_g.ui.viewmodel.InventoryViewModel;
 import com.pda.uhf_g.util.LogUtil;
 import com.pda.uhf_g.util.SharedUtil;
-import com.pda.uhf_g.util.UtilSound;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -24,8 +24,9 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class LocationFragment extends BaseFragment {
-
+public class LocationFragment extends BaseFragment implements AdapterView.OnItemSelectedListener {
+    @BindView(R.id.spinner_piscina)
+    Spinner spinnerPiscina;
     private InventoryViewModel viewModel;
 
     private MainActivity mainActivity ;
@@ -34,13 +35,9 @@ public class LocationFragment extends BaseFragment {
     private final SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
     SharedUtil sharedUtil ;
 
-
-
-
     public LocationFragment() {
 
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,9 +50,7 @@ public class LocationFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(InventoryViewModel.class);
 
-        viewModel.getCurrentTag().observe(getViewLifecycleOwner(), tagData -> {
 
-        });
     }
 
     @Override
@@ -85,7 +80,21 @@ public class LocationFragment extends BaseFragment {
         ButterKnife.bind(this, view);
         LogUtil.e("onCreateView()");
         sharedUtil = new SharedUtil(mainActivity);
+
+        spinnerPiscina.setOnItemSelectedListener(this);
         return view;
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
+        Object selectedItem = adapterView.getItemAtPosition(pos);
+        String selectedString = (String) selectedItem;
+        Log.d("pang", selectedString);
+        viewModel.setSelectedLocation("", "", "", selectedString);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
 }

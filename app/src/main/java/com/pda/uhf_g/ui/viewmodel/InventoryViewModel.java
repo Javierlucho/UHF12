@@ -9,13 +9,17 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.LiveData;
 
+import com.pda.uhf_g.R;
 import com.pda.uhf_g.data.local.ItemsLocalDataSource;
+import com.pda.uhf_g.data.local.entities.ListItem;
+import com.pda.uhf_g.data.local.entities.Location;
 import com.pda.uhf_g.data.remote.ItemsRemoteDataSource;
 import com.pda.uhf_g.data.gps.GPSInfo;
 import com.pda.uhf_g.data.local.entities.TagData;
 import com.pda.uhf_g.data.local.entities.TagInfo;
 import com.pda.uhf_g.data.repository.ItemsRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -24,10 +28,20 @@ public class InventoryViewModel extends AndroidViewModel {
     private final MutableLiveData<GPSInfo> currentLocation = new MutableLiveData<GPSInfo>();
     private final MutableLiveData<TagData> currentTag = new MutableLiveData<TagData>();
 
+    private final MutableLiveData<Location> selected_location = new MutableLiveData<Location>();
+
+    private final MutableLiveData<ListItem> selected_item = new MutableLiveData<ListItem>();
+
+    List<ListItem> items = new ArrayList<>();
+
+
+
     private ItemsRepository itemsRepository;
     private List<TagInfo> tagInfoList;
     public InventoryViewModel(@NonNull Application application) {
         super(application);
+
+        fillItems();
 
         ItemsLocalDataSource local = new ItemsLocalDataSource(application.getApplicationContext());
         ItemsRemoteDataSource remote = new ItemsRemoteDataSource();
@@ -79,6 +93,43 @@ public class InventoryViewModel extends AndroidViewModel {
         return null;
     }
 
+    public MutableLiveData<Location> getSelectedLocation() {
+        return selected_location;
+    }
+
+
+    public void setSelectedLocation(String megazona, String zona, String sector, String piscina) {
+        Location location = new Location(megazona, zona, sector, piscina);
+        selected_location.setValue(location);
+    }
+    public void setSelectedItem(ListItem item) {
+        selected_item.setValue(item);
+    }
+
+    public MutableLiveData<ListItem> getSelectedItem() {
+        return selected_item;
+    }
+
+    public void deselectItem() {
+        selected_item.setValue(null);
+    }
+
+    private void fillItems(){
+        items.add(new ListItem(R.drawable.button_disenabled_background, "Item 1", 0));
+        items.add(new ListItem(R.drawable.button_disenabled_background, "Item 2", 1));
+        items.add(new ListItem(R.drawable.button_disenabled_background, "Item 3", 2));
+        items.add(new ListItem(R.drawable.button_disenabled_background, "Item 4", 3));
+        items.add(new ListItem(R.drawable.button_disenabled_background, "Item 5", 4));
+        items.add(new ListItem(R.drawable.button_disenabled_background, "Item 6", 5));
+        items.add(new ListItem(R.drawable.button_disenabled_background, "Item 7", 6));
+        items.add(new ListItem(R.drawable.button_disenabled_background, "Item 8", 7));
+        items.add(new ListItem(R.drawable.button_disenabled_background, "Item 9", 8));
+        items.add(new ListItem(R.drawable.button_disenabled_background, "Item 10", 9));
+    }
+
+    public List<ListItem> getItems() {
+        return items;
+    }
 
 
 }

@@ -78,6 +78,9 @@ public class InventoryIPSPFragment extends BaseFragment {
     @BindView(R.id.tv_afid)
     TextView tvAfid;
 
+    @BindView(R.id.tv_piscina)
+    TextView tvPiscina;
+
 
     private final Map<String, TagInfo> tagInfoMap = new LinkedHashMap<>();//
     private final List<TagInfo> tagInfoList = new ArrayList<>();//
@@ -149,7 +152,6 @@ public class InventoryIPSPFragment extends BaseFragment {
         viewModel.getCurrentTag().observe(getViewLifecycleOwner(), tagData -> {
             tvAfid.setText(tagData.getAfid());
             tvTid.setText(tagData.getTid());
-            tvName.setText(tagData.getName());
             stopInventory();
         });
         btnLocation.setOnClickListener( v -> {
@@ -157,6 +159,13 @@ public class InventoryIPSPFragment extends BaseFragment {
         });
         btnCatalog.setOnClickListener( v -> {
             findNavController(this).navigate(R.id.action_inventoryIPSPFragment_to_catalogFragment);
+        });
+        viewModel.getSelectedItem().observe(getViewLifecycleOwner(), item -> {
+            tvName.setText(item.getTitle());
+        });
+
+        viewModel.getSelectedLocation().observe(getViewLifecycleOwner(), location -> {
+            tvPiscina.setText(location.getPiscina());
         });
 
     }

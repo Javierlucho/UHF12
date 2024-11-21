@@ -12,23 +12,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.pda.uhf_g.R;
 import com.pda.uhf_g.data.local.entities.ListItem;
+import com.pda.uhf_g.ui.viewmodel.InventoryViewModel;
 
 import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
+    private final InventoryViewModel viewModel;
     private List<ListItem> items;
-    private OnItemClickListener onItemClickListener;
 
     /**
      * Initialize the dataset of the Adapter
      *
-     * @param items List<ListItem> containing the data to populate views to be used
-     *                by RecyclerView
+     * @param items     List<ListItem> containing the data to populate views to be used
+     *                  by RecyclerView
+     * @param viewModel
      */
 
-    public ListAdapter(List<ListItem> items) {
+    public ListAdapter(List<ListItem> items, InventoryViewModel viewModel) {
         this.items = items;
+        this.viewModel = viewModel;
     }
 
     /**
@@ -67,21 +70,46 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
+    public void deselectItem(ListItem item) {
+        item.setImageResId(R.drawable.button_disenabled_background);
+        item.setSelected(false);
+    }
+
+    public void selectItem(ListItem item) {
+        item.setImageResId(R.drawable.button_press_background);
+        item.setSelected(true);
+    }
+
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.getTextView().setText(items.get(position).getTitle());
+
         ListItem item = items.get(position);
-        viewHolder.imageView.setImageResource(item.getImageResId());
-        viewHolder.textView.setText(item.getTitle());
+        viewHolder.getImageView().setImageResource(item.getImageResId());
+        viewHolder.getTextView().setText(item.getTitle());
 
         viewHolder.itemView.setOnClickListener( v -> {
-            Log.e("click", "Touched");
-            item.setImageResId(R.drawable.button_press_background);
+
+            if (item.isSelected()) {
+                Log.e("touch", "Deselected");
+                deselectItem(item);
+                viewModel.deselectItem();
+            } else {
+                Log.e("touch", "Selected");
+
+                ListItem old_selected = viewModel.getSelectedItem().getValue();
+                if (old_selected != null) {
+                    deselectItem(old_selected);
+                    notifyItemChanged(old_selected.getPosition());
+                }
+                selectItem(item);
+                viewModel.setSelectedItem(item);
+            }
             notifyItemChanged(position);
+
         });
 
     }

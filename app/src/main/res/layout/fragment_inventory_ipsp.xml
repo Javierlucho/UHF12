@@ -21,12 +21,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <TextView
         android:id="@+id/label_tid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="108dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="43dp"
         android:text="TID"
         android:textSize="20sp"
@@ -35,7 +36,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/item_type" />
-
 
     <TextView
         android:id="@+id/tv_tid"
@@ -118,10 +118,9 @@
         android:id="@+id/button_catalog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="32dp"
         android:layout_weight="1"
         android:drawableLeft="@drawable/ic_car_tag"
-        android:drawableRight="@drawable/ic_pending"
         android:minHeight="@dimen/min_height_60dp"
         android:text="@string/select_item"
         android:textSize="@dimen/text_size_18sp"
@@ -134,7 +133,7 @@
         android:layout_height="wrap_content"
 
         android:layout_marginTop="16dp"
-        android:text="piscina"
+        android:text="..."
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/button_location"
         app:layout_constraintStart_toStartOf="@+id/button_location"
@@ -145,7 +144,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="name"
+        android:text="..."
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="@+id/button_catalog"
         app:layout_constraintStart_toStartOf="@+id/button_catalog"
@@ -181,12 +180,11 @@
         android:layout_marginTop="172dp"
         android:layout_weight="1"
         android:drawableLeft="@drawable/ic_add_location"
-        android:drawableRight="@drawable/ic_check"
         android:minHeight="@dimen/min_height_60dp"
         android:text="@string/set_location"
         android:textSize="@dimen/text_size_18sp"
         app:layout_constraintEnd_toStartOf="@+id/button_catalog"
-        app:layout_constraintHorizontal_bias="0.442"
+        app:layout_constraintHorizontal_bias="0.32"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_lon" />
 
