@@ -1,5 +1,7 @@
 package com.pda.uhf_g.ui.fragment;
 
+import static com.pda.uhf_g.ui.base.NavHostFragment.findNavController;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pda.uhf_g.MainActivity;
 import com.pda.uhf_g.R;
 import com.pda.uhf_g.ui.base.BaseFragment;
@@ -27,6 +30,10 @@ import butterknife.ButterKnife;
 public class LocationFragment extends BaseFragment implements AdapterView.OnItemSelectedListener {
     @BindView(R.id.spinner_piscina)
     Spinner spinnerPiscina;
+
+    @BindView(R.id.button_save)
+    FloatingActionButton btnSave;
+
     private InventoryViewModel viewModel;
 
     private MainActivity mainActivity ;
@@ -50,7 +57,9 @@ public class LocationFragment extends BaseFragment implements AdapterView.OnItem
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(InventoryViewModel.class);
 
-
+        btnSave.setOnClickListener( v -> {
+            findNavController(this).navigate(R.id.nav_inventory_ipsp);
+        });
     }
 
     @Override

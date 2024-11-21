@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,56 +8,30 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+
     <ImageView
         android:id="@+id/my_image_view"
-        android:layout_width="76dp"
-        android:layout_height="58dp"
+        android:layout_width="89dp"
+        android:layout_height="76dp"
         android:layout_gravity="center"
-        android:layout_marginTop="24dp"
-        android:src="@drawable/ic_launcher_foreground"
+        android:layout_marginTop="56dp"
+        android:src="@drawable/ic_scan"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
-        android:id="@+id/label_tid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="43dp"
-        android:text="TID"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/tv_tid"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/item_type" />
-
-    <TextView
-        android:id="@+id/tv_tid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TID"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/label_tid"
-        app:layout_constraintStart_toEndOf="@+id/item_type" />
 
     <TextView
         android:id="@+id/label_afid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="31dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="92dp"
         android:text="AFID"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/tv_afid"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/label_tid"
-        app:layout_constraintTop_toBottomOf="@+id/label_tid" />
+        app:layout_constraintTop_toBottomOf="@+id/item_type" />
 
     <TextView
         android:id="@+id/label_latitud"
@@ -86,33 +59,34 @@
         android:id="@+id/tv_afid"
         android:layout_width="98dp"
         android:layout_height="24dp"
+        android:layout_marginEnd="68dp"
         android:text="AFID"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/label_afid"
-        app:layout_constraintStart_toStartOf="@+id/tv_tid" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
-        android:id="@+id/info_message"
+        android:id="@+id/tv_tid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:text="No item found yet"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/my_image_view" />
 
+
     <TextView
         android:id="@+id/item_type"
-        android:layout_width="87dp"
-        android:layout_height="28dp"
+        android:layout_width="227dp"
+        android:layout_height="39dp"
         android:layout_marginTop="16dp"
         android:text="Aireador Mecanico"
-        android:textSize="20sp"
+        android:textSize="26sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/info_message" />
-
+        app:layout_constraintTop_toBottomOf="@+id/tv_tid" />
 
     <Button
         android:id="@+id/button_catalog"
@@ -121,6 +95,7 @@
         android:layout_marginEnd="32dp"
         android:layout_weight="1"
         android:drawableLeft="@drawable/ic_car_tag"
+        android:enabled="false"
         android:minHeight="@dimen/min_height_60dp"
         android:text="@string/select_item"
         android:textSize="@dimen/text_size_18sp"
@@ -177,14 +152,15 @@
         android:id="@+id/button_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="172dp"
+        android:layout_marginTop="176dp"
         android:layout_weight="1"
         android:drawableLeft="@drawable/ic_add_location"
+        android:enabled="false"
         android:minHeight="@dimen/min_height_60dp"
         android:text="@string/set_location"
         android:textSize="@dimen/text_size_18sp"
         app:layout_constraintEnd_toStartOf="@+id/button_catalog"
-        app:layout_constraintHorizontal_bias="0.32"
+        app:layout_constraintHorizontal_bias="0.302"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_lon" />
 
@@ -194,8 +170,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        app:srcCompat="@drawable/ic_barcode"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"></com.google.android.material.floatingactionbutton.FloatingActionButton>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_barcode" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

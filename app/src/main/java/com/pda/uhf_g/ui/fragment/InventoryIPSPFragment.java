@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -80,6 +81,9 @@ public class InventoryIPSPFragment extends BaseFragment {
 
     @BindView(R.id.tv_piscina)
     TextView tvPiscina;
+
+    @BindView(R.id.my_image_view)
+    ImageView imageView;
 
 
     private final Map<String, TagInfo> tagInfoMap = new LinkedHashMap<>();//
@@ -152,6 +156,10 @@ public class InventoryIPSPFragment extends BaseFragment {
         viewModel.getCurrentTag().observe(getViewLifecycleOwner(), tagData -> {
             tvAfid.setText(tagData.getAfid());
             tvTid.setText(tagData.getTid());
+            btnCatalog.setEnabled(true);
+            btnLocation.setEnabled(true);
+            Drawable icon = ContextCompat.getDrawable(getContext(), R.drawable.ic_check);
+            imageView.setImageDrawable(icon);
             stopInventory();
         });
         btnLocation.setOnClickListener( v -> {
@@ -198,6 +206,10 @@ public class InventoryIPSPFragment extends BaseFragment {
         public void run() {
             LogUtil.e("inventoryThread is running");
             List<Reader.TAGINFO> listTag = null;
+            btnCatalog.setEnabled(false);
+            btnLocation.setEnabled(false);
+            Drawable icon = ContextCompat.getDrawable(getContext(), R.drawable.ic_scan);
+            imageView.setImageDrawable(icon);
             //6C
             //listTag = mainActivity.mUhfrManager.tagInventoryRealTime();
             listTag = mainActivity.mUhfrManager.tagEpcTidInventoryByTimer((short) 50) ;

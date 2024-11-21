@@ -1,5 +1,7 @@
 package com.pda.uhf_g.ui.fragment;
 
+import static com.pda.uhf_g.ui.base.NavHostFragment.findNavController;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pda.uhf_g.MainActivity;
 import com.pda.uhf_g.R;
 import com.pda.uhf_g.ui.adapter.ListAdapter;
@@ -28,7 +31,8 @@ public class CatalogFragment extends BaseFragment {
     @BindView(R.id.catalog_list)
     RecyclerView myRecyclerView;
     private InventoryViewModel viewModel;
-
+    @BindView(R.id.button_save)
+    FloatingActionButton btnSave;
     private MainActivity mainActivity ;
     SharedUtil sharedUtil ;
 
@@ -45,6 +49,10 @@ public class CatalogFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        btnSave.setOnClickListener( v -> {
+            findNavController(this).navigate(R.id.nav_inventory_ipsp);
+        });
     }
 
     @Override
