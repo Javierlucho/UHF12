@@ -13,16 +13,19 @@ import com.pda.uhf_g.R;
 import com.pda.uhf_g.data.local.ItemsLocalDataSource;
 import com.pda.uhf_g.data.local.entities.ListItem;
 import com.pda.uhf_g.data.local.entities.Location;
+import com.pda.uhf_g.data.remote.CatalogRemoteDataSource;
 import com.pda.uhf_g.data.remote.ItemsRemoteDataSource;
 import com.pda.uhf_g.data.gps.GPSInfo;
 import com.pda.uhf_g.data.local.entities.TagData;
 import com.pda.uhf_g.data.local.entities.TagInfo;
+import com.pda.uhf_g.data.remote.PondsRemoteDataSource;
 import com.pda.uhf_g.data.repository.ItemsRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import retrofit2.Response;
 
 public class InventoryViewModel extends AndroidViewModel {
     private final MutableLiveData<GPSInfo> currentLocation = new MutableLiveData<GPSInfo>();
@@ -32,9 +35,9 @@ public class InventoryViewModel extends AndroidViewModel {
 
     private final MutableLiveData<ListItem> selected_item = new MutableLiveData<ListItem>();
 
+    //private final MutableLiveData<Location> selected_item = new MutableLiveData<Location>();
+
     List<ListItem> items = new ArrayList<>();
-
-
 
     private ItemsRepository itemsRepository;
     private List<TagInfo> tagInfoList;
@@ -44,8 +47,10 @@ public class InventoryViewModel extends AndroidViewModel {
         fillItems();
 
         ItemsLocalDataSource local = new ItemsLocalDataSource(application.getApplicationContext());
-        ItemsRemoteDataSource remote = new ItemsRemoteDataSource();
-        itemsRepository = new ItemsRepository(remote, local);
+        ItemsRemoteDataSource items = new ItemsRemoteDataSource();
+        PondsRemoteDataSource ponds = new PondsRemoteDataSource();
+        CatalogRemoteDataSource catalog = new CatalogRemoteDataSource();
+        itemsRepository = new ItemsRepository(items, ponds, catalog, local);
     }
 
     public void setCurrentLocation(GPSInfo gpsInfo) {
@@ -97,7 +102,6 @@ public class InventoryViewModel extends AndroidViewModel {
         return selected_location;
     }
 
-
     public void setSelectedLocation(String megazona, String zona, String sector, String piscina) {
         Location location = new Location(megazona, zona, sector, piscina);
         selected_location.setValue(location);
@@ -132,4 +136,22 @@ public class InventoryViewModel extends AndroidViewModel {
     }
 
 
+    public void pushToServer() {
+        Log.d("db", "Pushing to server");
+        //itemsRepository.publishInventory();
+    }
+
+    @SuppressLint("CheckResult")
+    public void pullData(){
+        // Pull Items Locations and Tag
+        String megazone = "";
+        String zone = "";
+        String sector = "";
+        String level = "megazone";
+
+        // Pull Pools Data
+        //public void fillFilterPoolsDB();
+
+        // Pull IPSP Inventory Catalog
+    }
 }

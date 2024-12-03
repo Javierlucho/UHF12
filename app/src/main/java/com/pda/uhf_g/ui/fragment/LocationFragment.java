@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,8 @@ import com.pda.uhf_g.util.LogUtil;
 import com.pda.uhf_g.util.SharedUtil;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -60,6 +63,20 @@ public class LocationFragment extends BaseFragment implements AdapterView.OnItem
         btnSave.setOnClickListener( v -> {
             findNavController(this).navigate(R.id.nav_inventory_ipsp);
         });
+
+        List<String> itemsList = new ArrayList<>();
+        itemsList.add("SANTAMONICA1");
+        itemsList.add("SANTAMONICA2");
+        itemsList.add("SANTAMONICA3");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                getContext(),
+                android.R.layout.simple_spinner_item,
+                itemsList
+        );
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPiscina.setAdapter(adapter);
     }
 
     @Override

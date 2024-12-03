@@ -86,4 +86,9 @@
         android:name="com.pda.uhf_g.ui.fragment.LocationFragment"
         android:label="Seleccionar ubicación"
         tools:layout="@layout/fragment_location" />
+    <fragment
+        android:id="@+id/syncFragment"
+        android:name="com.pda.uhf_g.ui.fragment.SyncFragment"
+        android:label="nav_sync"
+        tools:layout="@layout/nav_sync" />
 </navigation>

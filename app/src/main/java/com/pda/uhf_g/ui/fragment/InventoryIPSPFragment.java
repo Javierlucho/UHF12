@@ -389,9 +389,9 @@ public class InventoryIPSPFragment extends BaseFragment {
                         break;
                 }
             }
+
         }
+
     }
-
-
 
 }

@@ -140,6 +140,7 @@
     <string name="megazona">Mega Zona</string>
     <string name="sector">Sector</string>
     <string name="piscina">Piscina</string>
+    <string name="sync">Sincronizar</string>
 
     <string-array name="temp_manufacturer">
         <item>Yuehe tag</item>
@@ -292,7 +293,5 @@
 
     <string-array name="piscina_array">
         <item>SANTAMONICA1</item>
-        <item>SANTAMONICA2</item>
-        <item>SANTAMONICA3</item>
     </string-array>
 </resources>

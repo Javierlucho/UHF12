@@ -294,6 +294,9 @@ public class MainActivity extends AppCompatActivity implements IBaseGpsListener,
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.nav_sync:
+                navController.navigate(R.id.syncFragment);
+                break ;
             case R.id.nav_inventory_ipsp:
                 navController.navigate(R.id.nav_inventory_ipsp);
                 break ;

@@ -36,7 +36,9 @@ import com.pda.uhf_g.MainActivity;
 import com.pda.uhf_g.R;
 import com.pda.uhf_g.adapter.EPCListViewAdapter;
 import com.pda.uhf_g.data.local.ItemsLocalDataSource;
+import com.pda.uhf_g.data.remote.CatalogRemoteDataSource;
 import com.pda.uhf_g.data.remote.ItemsRemoteDataSource;
+import com.pda.uhf_g.data.remote.PondsRemoteDataSource;
 import com.pda.uhf_g.data.repository.ItemsRepository;
 import com.pda.uhf_g.data.local.entities.TagInfo;
 import com.pda.uhf_g.ui.base.BaseFragment;
@@ -183,8 +185,10 @@ public class InventoryFragment extends BaseFragment {
         mainActivity = (MainActivity) getActivity();
 
         ItemsLocalDataSource local = new ItemsLocalDataSource(getContext());
-        ItemsRemoteDataSource remote = new ItemsRemoteDataSource();
-        itemsRepository = new ItemsRepository(remote, local);
+        ItemsRemoteDataSource items = new ItemsRemoteDataSource();
+        CatalogRemoteDataSource catalog = new CatalogRemoteDataSource();
+        PondsRemoteDataSource ponds = new PondsRemoteDataSource();
+        itemsRepository = new ItemsRepository(items, ponds, catalog, local);
     }
 
     @Override
