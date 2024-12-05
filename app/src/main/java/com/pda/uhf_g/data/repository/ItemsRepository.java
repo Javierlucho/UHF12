@@ -5,7 +5,6 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 
 import com.pda.uhf_g.data.local.ItemsLocalDataSource;
-import com.pda.uhf_g.data.local.entities.Location;
 import com.pda.uhf_g.data.local.entities.TagItemEntity;
 import com.pda.uhf_g.data.remote.CatalogRemoteDataSource;
 import com.pda.uhf_g.data.remote.ItemsRemoteDataSource;
@@ -15,11 +14,11 @@ import com.pda.uhf_g.data.remote.PondsRemoteDataSource;
 import java.util.List;
 import java.util.Objects;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 public class ItemsRepository {
@@ -127,34 +126,26 @@ public class ItemsRepository {
             // Handle insertion error
             Log.d("db", "Save failed" + readTag.getTid());
         });
-
-
     }
 
 //    public void publishInventory() {
 //        itemsRemoteDataSource.publishInventory();
 //    }
 
-    public Observable<Response<List<Location>>> getFilterPools(String megazone, String zone, String sector, String level){
+    public @NonNull Observable<Response<ResponseBody>> getFilterPools(String megazone, String zone, String sector, String level){
         // Perform database insertion on a background thread
         return Observable.fromCallable( () -> pondsRemoteDataSource.getFilters(megazone, zone, sector, level).execute())
                 .subscribeOn(Schedulers.io()); // Specify the background scheduler
 
     }
 
-//    public void fillFilterPoolsDB(){
-//        getFilterPools( megazone, zone, sector, level)
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe(item -> {
-//                        // Handle successful insertion (e.g., update UI)
-//                        Log.d("db", "Found item " + tid);
-//                        setCurrentTag(item);
-//                        itemsRepository.saveToDatabase(getCurrentTag());
-//                    },
-//                    error -> {
-//                        // Handle insertion error
-//                        Log.d("db", "Finding failed " + tid);
-//                        Log.d("db", error.getMessage());
-//                    });
-//    }
+    public @NonNull Observable<Response<PondsRemoteDataSource.PondsResponse>> getPoolsByZone(String zoneId){
+        String match_key = "meta_data.Id_Zona";
+        return Observable.fromCallable(() -> {
+                    // Perform database insertion on a background thread
+                    Log.d("remote", "getPoolsByZone:" + pondsRemoteDataSource.getPonds(match_key, zoneId).toString());
+                    return pondsRemoteDataSource.getPonds(match_key, zoneId).execute();
+                })
+                .subscribeOn(Schedulers.io()); // Specify the background scheduler
+    }
 }

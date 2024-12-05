@@ -55,6 +55,10 @@ public class SyncFragment extends BaseFragment {
         btnPush.setOnClickListener( v -> {
             viewModel.pushToServer();
         });
+
+        btnPull.setOnClickListener( v -> {
+            viewModel.pullData();
+        });
     }
 
     @Override

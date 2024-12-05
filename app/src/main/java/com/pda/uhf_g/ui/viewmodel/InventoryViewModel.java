@@ -9,6 +9,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.LiveData;
 
+import com.google.gson.JsonObject;
 import com.pda.uhf_g.R;
 import com.pda.uhf_g.data.local.ItemsLocalDataSource;
 import com.pda.uhf_g.data.local.entities.ListItem;
@@ -21,21 +22,23 @@ import com.pda.uhf_g.data.local.entities.TagInfo;
 import com.pda.uhf_g.data.remote.PondsRemoteDataSource;
 import com.pda.uhf_g.data.repository.ItemsRepository;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import retrofit2.Response;
 
 public class InventoryViewModel extends AndroidViewModel {
     private final MutableLiveData<GPSInfo> currentLocation = new MutableLiveData<GPSInfo>();
     private final MutableLiveData<TagData> currentTag = new MutableLiveData<TagData>();
 
-    private final MutableLiveData<Location> selected_location = new MutableLiveData<Location>();
+    private final MutableLiveData<Location> selectedLocation = new MutableLiveData<Location>();
 
-    private final MutableLiveData<ListItem> selected_item = new MutableLiveData<ListItem>();
+    private final MutableLiveData<ListItem> selectedItem = new MutableLiveData<ListItem>();
 
-    //private final MutableLiveData<Location> selected_item = new MutableLiveData<Location>();
+    private final MutableLiveData<Boolean> downloadedPools = new MutableLiveData<Boolean>();
+
 
     List<ListItem> items = new ArrayList<>();
 
@@ -65,6 +68,14 @@ public class InventoryViewModel extends AndroidViewModel {
     }
     public LiveData<TagData> getCurrentTag() {
         return currentTag;
+    }
+
+    public MutableLiveData<Boolean> getDownloadedPools() {
+        return downloadedPools;
+    }
+
+    public void setDownloadedPools(Boolean downloaded) {
+        downloadedPools.setValue(downloaded);
     }
 
     public void updateScanning(List<TagInfo> tagInfoList) {
@@ -99,23 +110,23 @@ public class InventoryViewModel extends AndroidViewModel {
     }
 
     public MutableLiveData<Location> getSelectedLocation() {
-        return selected_location;
+        return selectedLocation;
     }
 
     public void setSelectedLocation(String megazona, String zona, String sector, String piscina) {
         Location location = new Location(megazona, zona, sector, piscina);
-        selected_location.setValue(location);
+        selectedLocation.setValue(location);
     }
     public void setSelectedItem(ListItem item) {
-        selected_item.setValue(item);
+        selectedItem.setValue(item);
     }
 
     public MutableLiveData<ListItem> getSelectedItem() {
-        return selected_item;
+        return selectedItem;
     }
 
     public void deselectItem() {
-        selected_item.setValue(null);
+        selectedItem.setValue(null);
     }
 
     private void fillItems(){
@@ -144,14 +155,38 @@ public class InventoryViewModel extends AndroidViewModel {
     @SuppressLint("CheckResult")
     public void pullData(){
         // Pull Items Locations and Tag
-        String megazone = "";
-        String zone = "";
-        String sector = "";
-        String level = "megazone";
+        String megazone = "CALIFORNIA";
+        String zone = "CALIFORNIAA";
+        String zoneId = "Z005";
 
         // Pull Pools Data
-        //public void fillFilterPoolsDB();
+        itemsRepository.getPoolsByZone(zoneId)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(response -> {
+                    // Handle successful insertion (e.g., update UI)
+                    if(response.isSuccessful()){
+                        Log.d("remote", "Downloaded pool data" );
+                        PondsRemoteDataSource.PondsResponse responseBody = response.body();
+                        Log.d( "remote", "Items: " + responseBody.payload.items.get(1).meta_data.get("Id_Sector") );
+
+                        // Save downloaded data to database
+
+                        // Visual indicator for the user
+                        setDownloadedPools(true);
+                    } else {
+                        Log.d("remote", "Downloading error" );
+                        Log.d("remote", response.message());
+                    }
+                },
+                error -> {
+                    // Handle insertion error
+                    Log.d("remote", "Downloading failed ");
+                    Log.d("remote", error.getMessage());
+                });
+
 
         // Pull IPSP Inventory Catalog
     }
+
+
 }

@@ -14,7 +14,7 @@
         android:layout_height="160dp"
         android:layout_marginTop="136dp"
         android:background="@drawable/circular_button"
-        android:enabled="false"
+        android:enabled="true"
         android:text="Pull"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
