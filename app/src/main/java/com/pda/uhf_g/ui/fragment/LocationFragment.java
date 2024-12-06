@@ -2,6 +2,7 @@ package com.pda.uhf_g.ui.fragment;
 
 import static com.pda.uhf_g.ui.base.NavHostFragment.findNavController;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,13 +11,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pda.uhf_g.MainActivity;
 import com.pda.uhf_g.R;
+import com.pda.uhf_g.data.local.dao.PondsDao;
+import com.pda.uhf_g.data.local.entities.PondEntity;
+import com.pda.uhf_g.ui.adapter.SpinnerAdapter;
 import com.pda.uhf_g.ui.base.BaseFragment;
 import com.pda.uhf_g.ui.viewmodel.InventoryViewModel;
 import com.pda.uhf_g.util.LogUtil;
@@ -24,6 +30,7 @@ import com.pda.uhf_g.util.SharedUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,6 +38,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LocationFragment extends BaseFragment implements AdapterView.OnItemSelectedListener {
+    @BindView(R.id.spinner_mega_zona)
+    Spinner spinnerMegazone;
+
+    @BindView(R.id.spinner_zona)
+    Spinner spinnerZone;
+    @BindView(R.id.spinner_sector)
+    Spinner spinnerSector;
+
     @BindView(R.id.spinner_piscina)
     Spinner spinnerPiscina;
 
@@ -40,10 +55,9 @@ public class LocationFragment extends BaseFragment implements AdapterView.OnItem
     private InventoryViewModel viewModel;
 
     private MainActivity mainActivity ;
-
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss", Locale.getDefault());
-    private final SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
     SharedUtil sharedUtil ;
+
+    List<PondEntity> ponds = new ArrayList<PondEntity>();
 
     public LocationFragment() {
 
@@ -64,19 +78,23 @@ public class LocationFragment extends BaseFragment implements AdapterView.OnItem
             findNavController(this).navigate(R.id.nav_inventory_ipsp);
         });
 
-        List<String> itemsList = new ArrayList<>();
-        itemsList.add("SANTAMONICA1");
-        itemsList.add("SANTAMONICA2");
-        itemsList.add("SANTAMONICA3");
+        ponds = getPonds();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+        List<PondsDao.MegaZoneList> pondLists = getStubMegazones();
+        List<PondsDao.PondList> megazones = new ArrayList<>();
+        for (PondsDao.MegaZoneList pondList : pondLists) {
+                megazones.add((PondsDao.PondList) pondList);
+        }
+
+        SpinnerAdapter adapter = new SpinnerAdapter(
                 getContext(),
-                android.R.layout.simple_spinner_item,
-                itemsList
+                megazones
         );
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPiscina.setAdapter(adapter);
+        //spinnerPiscina.setAdapter(adapter);
+
+        spinnerMegazone.setAdapter(adapter);
+        spinnerZone.setAdapter(adapter);
     }
 
     @Override
@@ -107,20 +125,79 @@ public class LocationFragment extends BaseFragment implements AdapterView.OnItem
         LogUtil.e("onCreateView()");
         sharedUtil = new SharedUtil(mainActivity);
 
+        spinnerMegazone.setOnItemSelectedListener(this);
+        spinnerZone.setOnItemSelectedListener(this);
+        spinnerSector.setOnItemSelectedListener(this);
         spinnerPiscina.setOnItemSelectedListener(this);
+
         return view;
     }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long l) {
         Object selectedItem = adapterView.getItemAtPosition(pos);
-        String selectedString = (String) selectedItem;
-        Log.d("pang", selectedString);
-        viewModel.setSelectedLocation("", "", "", selectedString);
+        if (selectedItem instanceof PondsDao.MegaZoneList){
+            PondsDao.MegaZoneList item = (PondsDao.MegaZoneList) selectedItem;
+            viewModel.setSelectedLocation(item.megazone, "", "", "");
+            Log.d("SpinnerAdapter", item.megazone);
+        } else if (selectedItem instanceof PondsDao.ZoneList){
+            PondsDao.ZoneList item = (PondsDao.ZoneList) selectedItem;
+            viewModel.setSelectedLocation("", "", "", "");
+            Log.d("SpinnerAdapter", item.zone);
+
+        } else if (selectedItem instanceof PondsDao.SectorList){
+            PondsDao.SectorList item = (PondsDao.SectorList) selectedItem;
+            viewModel.setSelectedLocation("", "", "", "");
+            Log.d("SpinnerAdapter", item.sector);
+
+
+        }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+    public void getMegazones(){
+
+    }
+    public void getZones(){
+
+    }
+    public void getSectors(){
+
+    }
+    public List<PondEntity> getPonds(){
+        List<PondEntity> ponds;
+        ponds = getStubPonds();
+//        ponds = getPondsFromDB();
+        return ponds;
+    }
+
+    public List<PondEntity> getStubPonds(){
+        List<PondEntity> itemsList = new ArrayList<>();
+        PondEntity pondDB = new PondEntity(
+                "U001",
+                "ZONA",
+                "M001",
+                "MEGAZONA",
+                "Z001",
+                "SECTOR",
+                "S001",
+                "PISCINA");
+        itemsList.add(pondDB);
+        return itemsList;
+    }
+
+    public List<PondsDao.MegaZoneList> getStubMegazones(){
+        List<PondsDao.MegaZoneList> itemsList = new ArrayList<>();
+        PondsDao.MegaZoneList m1 = new PondsDao.MegaZoneList("MEGAZONA1", "M001");
+        PondsDao.MegaZoneList m2 = new PondsDao.MegaZoneList("MEGAZONA2", "M002");
+        itemsList.add(m1);
+        itemsList.add(m2);
+        return itemsList;
+    }
+
+
 }

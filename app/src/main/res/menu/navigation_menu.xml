@@ -7,6 +7,11 @@
             android:id="@+id/nav_sync"
             android:icon="@drawable/ic_cloud_sync"
             android:title="@string/sync" />
+
+        <item
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/settings" />
         <!--
             <item
                 android:id="@+id/nav_inventory"
@@ -31,10 +36,7 @@
                 android:id="@+id/nav_frequency_setting"
                 android:icon="@drawable/ic_freq_settings"
                 android:title="@string/frequency_settings" />
-        <item
-            android:id="@+id/nav_setting"
-            android:icon="@drawable/ic_settings"
-            android:title="@string/settings" />
+
 
         <item
             android:id="@+id/nav_temp"

@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 
 import com.pda.uhf_g.data.local.ItemsLocalDataSource;
+import com.pda.uhf_g.data.local.dao.PondsDao;
 import com.pda.uhf_g.data.local.entities.TagItemEntity;
 import com.pda.uhf_g.data.remote.CatalogRemoteDataSource;
 import com.pda.uhf_g.data.remote.ItemsRemoteDataSource;
@@ -14,6 +15,7 @@ import com.pda.uhf_g.data.remote.PondsRemoteDataSource;
 import java.util.List;
 import java.util.Objects;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
@@ -147,5 +149,14 @@ public class ItemsRepository {
                     return pondsRemoteDataSource.getPonds(match_key, zoneId).execute();
                 })
                 .subscribeOn(Schedulers.io()); // Specify the background scheduler
+    }
+
+
+    public void savePondsToDB(List<PondsRemoteDataSource.PondData> items) {
+        itemsLocalDataSource.insertPonds(items);
+    }
+
+    public io.reactivex.Observable<List<PondsDao.MegaZoneList>> getPondsMegazones() {
+        return itemsLocalDataSource.getPondsMegazones().subscribeOn(io.reactivex.schedulers.Schedulers.io()); // Specify the background scheduler
     }
 }

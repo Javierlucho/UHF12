@@ -12,6 +12,7 @@ import androidx.lifecycle.LiveData;
 import com.google.gson.JsonObject;
 import com.pda.uhf_g.R;
 import com.pda.uhf_g.data.local.ItemsLocalDataSource;
+import com.pda.uhf_g.data.local.dao.PondsDao;
 import com.pda.uhf_g.data.local.entities.ListItem;
 import com.pda.uhf_g.data.local.entities.Location;
 import com.pda.uhf_g.data.remote.CatalogRemoteDataSource;
@@ -38,6 +39,7 @@ public class InventoryViewModel extends AndroidViewModel {
     private final MutableLiveData<ListItem> selectedItem = new MutableLiveData<ListItem>();
 
     private final MutableLiveData<Boolean> downloadedPools = new MutableLiveData<Boolean>();
+    private final MutableLiveData<PondsDao.MegaZoneList> megazones = new MutableLiveData<PondsDao.MegaZoneList>();
 
 
     List<ListItem> items = new ArrayList<>();
@@ -170,6 +172,7 @@ public class InventoryViewModel extends AndroidViewModel {
                         Log.d( "remote", "Items: " + responseBody.payload.items.get(1).meta_data.get("Id_Sector") );
 
                         // Save downloaded data to database
+                        itemsRepository.savePondsToDB(responseBody.payload.items);
 
                         // Visual indicator for the user
                         setDownloadedPools(true);
@@ -185,8 +188,15 @@ public class InventoryViewModel extends AndroidViewModel {
                 });
 
 
+
         // Pull IPSP Inventory Catalog
     }
 
+    public void setMegazones(PondsDao.MegaZoneList megazonesFromDB) {
+        megazones.setValue(megazonesFromDB);
+    }
 
+    public MutableLiveData<PondsDao.MegaZoneList> getMegazones() {
+        return megazones;
+    }
 }

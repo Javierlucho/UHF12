@@ -1,5 +1,6 @@
 package com.pda.uhf_g.data.local.dao;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -12,10 +13,9 @@ import com.pda.uhf_g.data.local.entities.TagItemEntity;
 
 import java.util.List;
 
-import io.reactivex.rxjava3.core.Single;
-
 @Dao
 public interface TagItemDao {
+
     @Query("SELECT * FROM tag_items")
     List<TagItemEntity> getAllItems();
 
@@ -41,5 +41,6 @@ public interface TagItemDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertSighting(ItemSightingEntity item);
+
 
 }

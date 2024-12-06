@@ -35,7 +35,7 @@ public class ItemsRemoteDataSource {
 
     public List<TagData> getStubData() {
         ArrayList<TagData> items = new ArrayList<TagData>();
-        items.add(new TagData("1", "1", "1", "", ""));
+        items.add(new TagData("1", "1", "E280699520005011FB53EC59", "", ""));
         items.add(new TagData("1", "1", "1", "", ""));
         items.add(new TagData("1", "1", "1", "", ""));
         items.add(new TagData("1", "1", "1", "", ""));

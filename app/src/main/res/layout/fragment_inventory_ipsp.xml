@@ -155,7 +155,7 @@
         android:layout_marginTop="176dp"
         android:layout_weight="1"
         android:drawableLeft="@drawable/ic_add_location"
-        android:enabled="false"
+        android:enabled="true"
         android:minHeight="@dimen/min_height_60dp"
         android:text="@string/set_location"
         android:textSize="@dimen/text_size_18sp"
