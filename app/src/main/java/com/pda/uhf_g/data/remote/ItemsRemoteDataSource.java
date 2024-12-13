@@ -13,7 +13,7 @@ import retrofit2.http.POST;
 
 public class ItemsRemoteDataSource {
     private CompositeDisposable disposables = new CompositeDisposable();
-    public static final String API_URL = "http://localhost:3000/";
+    public static final String API_URL = "https://127.0.0.1:8005";
     private List<TagData> catalog;
 
     public ItemsRemoteDataSource(){

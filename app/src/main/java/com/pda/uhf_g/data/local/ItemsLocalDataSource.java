@@ -9,6 +9,7 @@ import com.pda.uhf_g.data.local.entities.ItemSightingEntity;
 import com.pda.uhf_g.data.local.entities.PondEntity;
 import com.pda.uhf_g.data.local.entities.TagItemEntity;
 import com.pda.uhf_g.data.local.entities.TagData;
+import com.pda.uhf_g.data.remote.CatalogRemoteDataSource;
 import com.pda.uhf_g.data.remote.PondsRemoteDataSource;
 
 import java.util.ArrayList;
@@ -92,6 +93,24 @@ public class ItemsLocalDataSource {
                     metaData.get("id_sector").getAsString(),
                     metaData.get("piscina").getAsString());
             ponds.add(pondDB);
+        }
+
+        pondsDao.insertAllPonds(ponds);
+    }
+
+    public void  insertCatalogItems(List<CatalogRemoteDataSource.CatalogoResponse.Item>  pondsJson) {
+        List<PondEntity> ponds = new ArrayList<>();
+        for (CatalogRemoteDataSource.CatalogoResponse.Item pond : pondsJson) {
+            //TODO
+        }
+
+        pondsDao.insertAllPonds(ponds);
+    }
+
+    public void  insertItemsIPSP(List<CatalogRemoteDataSource.ItemsResponse.Item>   pondsJson) {
+        List<PondEntity> ponds = new ArrayList<>();
+        for (CatalogRemoteDataSource.ItemsResponse.Item pond : pondsJson) {
+            //TODO
         }
 
         pondsDao.insertAllPonds(ponds);

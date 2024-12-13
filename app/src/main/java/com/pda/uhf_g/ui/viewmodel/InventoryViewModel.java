@@ -39,6 +39,9 @@ public class InventoryViewModel extends AndroidViewModel {
     private final MutableLiveData<ListItem> selectedItem = new MutableLiveData<ListItem>();
 
     private final MutableLiveData<Boolean> downloadedPools = new MutableLiveData<Boolean>();
+    private final MutableLiveData<Boolean> downloadedCatalog = new MutableLiveData<Boolean>();
+    private final MutableLiveData<Boolean> downloadedItemsIPSP = new MutableLiveData<Boolean>();
+
     private final MutableLiveData<PondsDao.MegaZoneList> megazones = new MutableLiveData<PondsDao.MegaZoneList>();
 
 
@@ -79,6 +82,23 @@ public class InventoryViewModel extends AndroidViewModel {
     public void setDownloadedPools(Boolean downloaded) {
         downloadedPools.setValue(downloaded);
     }
+
+    public MutableLiveData<Boolean> getDownloadedCatalog() {
+        return downloadedCatalog;
+    }
+
+    public void setDownloadedCatalog(Boolean downloaded) {
+        downloadedCatalog.setValue(downloaded);
+    }
+
+    public MutableLiveData<Boolean> getDownloadedItemsIPSP() {
+        return downloadedItemsIPSP;
+    }
+
+    public void setDownloadedItemsIPSP(Boolean downloaded) {
+        downloadedItemsIPSP.setValue(downloaded);
+    }
+
 
     public void updateScanning(List<TagInfo> tagInfoList) {
         setTagInfoList(tagInfoList);
@@ -165,31 +185,79 @@ public class InventoryViewModel extends AndroidViewModel {
         itemsRepository.getPoolsByZone(zoneId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(response -> {
-                    // Handle successful insertion (e.g., update UI)
-                    if(response.isSuccessful()){
-                        Log.d("remote", "Downloaded pool data" );
-                        PondsRemoteDataSource.PondsResponse responseBody = response.body();
-                        Log.d( "remote", "Items: " + responseBody.payload.items.get(1).meta_data.get("Id_Sector") );
+                // Handle successful insertion (e.g., update UI)
+                if(response.isSuccessful()){
+                    Log.d("remote", "Downloaded pool data" );
+                    PondsRemoteDataSource.PondsResponse responseBody = response.body();
+                    Log.d( "remote", "Items: " + responseBody.payload.items.get(1).meta_data.get("Id_Sector") );
 
-                        // Save downloaded data to database
-                        itemsRepository.savePondsToDB(responseBody.payload.items);
+                    // Save downloaded data to database
+                    itemsRepository.savePondsToDB(responseBody.payload.items);
 
-                        // Visual indicator for the user
-                        setDownloadedPools(true);
-                    } else {
-                        Log.d("remote", "Downloading error" );
-                        Log.d("remote", response.message());
-                    }
-                },
-                error -> {
-                    // Handle insertion error
-                    Log.d("remote", "Downloading failed ");
-                    Log.d("remote", error.getMessage());
-                });
-
-
+                    // Visual indicator for the user
+                    setDownloadedPools(true);
+                } else {
+                    Log.d("remote", "Downloading error" );
+                    Log.d("remote", response.message());
+                }
+            },
+            error -> {
+                // Handle insertion error
+                Log.d("remote", "Downloading failed ");
+                Log.d("remote", error.getMessage());
+            });
 
         // Pull IPSP Inventory Catalog
+        itemsRepository.getCatalogoItems()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(response -> {
+                // Handle successful insertion (e.g., update UI)
+                if(response.isSuccessful()){
+                    Log.d("remote", "Downloaded pool data" );
+                    CatalogRemoteDataSource.CatalogoResponse responseBody = response.body();
+//                   Log.d( "remote", "Items: " + responseBody.payload.items.get(1).meta_data.get("Id_Sector") );
+
+                    // Save downloaded data to database
+                    itemsRepository.saveCatalogToDB(responseBody.items);
+
+                    // Visual indicator for the user
+                    setDownloadedCatalog(true);
+                } else {
+                    Log.d("remote", "Downloading error" );
+                    Log.d("remote", response.message());
+                }
+            },
+            error -> {
+                // Handle insertion error
+                Log.d("remote", "Downloading failed ");
+                Log.d("remote", error.getMessage());
+            });
+
+        // Pull IPSP Items
+        itemsRepository.getItemsIPSP()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(response -> {
+                // Handle successful insertion (e.g., update UI)
+                if(response.isSuccessful()){
+                    Log.d("remote", "Downloaded pool data" );
+                    CatalogRemoteDataSource.ItemsResponse responseBody = response.body();
+//                  Log.d( "remote", "Items: " + responseBody.payload.items.get(1).meta_data.get("Id_Sector") );
+
+                    // Save downloaded data to database
+                    itemsRepository.saveItemsIPSPToDB(responseBody.items);
+
+                    // Visual indicator for the user
+                    setDownloadedItemsIPSP(true);
+                } else {
+                    Log.d("remote", "Downloading error" );
+                    Log.d("remote", response.message());
+                }
+            },
+            error -> {
+                // Handle insertion error
+                Log.d("remote", "Downloading failed ");
+                Log.d("remote", error.getMessage());
+            });
     }
 
     public void setMegazones(PondsDao.MegaZoneList megazonesFromDB) {

@@ -151,9 +151,35 @@ public class ItemsRepository {
                 .subscribeOn(Schedulers.io()); // Specify the background scheduler
     }
 
+    public @NonNull Observable<Response<CatalogRemoteDataSource.CatalogoResponse>> getCatalogoItems(){
+        return Observable.fromCallable(() -> {
+                    // Perform database insertion on a background thread
+                    Log.d("remote", "getPoolsByZone:" + catalogRemoteDataSource.getCatalogoItems().toString());
+                    return catalogRemoteDataSource.getCatalogoItems().execute();
+                })
+                .subscribeOn(Schedulers.io()); // Specify the background scheduler
+    }
+
+    public @NonNull Observable<Response<CatalogRemoteDataSource.ItemsResponse>> getItemsIPSP(){
+        String sector = "SANDIEGO";
+        return Observable.fromCallable(() -> {
+                    // Perform database insertion on a background thread
+                    Log.d("remote", "getPoolsByZone:" + catalogRemoteDataSource.getItems(sector).toString());
+                    return catalogRemoteDataSource.getItems(sector).execute();
+                })
+                .subscribeOn(Schedulers.io()); // Specify the background scheduler
+    }
 
     public void savePondsToDB(List<PondsRemoteDataSource.PondData> items) {
         itemsLocalDataSource.insertPonds(items);
+    }
+
+    public void saveCatalogToDB(List<CatalogRemoteDataSource.CatalogoResponse.Item> items) {
+        itemsLocalDataSource.insertCatalogItems(items);
+    }
+
+    public void saveItemsIPSPToDB(List<CatalogRemoteDataSource.ItemsResponse.Item> items) {
+        itemsLocalDataSource.insertItemsIPSP(items);
     }
 
     public io.reactivex.Observable<List<PondsDao.MegaZoneList>> getPondsMegazones() {
