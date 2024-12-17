@@ -75,7 +75,7 @@ public class CatalogRemoteDataSource {
         }
         @SerializedName("Fecha de consulta")
         public String fechaDeConsulta;
-
+        @SerializedName("Items")
         public List<ItemsResponse.Item> items;
     }
 
@@ -108,6 +108,7 @@ public class CatalogRemoteDataSource {
         @SerializedName("Fecha de consulta")
         public String fechaConsulta;
 
+        @SerializedName("Categoria Item")
         public List<CatalogoResponse.Item> items;
 
         public CatalogoResponse(String fechaConsulta, List<CatalogoResponse.Item> items) {

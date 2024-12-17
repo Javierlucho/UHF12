@@ -236,7 +236,7 @@ public class InventoryViewModel extends AndroidViewModel {
                 if(response.isSuccessful()){
                     Log.d("remote", "Downloaded Ponds data" );
                     PondsRemoteDataSource.PondsResponse responseBody = response.body();
-                    Log.d( "remote", "Items: " + responseBody.payload.items.get(1).meta_data.get("Id_Sector") );
+//                    Log.d( "remote", "Items: " + responseBody.payload.items.get(1).meta_data.get("Id_Sector") );
 
                     // Save downloaded data to database
                     itemsRepository.savePondsToDB(responseBody.payload.items);
@@ -262,15 +262,20 @@ public class InventoryViewModel extends AndroidViewModel {
                 Log.d("remote", response.raw().request().toString());
                 // Handle successful insertion (e.g., update UI)
                 if(response.isSuccessful()){
-                    Log.d("remote", "Downloaded Categorias data" );
+                    Log.d("remote", "Downloading Categorias data" );
                     CatalogRemoteDataSource.CatalogoResponse responseBody = response.body();
-//                   Log.d( "remote", "Items: " + responseBody.payload.items.get(1).meta_data.get("Id_Sector") );
 
                     // Save downloaded data to database
-                    itemsRepository.saveCategoriaToDB(responseBody.items);
-
-                    // Visual indicator for the user
-                    setDownloadedCatalog(true);
+                    itemsRepository
+                            .saveCategoriaToDB(responseBody.items)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(done -> {
+                               if (done) {
+                                   Log.d("remote", "Downloaded Categorias data");
+                                   // Visual indicator for the user
+                                   setDownloadedCatalog(true);
+                               }
+                            });
                 } else {
                     Log.d("remote", "Downloading Categorias error" );
                     Log.d("remote", response.message());
@@ -288,15 +293,21 @@ public class InventoryViewModel extends AndroidViewModel {
             .subscribe(response -> {
                 // Handle successful insertion (e.g., update UI)
                 if(response.isSuccessful()){
-                    Log.d("remote", "Downloaded Items IPSP data" );
+                    Log.d("remote", "Downloading Items IPSP data" );
                     CatalogRemoteDataSource.ItemsResponse responseBody = response.body();
-//                  Log.d( "remote", "Items: " + responseBody.payload.items.get(1).meta_data.get("Id_Sector") );
 
                     // Save downloaded data to database
-                    itemsRepository.saveItemsIPSPToDB(responseBody.items);
+                    itemsRepository
+                            .saveItemsIPSPToDB(responseBody.items)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(done -> {
+                                if (done) {
+                                    Log.d("remote", "Downloaded Categorias data");
+                                    // Visual indicator for the user
+                                    setDownloadedItemsIPSP(true);
+                                }
+                            });
 
-                    // Visual indicator for the user
-                    setDownloadedItemsIPSP(true);
                 } else {
                     Log.d("remote", "Downloading Items IPSP error" );
                     Log.d("remote", response.message());

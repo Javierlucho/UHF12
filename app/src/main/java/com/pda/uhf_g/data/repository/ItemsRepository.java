@@ -122,8 +122,14 @@ public class ItemsRepository {
 
     // ------------------------------------ ITEMS -----------------------------------------------//
 
-    public void saveItemsIPSPToDB(List<CatalogRemoteDataSource.ItemsResponse.Item> items) {
-        itemsLocalDataSource.insertItemsIPSP(items);
+    public @NonNull Observable<Boolean> saveItemsIPSPToDB(List<CatalogRemoteDataSource.ItemsResponse.Item> items) {
+        return Observable.fromCallable(() -> {
+                    // Perform database insertion on a background thread
+                    itemsLocalDataSource.insertItemsIPSP(items);
+                    return true;
+                })
+                .subscribeOn(Schedulers.io()); // Specify the background scheduler
+
     }
 
 
@@ -138,8 +144,14 @@ public class ItemsRepository {
 
 
     // ------------------------------------ CATEGORIA --------------------------------------------//
-    public void saveCategoriaToDB(List<CatalogRemoteDataSource.CatalogoResponse.Item> items) {
-        itemsLocalDataSource.insertCategories(items);
+    public @NonNull Observable<Boolean> saveCategoriaToDB(List<CatalogRemoteDataSource.CatalogoResponse.Item> items) {
+
+        return Observable.fromCallable(() -> {
+                    // Perform database insertion on a background thread
+                    itemsLocalDataSource.insertCategories(items);
+                    return true;
+                })
+                .subscribeOn(Schedulers.io()); // Specify the background scheduler
     }
     public @NonNull Observable<Response<CatalogRemoteDataSource.CatalogoResponse>> getCatalogoItems(){
         return Observable.fromCallable(() -> {
