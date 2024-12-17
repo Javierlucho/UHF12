@@ -2,15 +2,11 @@ package com.pda.uhf_g.data.local.dao;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.Update;
 
-import com.pda.uhf_g.data.local.entities.ItemSightingEntity;
 import com.pda.uhf_g.data.local.entities.PondEntity;
-import com.pda.uhf_g.data.local.entities.TagItemEntity;
 
 import java.util.List;
 

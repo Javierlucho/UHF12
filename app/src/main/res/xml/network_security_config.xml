@@ -2,5 +2,11 @@
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">192.168.1.49</domain>
+        <domain includeSubdomains="true">192.168.1.43</domain>
+        <trust-anchors>
+            <certificates src="user"/>
+            <certificates src="@raw/certselfsignedipsp"/>
+        </trust-anchors>
     </domain-config>
 </network-security-config>
+

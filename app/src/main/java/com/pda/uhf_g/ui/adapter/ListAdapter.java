@@ -39,24 +39,43 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
      * (custom ViewHolder)
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
+        private final TextView title;
         private final ImageView imageView;
+
+        private final TextView description;
+        private final TextView brand;
+        private final TextView serial_number;
+
 
 
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
 
-            textView = (TextView) view.findViewById(R.id.item_title);
+            title = (TextView) view.findViewById(R.id.item_title);
             imageView = (ImageView) view.findViewById(R.id.item_image);
+            description = (TextView) view.findViewById(R.id.item_description);
+            brand = (TextView) view.findViewById(R.id.item_brand);
+            serial_number = (TextView) view.findViewById(R.id.item_serial_number);
+
         }
 
-        public TextView getTextView() {
-            return textView;
+        public TextView getTitle() {
+            return title;
         }
         public ImageView getImageView() {
             return imageView;
         }
+        public TextView getDescription() {
+            return description;
+        }
+        public TextView getBrand() {
+            return brand;
+        }
+        public TextView getSerial() {
+            return serial_number;
+        }
+
     }
 
     // Create new views (invoked by the layout manager)
@@ -89,7 +108,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
         ListItem item = items.get(position);
         viewHolder.getImageView().setImageResource(item.getImageResId());
-        viewHolder.getTextView().setText(item.getTitle());
+        viewHolder.getTitle().setText(item.getTitle());
+        viewHolder.getDescription().setText(item.getDescription());
+        viewHolder.getBrand().setText(item.getBrand());
+        viewHolder.getSerial().setText(item.getSerial());
 
         viewHolder.itemView.setOnClickListener( v -> {
 

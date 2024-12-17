@@ -6,6 +6,10 @@ public class ListItem {
 
     private int position;
 
+    private String description;
+    private String brand;
+    private String serial;
+
     private boolean isSelected;
 
     public ListItem(int imageResId, String title, int position) {
@@ -45,5 +49,30 @@ public class ListItem {
 
     public void setPosition(int position) {
         this.position = position;
+    }
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getSerial() {
+        return serial;
+    }
+
+    public void setSerial(String serial) {
+        this.serial = serial;
     }
 }
