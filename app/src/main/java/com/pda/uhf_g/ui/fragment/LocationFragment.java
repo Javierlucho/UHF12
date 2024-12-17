@@ -130,6 +130,10 @@ public class LocationFragment extends BaseFragment implements AdapterView.OnItem
         spinnerSector.setOnItemSelectedListener(this);
         spinnerPiscina.setOnItemSelectedListener(this);
 
+        btnSave.setOnClickListener( v -> {
+            viewModel.saveToDatabase();
+        });
+
         return view;
     }
 

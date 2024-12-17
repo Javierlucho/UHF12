@@ -18,7 +18,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-public class PondsRemoteDataSource{
+public class PondsRemoteDataSource {
     public final static String API_URL= "http://192.168.1.49:31000/";
     private Retrofit retrofit;
     private Ponds ponds;

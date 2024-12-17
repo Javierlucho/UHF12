@@ -1,34 +1,40 @@
 package com.pda.uhf_g.data.local;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.gson.JsonObject;
 import com.pda.uhf_g.data.local.dao.PondsDao;
-import com.pda.uhf_g.data.local.entities.ItemSightingEntity;
+import com.pda.uhf_g.data.local.entities.CategoriaEntity;
+import com.pda.uhf_g.data.local.entities.ItemEntity;
 import com.pda.uhf_g.data.local.entities.PondEntity;
-import com.pda.uhf_g.data.local.entities.TagItemEntity;
-import com.pda.uhf_g.data.local.entities.TagData;
+import com.pda.uhf_g.data.local.entities.PosicionamientoEntity;
 import com.pda.uhf_g.data.remote.CatalogRemoteDataSource;
 import com.pda.uhf_g.data.remote.PondsRemoteDataSource;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Observable;
-import io.reactivex.Single;
-import io.reactivex.disposables.CompositeDisposable;
 
 public class ItemsLocalDataSource {
 
     private final com.pda.uhf_g.data.local.dao.TagItemDao tagItemDao;
     private final com.pda.uhf_g.data.local.dao.PondsDao pondsDao;
+    private final com.pda.uhf_g.data.local.dao.CatalogDao catalogDao;
+    private final com.pda.uhf_g.data.local.dao.ItemsDao itemsDao;
+    private final com.pda.uhf_g.data.local.dao.ResetDao resetDao;
 
+    AppDatabase db;
 
     public ItemsLocalDataSource(Context context) {
-        AppDatabase db = AppDatabase.getInstance(context);
+
+        db = AppDatabase.getInstance(context);
         tagItemDao = db.TagItemDao();
         pondsDao = db.PondsDao();
+        catalogDao = db.CatalogDao();
+        itemsDao = db.ItemsDao();
+        resetDao = db.ResetDao();
 
         this.initStubDB();
     }
@@ -48,35 +54,18 @@ public class ItemsLocalDataSource {
         pondsDao.insertAllPonds(ponds);
     }
 
-    public List<TagData> getAllItems() {
-        List<TagItemEntity> entities = tagItemDao.getAllItems();
-        // Convert entities to TagData objects
-        List<TagData> items = new ArrayList<>();
-        for (TagItemEntity entity : entities) {
-            items.add(new TagData(entity.getCid(), entity.getAfid(), entity.getTid(),
-                    entity.getName(), entity.getDescription()));
-        }
-        return items;
+    public List<PosicionamientoEntity> getAllItems() {
+        List<PosicionamientoEntity> entities = tagItemDao.getAllItems();
+        return entities;
     }
 
-    private final CompositeDisposable mDisposable = new CompositeDisposable();
-    public TagData findItemByTid(String tid) {
-        TagItemEntity item = tagItemDao.getItemByTid(tid);
-        return new TagData(item.getCid(), item.getAfid(), item.getTid(), item.getName(), item.getDescription());
+    public PosicionamientoEntity findItemByTid(String tid) {
+        PosicionamientoEntity item = tagItemDao.getItemByTid(tid);
+        return item;
     }
 
-    public void insertItemSighting(TagData item) {
-        ItemSightingEntity entity = new ItemSightingEntity(item.getCid(), System.currentTimeMillis());
-        tagItemDao.insertSighting(entity);
-    }
-
-    public TagItemEntity insertItem(TagData item) {
-        TagItemEntity entity = new TagItemEntity(item.getCid(), item.getAfid(), item.getTid());
-        entity.setCreatedTimestamp(System.currentTimeMillis());
-        entity.setName(item.getName());
-        entity.setDescription(item.getDescription());
-        tagItemDao.insertItem(entity);
-        return entity;
+    public void insertNewPosicionamiento(PosicionamientoEntity updatedData) {
+        tagItemDao.insertItem(updatedData);
     }
 
     public void insertPonds(List<PondsRemoteDataSource.PondData>  pondsJson) {
@@ -98,26 +87,37 @@ public class ItemsLocalDataSource {
         pondsDao.insertAllPonds(ponds);
     }
 
-    public void  insertCatalogItems(List<CatalogRemoteDataSource.CatalogoResponse.Item>  pondsJson) {
-        List<PondEntity> ponds = new ArrayList<>();
-        for (CatalogRemoteDataSource.CatalogoResponse.Item pond : pondsJson) {
-            //TODO
-        }
+    public void insertCategories(List<CatalogRemoteDataSource.CatalogoResponse.Item> catalogItems) {
+        for (CatalogRemoteDataSource.CatalogoResponse.Item catalogItem : catalogItems) {
+            CategoriaEntity catalogEntity = new CategoriaEntity(
+                    catalogItem.idCategoria,
+                    catalogItem.nombre,
+                    catalogItem.nomenclatura,
+                    catalogItem.codigoHexadecimal,
+                    catalogItem.estado);
 
-        pondsDao.insertAllPonds(ponds);
+            catalogDao.insertCatalogItem(catalogEntity);
+        }
+//        catalogDao.insertAllCatalogItems(catalogItems);
     }
 
-    public void  insertItemsIPSP(List<CatalogRemoteDataSource.ItemsResponse.Item>   pondsJson) {
-        List<PondEntity> ponds = new ArrayList<>();
-        for (CatalogRemoteDataSource.ItemsResponse.Item pond : pondsJson) {
-            //TODO
+    public void  insertItemsIPSP(List<CatalogRemoteDataSource.ItemsResponse.Item> Items) {
+        for (CatalogRemoteDataSource.ItemsResponse.Item item : Items) {
+            ItemEntity itemEntity = new ItemEntity(item.idItem, item.descripcion, item.serie, item.codigoCampo, item.marca);
+            itemsDao.insertItem(itemEntity);
         }
-
-        pondsDao.insertAllPonds(ponds);
+//        itemsDao.insertAllItems(Items);
     }
-
 
     public Observable<List<PondsDao.MegaZoneList>> getPondsMegazones() {
         return pondsDao.getPondsMegaZones();
+    }
+
+    public Completable resetDb(){
+        return Completable.fromCallable( () -> {
+            db.clearAllTables();
+            return true;
+        });
+        //return resetDao.clearPrimaryKeyIndex();
     }
 }

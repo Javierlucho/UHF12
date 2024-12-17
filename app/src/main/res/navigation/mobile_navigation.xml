@@ -89,6 +89,6 @@
     <fragment
         android:id="@+id/syncFragment"
         android:name="com.pda.uhf_g.ui.fragment.SyncFragment"
-        android:label="nav_sync"
+        android:label="Datos en dispositivo"
         tools:layout="@layout/nav_sync" />
 </navigation>

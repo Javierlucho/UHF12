@@ -1,26 +1,20 @@
 package com.pda.uhf_g.ui.fragment;
 
-import static com.pda.uhf_g.ui.base.NavHostFragment.findNavController;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pda.uhf_g.MainActivity;
 import com.pda.uhf_g.R;
-import com.pda.uhf_g.ui.adapter.ListAdapter;
 import com.pda.uhf_g.ui.base.BaseFragment;
 import com.pda.uhf_g.ui.viewmodel.InventoryViewModel;
-import com.pda.uhf_g.util.LogUtil;
 import com.pda.uhf_g.util.SharedUtil;
 
 
@@ -31,10 +25,24 @@ public class SyncFragment extends BaseFragment {
 
     private InventoryViewModel viewModel;
     @BindView(R.id.push_button)
-    Button btnPush;
+    FloatingActionButton btnPush;
 
     @BindView(R.id.pull_button)
-    Button btnPull;
+    FloatingActionButton btnPull;
+
+    @BindView(R.id.categoria_status)
+    TextView categoriaLabel;
+
+    @BindView(R.id.items_status)
+    TextView itemsLabel;
+
+    @BindView(R.id.posicionamiento_status)
+    TextView posicionamientoLabel;
+
+    @BindView(R.id.ponds_status)
+    TextView pondsLabel;
+
+
     private MainActivity mainActivity ;
     SharedUtil sharedUtil ;
 
@@ -59,12 +67,27 @@ public class SyncFragment extends BaseFragment {
         btnPull.setOnClickListener( v -> {
             viewModel.pullData();
         });
+
+        viewModel.getDownloadedCatalog().observe(getViewLifecycleOwner(), downloaded -> {
+            updateIcon(downloaded, categoriaLabel);
+        });
+
+        viewModel.getDownloadedItemsIPSP().observe(getViewLifecycleOwner(), downloaded -> {
+            updateIcon(downloaded, itemsLabel);
+        });
+
+        viewModel.getDownloadedPosicionamiento().observe(getViewLifecycleOwner(), downloaded -> {
+            updateIcon(downloaded, posicionamientoLabel);
+        });
+
+        viewModel.getDownloadedPools().observe(getViewLifecycleOwner(), downloaded -> {
+            updateIcon(downloaded, pondsLabel);
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("pang", "onResume()");
         if (mainActivity.mUhfrManager != null) {
             mainActivity.mUhfrManager.setCancleInventoryFilter();
         }
@@ -73,7 +96,6 @@ public class SyncFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.e("pang", "onPause()");
     }
 
     @Override
@@ -90,10 +112,22 @@ public class SyncFragment extends BaseFragment {
 
         viewModel = new ViewModelProvider(requireActivity()).get(InventoryViewModel.class);
 
-        LogUtil.e("onCreateView()");
         sharedUtil = new SharedUtil(mainActivity);
 
         return view;
     }
 
+    public void updateIcon(Boolean downloaded, TextView textView){
+        if (downloaded){
+            setOkDrawable(textView);
+        } else {
+            setNotOkDrawable(textView);
+        }
+    }
+    public void setOkDrawable(TextView textView) {
+        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check, 0, 0, 0);
+    }
+    public void setNotOkDrawable(TextView textView) {
+        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_sync, 0, 0, 0);
+    }
 }

@@ -30,6 +30,7 @@ import com.pda.uhf_g.MainActivity;
 import com.pda.uhf_g.R;
 
 import com.pda.uhf_g.data.local.entities.TagInfo;
+import com.pda.uhf_g.data.remote.CatalogRemoteDataSource;
 import com.pda.uhf_g.ui.base.BaseFragment;
 import com.pda.uhf_g.ui.viewmodel.InventoryViewModel;
 import com.pda.uhf_g.util.LogUtil;
@@ -351,6 +352,7 @@ public class InventoryIPSPFragment extends BaseFragment {
         LogUtil.e("onCreateView()");
         sharedUtil = new SharedUtil(mainActivity);
         UtilSound.initSoundPool(mainActivity);
+
         return view;
     }
 

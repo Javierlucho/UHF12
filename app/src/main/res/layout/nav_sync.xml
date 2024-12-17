@@ -8,29 +8,122 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.SyncFragment">
 
-    <Button
-        android:id="@+id/pull_button"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_marginTop="136dp"
-        android:background="@drawable/circular_button"
-        android:enabled="true"
-        android:text="Pull"
+    <LinearLayout
+        android:layout_width="180dp"
+        android:layout_height="151dp"
+        android:layout_margin="@dimen/text_size_20sp"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/categoria_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/categorias_api_ipsp_label"
+            app:drawableStartCompat="@drawable/ic_downloading" />
+
+        <TextView
+            android:id="@+id/items_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/items_api_ipsp_label"
+            app:drawableStartCompat="@drawable/ic_downloading" />
+
+        <TextView
+            android:id="@+id/posicionamiento_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/ponds_api_label"
+            app:drawableStartCompat="@drawable/ic_downloading" />
+
+        <TextView
+            android:id="@+id/ponds_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/posicionamiento_api_label"
+            app:drawableStartCompat="@drawable/ic_downloading" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/pull_label"
+        app:layout_constraintBottom_toTopOf="@+id/pull_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/pull_button"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="88dp"
+        android:contentDescription="@string/pull_button"
+        app:fabCustomSize="160dp"
+        app:maxImageSize="120dp"
+        app:srcCompat="@drawable/ic_download"
+        android:enabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/push_button"
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_marginTop="152dp"
-        android:background="@drawable/circular_button"
-        android:text="Push"
+        android:textAlignment="center"
+        android:contentDescription="@string/push_button"
+        app:fabCustomSize="160dp"
+        app:maxImageSize="120dp"
+        app:srcCompat="@drawable/ic_upload"
+        android:enabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pull_button"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.508" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/push_label"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/push_button"
+        app:layout_constraintVertical_bias="0.184" />
+
+<!--    <Button-->
+<!--        android:id="@+id/push_button"-->
+<!--        android:layout_width="160dp"-->
+<!--        android:layout_height="160dp"-->
+<!--        android:layout_marginTop="152dp"-->
+<!--        android:drawableTop="@drawable/ic_upload"-->
+<!--        android:background="@drawable/circular_button"-->
+<!--        android:text="Push"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.498"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/pull_button"-->
+<!--        app:layout_constraintVertical_bias="0.508" />-->
+
 </androidx.constraintlayout.widget.ConstraintLayout>

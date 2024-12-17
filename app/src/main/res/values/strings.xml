@@ -141,6 +141,14 @@
     <string name="sector">Sector</string>
     <string name="piscina">Piscina</string>
     <string name="sync">Sincronizar</string>
+    <string name="categorias_api_ipsp_label">Categorias API (IPSP)</string>
+    <string name="items_api_ipsp_label">Items API (IPSP)</string>
+    <string name="ponds_api_label">Ponds API</string>
+    <string name="posicionamiento_api_label">Posicionamiento API</string>
+    <string name="pull_label">Cargar Datos al Dispositivo</string>
+    <string name="push_label">Subir Datos y \nBorrarlos del Dispositivo</string>
+    <string name="pull_button">Download button</string>
+    <string name="push_button">Push Data to server</string>
 
     <string-array name="temp_manufacturer">
         <item>Yuehe tag</item>

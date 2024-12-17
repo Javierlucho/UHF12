@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import javax.net.ssl.HostnameVerifier;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -13,18 +15,27 @@ import retrofit2.http.Header;
 import retrofit2.http.Query;
 
 public class CatalogRemoteDataSource {
-    private final CompositeDisposable disposables = new CompositeDisposable();
     private Retrofit retrofit;
     private Externo api;
     public static final String API_URL = "https://192.168.1.43:8005";
     public static final String AUTH_TOKEN = "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY1Mzg2Mjc5LCJpYXQiOjE3MzM4NTAyNzksImp0aSI6IjU4Y2RlNjM3NGY0NTQzYWJiMDBmNTYyODFmM2ZjNWYxIiwidXNlcl9pZCI6IjIifQ.Mn5hHzMQmT7-hIEGrl6LWPMeUAHvqfA0PFNrEMdpIUQ";
+
+    HostnameVerifier hostnameVerifier = (hostname, session) -> {
+        // Perform your custom hostname verification logic here
+        // For example, you could check if the hostname matches a specific IP address
+        return hostname.equals("192.168.1.43") || hostname.equals("localhost");
+    };
     public CatalogRemoteDataSource(){
+        OkHttpClient client = new OkHttpClient.Builder()
+                .hostnameVerifier(hostnameVerifier)
+                .build();
         // Create a very simple REST adapter which points the GitHub API.
         retrofit =
                 new Retrofit.Builder()
-                        .baseUrl(API_URL)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
+                    .baseUrl(API_URL)
+                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
 
         // Create an instance of our API interface.
         api = getRetrofit().create(Externo.class);
@@ -112,16 +123,17 @@ public class CatalogRemoteDataSource {
 //                @Header("Authorization") String authHeader,
 //                @Query("id_item") int id_item
 //        );
-        @GET("/api/IPSP-GDE-Externo/items-list")
-        Call<ItemsResponse> getItemsBySector(
-                @Header("Authorization") String authHeader,
-                @Query("sector") String sector
-        );
-//        Call<ItemsResponse> getItemsByZona(
+//        @GET("/api/IPSP-GDE-Externo/items-list")
+//        Call<ItemsResponse> getItemsBySector(
 //                @Header("Authorization") String authHeader,
-//                @Query("zona") String zona
+//                @Query("sector") String sector
 //        );
-        @GET("/api/IPSP-GDE-Externo/catalogo-items-list")
+        @GET("/api/IPSP-GDE-Externo/items-list/")
+        Call<ItemsResponse> getItemsByZone(
+                @Header("Authorization") String authHeader,
+                @Query("zona") String zona
+        );
+        @GET("/api/IPSP-GDE-Externo/catalogo-items-list/")
         Call<CatalogoResponse> getCatalogoItems(
                 @Header("Authorization") String authHeader,
                 @Query("estado") String estado
@@ -131,8 +143,8 @@ public class CatalogRemoteDataSource {
         );
     }
 
-    public Call<ItemsResponse> getItems(String sector){
-        return api.getItemsBySector(AUTH_TOKEN, sector);
+    public Call<ItemsResponse> getItems(String zone){
+        return api.getItemsByZone(AUTH_TOKEN, zone);
     }
 
     public Call<CatalogoResponse> getCatalogoItems(){
