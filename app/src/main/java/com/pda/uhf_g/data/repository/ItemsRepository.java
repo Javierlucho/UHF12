@@ -102,12 +102,19 @@ public class ItemsRepository {
 
     }
 
-    public @NonNull Observable<Response<PondsRemoteDataSource.PondsResponse>> getPoolsByZone(String zoneId){
+    public @NonNull Observable<Response<PondsRemoteDataSource.PondsResponse>> getPoolsByZoneId(String zoneId){
         String match_key = "meta_data.Id_Zona";
         return Observable.fromCallable(() -> {
                     // Perform database insertion on a background thread
-                    Log.d("remote", "getPoolsByZone:" + pondsRemoteDataSource.getPonds(match_key, zoneId).toString());
                     return pondsRemoteDataSource.getPonds(match_key, zoneId).execute();
+                })
+                .subscribeOn(Schedulers.io()); // Specify the background scheduler
+    }
+    public @NonNull Observable<Response<PondsRemoteDataSource.PondsResponse>> getPoolsByZone(String zone){
+        String match_key = "meta_data.Zona";
+        return Observable.fromCallable(() -> {
+                    // Perform database insertion on a background thread
+                    return pondsRemoteDataSource.getPonds(match_key, zone).execute();
                 })
                 .subscribeOn(Schedulers.io()); // Specify the background scheduler
     }
@@ -115,9 +122,14 @@ public class ItemsRepository {
     public io.reactivex.Observable<List<PondsDao.MegaZoneList>> getPondsMegazones() {
         return itemsLocalDataSource.getPondsMegazones().subscribeOn(io.reactivex.schedulers.Schedulers.io()); // Specify the background scheduler
     }
-    public void savePondsToDB(List<PondsRemoteDataSource.PondData> items) {
-        itemsLocalDataSource.insertPonds(items);
+    public @NonNull Observable<Boolean> savePondsToDB(List<PondsRemoteDataSource.PondData> items) {
+        return Observable.fromCallable(() -> {
+            //return itemsLocalDataSource.insertPonds(items).subscribeOn(io.reactivex.schedulers.Schedulers.io()); // Specify the background scheduler
+            itemsLocalDataSource.insertPonds(items);
+            return true;
+        }).subscribeOn(Schedulers.io()); // Specify the background scheduler
     }
+
     // ------------------------------------ PONDS END -------------------------------------------//
 
     // ------------------------------------ ITEMS -----------------------------------------------//

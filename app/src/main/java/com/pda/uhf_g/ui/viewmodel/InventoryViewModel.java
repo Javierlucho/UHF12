@@ -229,20 +229,31 @@ public class InventoryViewModel extends AndroidViewModel {
             });
 
         // Pull Pools Data
-        itemsRepository.getPoolsByZone(zoneId)
+        itemsRepository.getPoolsByZone(zone)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(response -> {
                 // Handle successful insertion (e.g., update UI)
                 if(response.isSuccessful()){
-                    Log.d("remote", "Downloaded Ponds data" );
+                    Log.d("remote", "Downloading Ponds data" );
+                    Log.d("remote", response.raw().request().toString());
                     PondsRemoteDataSource.PondsResponse responseBody = response.body();
 //                    Log.d( "remote", "Items: " + responseBody.payload.items.get(1).meta_data.get("Id_Sector") );
 
                     // Save downloaded data to database
-                    itemsRepository.savePondsToDB(responseBody.payload.items);
+                    List<PondsRemoteDataSource.PondData> items = responseBody.payload.items;
+                    Log.d( "remote", "Items: " + items.size() );
+                    itemsRepository
+                            .savePondsToDB(items)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(done -> {
+                                Log.d("remote", "Downloaded Ponds data");
+                                // Visual indicator for the user
+                                setDownloadedPools(true);
+                            }, error -> {
+                                    Log.d("remote", "Downloading Ponds error" );
+                                   Log.d("remote", response.message());
+                            });
 
-                    // Visual indicator for the user
-                    setDownloadedPools(true);
                 } else {
                     Log.d("remote", "Downloading Ponds error" );
                     Log.d("remote", response.message());
@@ -323,8 +334,10 @@ public class InventoryViewModel extends AndroidViewModel {
     public void saveToDatabase(){
         PosicionamientoEntity updatedData = currentTag.getValue();
         // Save new data added to PosicionamientoEntity
-        itemsRepository.savePosicionamientoToDB(updatedData).subscribe(item -> {
-            // If the item doesn't exist do nothing
+        itemsRepository
+                .savePosicionamientoToDB(updatedData)
+                .subscribe(item -> {
+                    // If the item doesn't exist do nothing
             // Else save it as a record in ItemSighting
             if (item == null) {
                 // Handle the case where the item is not found

@@ -60,8 +60,8 @@ public interface PondsDao {
 //           }
 //    }
 //
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    void insertPond(PondEntity pond);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertPond(PondEntity pond);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Completable insertAllPonds(List<PondEntity> ponds);

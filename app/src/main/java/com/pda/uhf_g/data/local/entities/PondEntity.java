@@ -30,14 +30,15 @@ public class PondEntity {
 
     public PondEntity( String uuid, String megazone, String megazone_id, String zone,
                        String zone_id, String sector, String sector_id, String pond ) {
-        uuid = uuid;
-        megazone = megazone;
-        megazone_id = megazone_id;
-        zone = zone;
-        zone_id = zone_id;
-        sector = sector;
-        sector_id = sector_id;
-        pond = pond;
+        this.uuid = uuid;
+        this.megazone = megazone;
+        this.megazone_id = megazone_id;
+        this.zone = zone;
+        this.zone_id = zone_id;
+        this.sector = sector;
+        this.sector_id = sector_id;
+        this.pond = pond;
+
     }
 
     @NonNull

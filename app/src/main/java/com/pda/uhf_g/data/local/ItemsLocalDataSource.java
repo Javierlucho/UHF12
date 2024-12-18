@@ -72,19 +72,30 @@ public class ItemsLocalDataSource {
         List<PondEntity> ponds = new ArrayList<>();
         for (PondsRemoteDataSource.PondData pond : pondsJson) {
             JsonObject metaData = pond.meta_data;
+            //            PondEntity pondDB = new PondEntity(
+            //                    metaData.get("uuid").getAsString(),
+            //                    metaData.get("mega_zona").getAsString(),
+            //                    metaData.get("id_mega_zona").getAsString(),
+            //                    metaData.get("zona").getAsString(),
+            //                    metaData.get("id_zona").getAsString(),
+            //                    metaData.get("sector").getAsString(),
+            //                    metaData.get("id_sector").getAsString(),
+            //                    metaData.get("piscina").getAsString());
             PondEntity pondDB = new PondEntity(
-                    metaData.get("uuid").getAsString(),
-                    metaData.get("mega_zona").getAsString(),
-                    metaData.get("id_mega_zona").getAsString(),
-                    metaData.get("zona").getAsString(),
-                    metaData.get("id_zona").getAsString(),
-                    metaData.get("sector").getAsString(),
-                    metaData.get("id_sector").getAsString(),
+                    metaData.get("Id_Unidad").getAsString(),
+                    metaData.get("Megazona").getAsString(),
+                    metaData.get("Id_Megazona").getAsString(),
+                    metaData.get("Zona").getAsString(),
+                    metaData.get("Id_Zona").getAsString(),
+                    metaData.get("Sector").getAsString(),
+                    metaData.get("Id_Sector").getAsString(),
                     metaData.get("piscina").getAsString());
+
             ponds.add(pondDB);
+            pondsDao.insertPond(pondDB);
         }
 
-        pondsDao.insertAllPonds(ponds);
+//        pondsDao.insertAllPonds(ponds);
     }
 
     public void insertCategories(List<CatalogRemoteDataSource.CatalogoResponse.Item> catalogItems) {
