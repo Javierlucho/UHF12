@@ -115,8 +115,20 @@ public class ItemsLocalDataSource {
 //        itemsDao.insertAllItems(Items);
     }
 
-    public Observable<List<PondsDao.MegaZoneList>> getPondsMegazones() {
+    public List<PondsDao.MegaZoneList> getPondsMegazones() {
         return pondsDao.getPondsMegaZones();
+    }
+
+    public List<PondsDao.ZoneList> getPondsZones(String megazone_id) {
+        return pondsDao.getPondsZones(megazone_id);
+    }
+
+    public List<PondsDao.SectorList> getPondsSectors(String zona_id) {
+        return pondsDao.getPondsSectors(zona_id);
+    }
+
+    public List<PondsDao.PondsList> getPonds(String sector_id) {
+        return pondsDao.getPondsBySector(sector_id);
     }
 
     public Completable resetDb(){

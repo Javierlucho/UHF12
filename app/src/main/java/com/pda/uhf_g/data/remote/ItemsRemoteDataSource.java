@@ -21,7 +21,7 @@ import retrofit2.http.POST;
 public class ItemsRemoteDataSource {
     private Retrofit retrofit;
     private Items api;
-    public static final String API_URL = "http://127.0.0.1:8005";
+    public static final String API_URL = "http://10.100.1.182:8001/";
     private List<PosicionamientoEntity> catalog;
 
     public ItemsRemoteDataSource(){
@@ -50,10 +50,10 @@ public class ItemsRemoteDataSource {
     }
 
     public interface Items {
-        @POST("/upload")
+        @POST("post_associated_inventory/")
         Call<PosicionamientoRequest> upload(PosicionamientoRequest requestData);
 
-        @GET("/download")
+        @GET("get_inventory/")
         Call<PosicionamientoRequest> download();
     }
 

@@ -41,17 +41,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView title;
         private final ImageView imageView;
-
         private final TextView description;
         private final TextView brand;
         private final TextView serial_number;
 
-
-
         public ViewHolder(View view) {
             super(view);
-            // Define click listener for the ViewHolder's View
 
+            // Define click listener for the ViewHolder's View
             title = (TextView) view.findViewById(R.id.item_title);
             imageView = (ImageView) view.findViewById(R.id.item_image);
             description = (TextView) view.findViewById(R.id.item_description);

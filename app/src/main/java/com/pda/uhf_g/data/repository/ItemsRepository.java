@@ -5,6 +5,7 @@ import android.util.Log;
 import com.pda.uhf_g.data.local.ItemsLocalDataSource;
 import com.pda.uhf_g.data.local.dao.PondsDao;
 import com.pda.uhf_g.data.local.entities.ItemEntity;
+import com.pda.uhf_g.data.local.entities.PondEntity;
 import com.pda.uhf_g.data.local.entities.PosicionamientoEntity;
 import com.pda.uhf_g.data.remote.CatalogRemoteDataSource;
 import com.pda.uhf_g.data.remote.ItemsRemoteDataSource;
@@ -120,9 +121,27 @@ public class ItemsRepository {
                 .subscribeOn(Schedulers.io()); // Specify the background scheduler
     }
 
-    public io.reactivex.Observable<List<PondsDao.MegaZoneList>> getPondsMegazones() {
-        return itemsLocalDataSource.getPondsMegazones().subscribeOn(io.reactivex.schedulers.Schedulers.io()); // Specify the background scheduler
+    public Observable<List<PondsDao.MegaZoneList>> getPondsMegazones() {
+        return Observable.fromCallable(itemsLocalDataSource::getPondsMegazones).subscribeOn(Schedulers.io()); // Specify the background scheduler
     }
+    public Observable<List<PondsDao.ZoneList>> getPondsZones(String megazone_id) {
+        return Observable.fromCallable( () -> {
+            return itemsLocalDataSource.getPondsZones(megazone_id);
+        }).subscribeOn(Schedulers.io()); // Specify the background scheduler
+    }
+
+    public Observable<List<PondsDao.SectorList>> getPondsSectors(String zone_id) {
+        return Observable.fromCallable( () -> {
+            return itemsLocalDataSource.getPondsSectors(zone_id);
+        }).subscribeOn(Schedulers.io()); // Specify the background scheduler
+    }
+
+    public Observable<List<PondsDao.PondsList>> getPonds(String sector_id) {
+        return Observable.fromCallable( () -> {
+            return itemsLocalDataSource.getPonds(sector_id);
+        }).subscribeOn(Schedulers.io()); // Specify the background scheduler
+    }
+
     public @NonNull Observable<Boolean> savePondsToDB(List<PondsRemoteDataSource.PondData> items) {
         return Observable.fromCallable(() -> {
             //return itemsLocalDataSource.insertPonds(items).subscribeOn(io.reactivex.schedulers.Schedulers.io()); // Specify the background scheduler

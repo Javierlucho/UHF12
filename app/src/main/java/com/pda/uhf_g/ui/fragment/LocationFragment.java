@@ -2,7 +2,6 @@ package com.pda.uhf_g.ui.fragment;
 
 import static com.pda.uhf_g.ui.base.NavHostFragment.findNavController;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,10 +10,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cursoradapter.widget.CursorAdapter;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,17 +19,14 @@ import com.pda.uhf_g.MainActivity;
 import com.pda.uhf_g.R;
 import com.pda.uhf_g.data.local.dao.PondsDao;
 import com.pda.uhf_g.data.local.entities.PondEntity;
-import com.pda.uhf_g.ui.adapter.SpinnerAdapter;
+import com.pda.uhf_g.ui.adapter.LocationAdapter;
 import com.pda.uhf_g.ui.base.BaseFragment;
 import com.pda.uhf_g.ui.viewmodel.InventoryViewModel;
 import com.pda.uhf_g.util.LogUtil;
 import com.pda.uhf_g.util.SharedUtil;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,8 +48,8 @@ public class LocationFragment extends BaseFragment implements AdapterView.OnItem
 
     private InventoryViewModel viewModel;
 
-    private MainActivity mainActivity ;
-    SharedUtil sharedUtil ;
+    private MainActivity mainActivity;
+    SharedUtil sharedUtil;
 
     List<PondEntity> ponds = new ArrayList<PondEntity>();
 
@@ -74,27 +68,56 @@ public class LocationFragment extends BaseFragment implements AdapterView.OnItem
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(InventoryViewModel.class);
 
-        btnSave.setOnClickListener( v -> {
+        btnSave.setOnClickListener(v -> {
             findNavController(this).navigate(R.id.nav_inventory_ipsp);
         });
 
+        // Load Data
         ponds = getPonds();
+        viewModel.getMegazonesFromDB();
+        // Setup megazone
+//        ArrayList<PondsDao.MegaZoneList> megazones = getStubMegazones();
+//        ArrayList<PondsDao.PondList> megazonesPondList = transformToPondLists(megazones);
+//        LocationAdapter adapter = new LocationAdapter(
+//                requireContext(),
+//                megazonesPondList
+//        );
+        viewModel.getMegazones().observe(getViewLifecycleOwner(), megazones -> {
+            LocationAdapter adapter = new LocationAdapter(
+                    requireContext(),
+                    transformToPondLists(megazones)
+            );
+            spinnerMegazone.setAdapter(adapter);
+        });
+        viewModel.getZones().observe(getViewLifecycleOwner(), zones -> {
+            LocationAdapter adapter = new LocationAdapter(
+                    requireContext(),
+                    transformToPondLists(zones)
+            );
+            spinnerZone.setAdapter(adapter);
+        });
+        viewModel.getSectors().observe(getViewLifecycleOwner(), sectors -> {
+            LocationAdapter adapter = new LocationAdapter(
+                    requireContext(),
+                    transformToPondLists(sectors)
+            );
+            spinnerSector.setAdapter(adapter);
+        });
+        viewModel.getPonds().observe(getViewLifecycleOwner(), ponds -> {
+            LocationAdapter adapter = new LocationAdapter(
+                    requireContext(),
+                    transformToPondLists(ponds)
+            );
+            spinnerPiscina.setAdapter(adapter);
+        });
+    }
 
-        List<PondsDao.MegaZoneList> pondLists = getStubMegazones();
-        List<PondsDao.PondList> megazones = new ArrayList<>();
-        for (PondsDao.MegaZoneList pondList : pondLists) {
-                megazones.add((PondsDao.PondList) pondList);
+    private List<PondsDao.PondList> transformToPondLists(List listOfSubdivisions) {
+        List<PondsDao.PondList> pondLists = new ArrayList<>();
+        for(Object pond : listOfSubdivisions) {
+            pondLists.add((PondsDao.PondList) pond);
         }
-
-        SpinnerAdapter adapter = new SpinnerAdapter(
-                getContext(),
-                megazones
-        );
-
-        //spinnerPiscina.setAdapter(adapter);
-
-        spinnerMegazone.setAdapter(adapter);
-        spinnerZone.setAdapter(adapter);
+        return pondLists;
     }
 
     @Override
@@ -142,18 +165,21 @@ public class LocationFragment extends BaseFragment implements AdapterView.OnItem
         Object selectedItem = adapterView.getItemAtPosition(pos);
         if (selectedItem instanceof PondsDao.MegaZoneList){
             PondsDao.MegaZoneList item = (PondsDao.MegaZoneList) selectedItem;
-            viewModel.setSelectedLocation(item.megazone, "", "", "");
-            Log.d("SpinnerAdapter", item.megazone);
+            viewModel.setSelectedLocation(item.getVisualName(), "", "", "");
+            Log.d("SpinnerAdapter", "Megazone: " + item.getVisualName());
+            viewModel.getZonesFromDB(item.getID());
+
         } else if (selectedItem instanceof PondsDao.ZoneList){
             PondsDao.ZoneList item = (PondsDao.ZoneList) selectedItem;
             viewModel.setSelectedLocation("", "", "", "");
-            Log.d("SpinnerAdapter", item.zone);
+            Log.d("SpinnerAdapter", "Zone: " + item.getVisualName());
+            viewModel.getSectorsFromDB(item.getID());
 
         } else if (selectedItem instanceof PondsDao.SectorList){
             PondsDao.SectorList item = (PondsDao.SectorList) selectedItem;
             viewModel.setSelectedLocation("", "", "", "");
-            Log.d("SpinnerAdapter", item.sector);
-
+            Log.d("SpinnerAdapter", "Sector: " + item.getVisualName());
+            viewModel.getPondsFromDB(item.getID());
 
         }
     }
@@ -163,15 +189,6 @@ public class LocationFragment extends BaseFragment implements AdapterView.OnItem
 
     }
 
-    public void getMegazones(){
-
-    }
-    public void getZones(){
-
-    }
-    public void getSectors(){
-
-    }
     public List<PondEntity> getPonds(){
         List<PondEntity> ponds;
         ponds = getStubPonds();
@@ -194,8 +211,8 @@ public class LocationFragment extends BaseFragment implements AdapterView.OnItem
         return itemsList;
     }
 
-    public List<PondsDao.MegaZoneList> getStubMegazones(){
-        List<PondsDao.MegaZoneList> itemsList = new ArrayList<>();
+    public ArrayList<PondsDao.MegaZoneList> getStubMegazones(){
+        ArrayList<PondsDao.MegaZoneList> itemsList = new ArrayList<>();
         PondsDao.MegaZoneList m1 = new PondsDao.MegaZoneList("MEGAZONA1", "M001");
         PondsDao.MegaZoneList m2 = new PondsDao.MegaZoneList("MEGAZONA2", "M002");
         itemsList.add(m1);

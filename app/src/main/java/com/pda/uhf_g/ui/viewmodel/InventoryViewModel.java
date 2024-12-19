@@ -9,12 +9,12 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.LiveData;
 
-import com.pda.uhf_g.R;
 import com.pda.uhf_g.data.local.ItemsLocalDataSource;
 import com.pda.uhf_g.data.local.dao.PondsDao;
 import com.pda.uhf_g.data.local.entities.ItemEntity;
 import com.pda.uhf_g.data.local.entities.ListItem;
 import com.pda.uhf_g.data.local.entities.Location;
+import com.pda.uhf_g.data.local.entities.PondEntity;
 import com.pda.uhf_g.data.local.entities.PosicionamientoEntity;
 import com.pda.uhf_g.data.remote.CatalogRemoteDataSource;
 import com.pda.uhf_g.data.remote.ItemsRemoteDataSource;
@@ -42,8 +42,10 @@ public class InventoryViewModel extends AndroidViewModel {
     private final MutableLiveData<Boolean> downloadedItemsIPSP = new MutableLiveData<Boolean>();
     private final MutableLiveData<Boolean> downloadedPosicionamiento = new MutableLiveData<Boolean>();
 
-    private final MutableLiveData<PondsDao.MegaZoneList> megazones = new MutableLiveData<PondsDao.MegaZoneList>();
-
+    private final MutableLiveData<List<PondsDao.MegaZoneList>> megazones = new MutableLiveData<List<PondsDao.MegaZoneList>>();
+    private final MutableLiveData<List<PondsDao.ZoneList>> zones = new MutableLiveData<List<PondsDao.ZoneList>>();
+    private final MutableLiveData<List<PondsDao.SectorList>> sectors = new MutableLiveData<List<PondsDao.SectorList>>();
+    private final MutableLiveData<List<PondsDao.PondsList>> ponds = new MutableLiveData<List<PondsDao.PondsList>>();
 
     List<ListItem> items = new ArrayList<>();
 
@@ -141,6 +143,58 @@ public class InventoryViewModel extends AndroidViewModel {
         return null;
     }
 
+    @SuppressLint("CheckResult")
+    public void getMegazonesFromDB() {
+        itemsRepository.getPondsMegazones()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(db_result -> {
+                    Log.d("db", "Obtained megazones from db");
+                    setMegazones(db_result);
+                },
+                error -> {
+                    Log.d("db", error.getMessage());
+                });
+    }
+
+    @SuppressLint("CheckResult")
+    public void getZonesFromDB(String megazone_id) {
+        itemsRepository.getPondsZones(megazone_id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(db_result -> {
+                            Log.d("db", "Obtained megazones from db");
+                            setZones(db_result);
+                        },
+                        error -> {
+                            Log.d("db", error.getMessage());
+                        });
+    }
+
+    @SuppressLint("CheckResult")
+    public void getSectorsFromDB(String zone_id) {
+        itemsRepository.getPondsSectors(zone_id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(db_result -> {
+                            Log.d("db", "Obtained megazones from db");
+                            setSectors(db_result);
+                        },
+                        error -> {
+                            Log.d("db", error.getMessage());
+                        });
+    }
+
+    @SuppressLint("CheckResult")
+    public void getPondsFromDB(String sector_id) {
+        itemsRepository.getPonds(sector_id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(db_result -> {
+                            Log.d("db", "Obtained megazones from db");
+                            setPonds(db_result);
+                        },
+                        error -> {
+                            Log.d("db", error.getMessage());
+                        });
+    }
+
     public MutableLiveData<Location> getSelectedLocation() {
         return selectedLocation;
     }
@@ -192,7 +246,6 @@ public class InventoryViewModel extends AndroidViewModel {
                 if(response.isSuccessful()){
                     Log.d("remote", "Downloaded pool data" );
                     resetDatabase();
-
                 } else {
                     Log.d("remote", "Downloading error" );
                     Log.d("remote", response.message());
@@ -372,13 +425,33 @@ public class InventoryViewModel extends AndroidViewModel {
             });
     }
 
-
-
-    public void setMegazones(PondsDao.MegaZoneList megazonesFromDB) {
+    public void setMegazones(List<PondsDao.MegaZoneList> megazonesFromDB) {
         megazones.setValue(megazonesFromDB);
     }
 
-    public MutableLiveData<PondsDao.MegaZoneList> getMegazones() {
+    public MutableLiveData<List<PondsDao.MegaZoneList>> getMegazones() {
         return megazones;
     }
+
+    public void setZones(List<PondsDao.ZoneList> zonesFromDB) {
+        zones.setValue(zonesFromDB);
+    }
+    public MutableLiveData<List<PondsDao.ZoneList>> getZones() {
+        return zones;
+    }
+
+    public void setSectors(List<PondsDao.SectorList> sectorsFromDB) {
+        sectors.setValue(sectorsFromDB);
+    }
+    public MutableLiveData<List<PondsDao.SectorList>> getSectors() {
+        return sectors;
+    }
+    public void setPonds(List<PondsDao.PondsList> pondsFromDB) {
+        ponds.setValue(pondsFromDB);
+    }
+    public MutableLiveData<List<PondsDao.PondsList>> getPonds() {
+        return ponds;
+    }
+
 }
+
