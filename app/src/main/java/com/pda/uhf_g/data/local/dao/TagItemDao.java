@@ -30,4 +30,5 @@ public interface TagItemDao {
     @Delete
     void deleteItem(PosicionamientoEntity item);
 
+
 }

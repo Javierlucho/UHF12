@@ -17,7 +17,7 @@ import io.reactivex.Completable;
 public interface ItemsDao {
 
     @Query("SELECT * FROM items")
-    List<ItemEntity> getAllItems();
+    List<ItemEntity> getAllItemsIPSP();
 
     @Query("SELECT * FROM items WHERE cid = :cid")
     ItemEntity getItemByTid(String cid);

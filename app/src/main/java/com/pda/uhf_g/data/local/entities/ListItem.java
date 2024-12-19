@@ -1,5 +1,7 @@
 package com.pda.uhf_g.data.local.entities;
 
+import com.pda.uhf_g.R;
+
 public class ListItem {
     private int imageResId;
     private String title;
@@ -12,9 +14,12 @@ public class ListItem {
 
     private boolean isSelected;
 
-    public ListItem(int imageResId, String title, int position) {
-        this.setImageResId(imageResId);
+    public ListItem(String title, String description, String marca, String serial, int position) {
+        this.setImageResId(R.drawable.button_disenabled_background);
         this.setTitle(title);
+        this.setDescription(description);
+        this.setBrand(marca);
+        this.setSerial(serial);
         this.setSelected(false);
         this.setPosition(position);
     }

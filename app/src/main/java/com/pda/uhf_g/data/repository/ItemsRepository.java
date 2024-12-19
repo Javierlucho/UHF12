@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.pda.uhf_g.data.local.ItemsLocalDataSource;
 import com.pda.uhf_g.data.local.dao.PondsDao;
+import com.pda.uhf_g.data.local.entities.ItemEntity;
 import com.pda.uhf_g.data.local.entities.PosicionamientoEntity;
 import com.pda.uhf_g.data.remote.CatalogRemoteDataSource;
 import com.pda.uhf_g.data.remote.ItemsRemoteDataSource;
@@ -145,11 +146,17 @@ public class ItemsRepository {
     }
 
 
-    public @NonNull Observable<Response<CatalogRemoteDataSource.ItemsResponse>> getItemsIPSP(String zone){
+    public @NonNull Observable<Response<CatalogRemoteDataSource.ItemsResponse>> getItemsIPSPRemote(String zone){
         return Observable.fromCallable(() -> {
                     // Perform database insertion on a background thread
                     return catalogRemoteDataSource.getItems(zone).execute();
                 })
+                .subscribeOn(Schedulers.io()); // Specify the background scheduler
+    }
+
+    public @NonNull Observable<List<ItemEntity>> getItemsIPSP() {
+        // Perform database insertion on a background thread
+        return Observable.fromCallable(itemsLocalDataSource::getAllItemsIPSP)
                 .subscribeOn(Schedulers.io()); // Specify the background scheduler
     }
     // ------------------------------------ ITEMS END --------------------------------------------//

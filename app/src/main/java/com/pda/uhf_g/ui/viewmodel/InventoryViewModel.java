@@ -12,6 +12,7 @@ import androidx.lifecycle.LiveData;
 import com.pda.uhf_g.R;
 import com.pda.uhf_g.data.local.ItemsLocalDataSource;
 import com.pda.uhf_g.data.local.dao.PondsDao;
+import com.pda.uhf_g.data.local.entities.ItemEntity;
 import com.pda.uhf_g.data.local.entities.ListItem;
 import com.pda.uhf_g.data.local.entities.Location;
 import com.pda.uhf_g.data.local.entities.PosicionamientoEntity;
@@ -51,13 +52,16 @@ public class InventoryViewModel extends AndroidViewModel {
     public InventoryViewModel(@NonNull Application application) {
         super(application);
 
-        fillItems();
-
+        // Create Data handlers
         ItemsLocalDataSource local = new ItemsLocalDataSource(application.getApplicationContext());
         ItemsRemoteDataSource items = new ItemsRemoteDataSource();
         PondsRemoteDataSource ponds = new PondsRemoteDataSource();
         CatalogRemoteDataSource catalog = new CatalogRemoteDataSource();
         itemsRepository = new ItemsRepository(items, ponds, catalog, local);
+
+        // Load Data from DB
+        //fillItems();
+        fillItemsFromDB();
     }
 
     public void setCurrentLocation(GPSInfo gpsInfo) {
@@ -157,23 +161,28 @@ public class InventoryViewModel extends AndroidViewModel {
         selectedItem.setValue(null);
     }
 
+    public void fillItemsFromDB() {
+        itemsRepository.getItemsIPSP()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(itemsFromDB -> {
+                    int position = 0;
+                    for (ItemEntity item : itemsFromDB) {
+                        items.add(new ListItem(String.valueOf(item.getCid()), item.getDescripcion(), item.getMarca(), item.getSerie(), position));
+                        position++;
+                    }
+                },
+                error -> {
+                    // Handle insertion error
+                    Log.d("db", error.getMessage());
+                });
+    }
     private void fillItems(){
-        items.add(new ListItem(R.drawable.button_disenabled_background, "Item 1", 0));
-        items.add(new ListItem(R.drawable.button_disenabled_background, "Item 2", 1));
-        items.add(new ListItem(R.drawable.button_disenabled_background, "Item 3", 2));
-        items.add(new ListItem(R.drawable.button_disenabled_background, "Item 4", 3));
-        items.add(new ListItem(R.drawable.button_disenabled_background, "Item 5", 4));
-        items.add(new ListItem(R.drawable.button_disenabled_background, "Item 6", 5));
-        items.add(new ListItem(R.drawable.button_disenabled_background, "Item 7", 6));
-        items.add(new ListItem(R.drawable.button_disenabled_background, "Item 8", 7));
-        items.add(new ListItem(R.drawable.button_disenabled_background, "Item 9", 8));
-        items.add(new ListItem(R.drawable.button_disenabled_background, "Item 10", 9));
+        items.add(new ListItem( "Item 2", "","", "",1));
     }
 
     public List<ListItem> getItems() {
         return items;
     }
-
 
     public void pushToServer() {
         Log.d("db", "Pushing to server");
@@ -299,7 +308,7 @@ public class InventoryViewModel extends AndroidViewModel {
             });
 
         // Pull IPSP Items
-        itemsRepository.getItemsIPSP(zone)
+        itemsRepository.getItemsIPSPRemote(zone)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(response -> {
                 // Handle successful insertion (e.g., update UI)
@@ -362,6 +371,8 @@ public class InventoryViewModel extends AndroidViewModel {
                 Log.d("db", "Delete DB failed" );
             });
     }
+
+
 
     public void setMegazones(PondsDao.MegaZoneList megazonesFromDB) {
         megazones.setValue(megazonesFromDB);

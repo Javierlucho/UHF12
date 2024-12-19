@@ -36,7 +36,6 @@ public class ItemsLocalDataSource {
         itemsDao = db.ItemsDao();
         resetDao = db.ResetDao();
 
-        this.initStubDB();
     }
 
     public void initStubDB(){
@@ -51,7 +50,7 @@ public class ItemsLocalDataSource {
                 "S001",
                 "PISCINA");
         ponds.add(pondDB);
-        pondsDao.insertAllPonds(ponds);
+        //pondsDao.insertAllPonds(ponds);
     }
 
     public List<PosicionamientoEntity> getAllItems() {
@@ -72,15 +71,6 @@ public class ItemsLocalDataSource {
         List<PondEntity> ponds = new ArrayList<>();
         for (PondsRemoteDataSource.PondData pond : pondsJson) {
             JsonObject metaData = pond.meta_data;
-            //            PondEntity pondDB = new PondEntity(
-            //                    metaData.get("uuid").getAsString(),
-            //                    metaData.get("mega_zona").getAsString(),
-            //                    metaData.get("id_mega_zona").getAsString(),
-            //                    metaData.get("zona").getAsString(),
-            //                    metaData.get("id_zona").getAsString(),
-            //                    metaData.get("sector").getAsString(),
-            //                    metaData.get("id_sector").getAsString(),
-            //                    metaData.get("piscina").getAsString());
             PondEntity pondDB = new PondEntity(
                     metaData.get("Id_Unidad").getAsString(),
                     metaData.get("Megazona").getAsString(),
@@ -110,6 +100,11 @@ public class ItemsLocalDataSource {
             catalogDao.insertCatalogItem(catalogEntity);
         }
 //        catalogDao.insertAllCatalogItems(catalogItems);
+    }
+
+    public List<ItemEntity> getAllItemsIPSP() {
+        List<ItemEntity> entities = itemsDao.getAllItemsIPSP();
+        return entities;
     }
 
     public void  insertItemsIPSP(List<CatalogRemoteDataSource.ItemsResponse.Item> Items) {
