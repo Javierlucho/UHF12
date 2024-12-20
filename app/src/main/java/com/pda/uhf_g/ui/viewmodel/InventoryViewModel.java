@@ -123,24 +123,32 @@ public class InventoryViewModel extends AndroidViewModel {
     }
 
     @SuppressLint("CheckResult")
-    public TagData updateLatestTag() {
+    public void updateLatestTag() {
         if (tagInfoList != null && !tagInfoList.isEmpty()) {
-            // TODO: Pop
-            String tid = tagInfoList.get(0).getTid();
-            itemsRepository.findPosicionamientoItem(tid)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(item -> {
-                    // Handle successful insertion (e.g., update UI)
-                    Log.d("db", "Found item " + tid);
-                    setCurrentTag(item);
-                },
-                error -> {
-                    // Handle insertion error
-                    Log.d("db", "Finding failed " + tid);
-                    Log.d("db", error.getMessage());
-                });
+//            itemsRepository.findPosicionamientoItemFromList(tagInfoList)
+//                            .observeOn(AndroidSchedulers.mainThread())
+//                            .subscribe(this::setCurrentTag, error -> {
+//                                for (TagInfo tagInfo: tagInfoList) {
+//                                    Log.d("tag", "Finding failed " + tagInfo.getTid());
+//                                }
+//                                Log.d("tag", error.getMessage());
+//                            });
+//            for (TagInfo tag: tagInfoList){
+//                String tid = tag.getTid();
+//                itemsRepository.findPosicionamientoItem(tid)
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(item -> {
+//                        // Handle successful insertion (e.g., update UI)
+//                        Log.d("tag", "Found item " + tid);
+//                        setCurrentTag(item);
+//                    },
+//                    error -> {
+//                        // Handle insertion error
+//                        Log.d("tag", "Finding failed " + tid);
+//                        Log.d("tag", error.getMessage());
+//                    });
+//            }
         }
-        return null;
     }
 
     @SuppressLint("CheckResult")

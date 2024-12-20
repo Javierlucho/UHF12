@@ -9,8 +9,6 @@ import com.pda.uhf_g.data.local.entities.CategoriaEntity;
 
 import java.util.List;
 
-import io.reactivex.Completable;
-
 @Dao
 public interface ResetDao {
 

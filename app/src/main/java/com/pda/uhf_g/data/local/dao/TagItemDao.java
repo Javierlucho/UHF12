@@ -8,9 +8,11 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.pda.uhf_g.data.local.entities.PosicionamientoEntity;
-import com.pda.uhf_g.data.local.entities.TagItemEntity;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.core.Single;
+
 
 @Dao
 public interface TagItemDao {
@@ -19,16 +21,16 @@ public interface TagItemDao {
     List<PosicionamientoEntity> getAllItems();
 
     @Query("SELECT * FROM posicionamiento WHERE tid = :tid")
-    PosicionamientoEntity getItemByTid(String tid);
+    Single<PosicionamientoEntity> getItemByTid(String tid);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertItem(PosicionamientoEntity item);
 
-    @Update
-    void updateItem(PosicionamientoEntity item);
-
-    @Delete
-    void deleteItem(PosicionamientoEntity item);
+//    @Update
+//    void updateItem(PosicionamientoEntity item);
+//
+//    @Delete
+//    void deleteItem(PosicionamientoEntity item);
 
 
 }

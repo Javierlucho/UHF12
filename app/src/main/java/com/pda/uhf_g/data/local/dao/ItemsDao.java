@@ -10,7 +10,7 @@ import com.pda.uhf_g.data.local.entities.TagItemEntity;
 
 import java.util.List;
 
-import io.reactivex.Completable;
+import io.reactivex.rxjava3.core.Completable;
 
 
 @Dao

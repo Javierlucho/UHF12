@@ -7,6 +7,7 @@ import com.pda.uhf_g.data.local.dao.PondsDao;
 import com.pda.uhf_g.data.local.entities.ItemEntity;
 import com.pda.uhf_g.data.local.entities.PondEntity;
 import com.pda.uhf_g.data.local.entities.PosicionamientoEntity;
+import com.pda.uhf_g.data.local.entities.TagInfo;
 import com.pda.uhf_g.data.remote.CatalogRemoteDataSource;
 import com.pda.uhf_g.data.remote.ItemsRemoteDataSource;
 import com.pda.uhf_g.data.remote.PondsRemoteDataSource;
@@ -43,13 +44,31 @@ public class ItemsRepository {
         return Observable.fromCallable(itemsLocalDataSource::getAllItems)
                 .subscribeOn(Schedulers.io()); // Specify the background scheduler
     }
-    public Observable<PosicionamientoEntity> findPosicionamientoItem(String tid) {
-        return Observable.fromCallable(() -> {
-                    // Perform database insertion on a background thread
-                    return itemsLocalDataSource.findItemByTid(tid);
-                })
-                .subscribeOn(Schedulers.io()); // Specify the background scheduler
-    }
+
+//    public Observable<PosicionamientoEntity> findPosicionamientoItemFromList(List<TagInfo> itemsToSearch) {
+//        return Observable.fromIterable(itemsToSearch)
+//                .concatMapSingle(tagFound -> {
+////                  String tid = ;
+//                    return itemsLocalDataSource.findItemByTid(tagFound.getTid());
+//                })
+//                .filter(item -> item != null)
+//                .firstOrError()
+//                .flatMapObservable(item -> {
+//                    return item;
+//                })
+//                .onErrorResumeNext(throwable -> {
+//                    // If no item was found, notify
+//                    return Completable.error(new Throwable("Item not found")).toObservable();
+//                })
+//                .subscribeOn(Schedulers.io());
+//    }
+//    public Observable<PosicionamientoEntity> findPosicionamientoItem(String tid) {
+//        return Observable.fromCallable(() -> {
+//                    // Perform database insertion on a background thread
+//                    return itemsLocalDataSource.findItemByTid(tid);
+//                })
+//                .subscribeOn(Schedulers.io()); // Specify the background scheduler
+//    }
 
     public  Observable<PosicionamientoEntity> savePosicionamientoToDB(PosicionamientoEntity updatedData) {
         return Observable.fromCallable(() -> {
@@ -206,8 +225,8 @@ public class ItemsRepository {
     // ------------------------------------ MULTI --------------------------------------------//
 
 
-    public @NonNull io.reactivex.Completable resetDb(){
-        return itemsLocalDataSource.resetDb().subscribeOn(io.reactivex.schedulers.Schedulers.io()); // Specify the background scheduler
+    public @NonNull Completable resetDb(){
+        return itemsLocalDataSource.resetDb().subscribeOn(Schedulers.io()); // Specify the background scheduler
     }
 
     // Serialize to JSON

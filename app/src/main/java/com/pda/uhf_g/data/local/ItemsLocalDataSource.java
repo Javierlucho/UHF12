@@ -14,8 +14,9 @@ import com.pda.uhf_g.data.remote.PondsRemoteDataSource;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Completable;
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 
 public class ItemsLocalDataSource {
 
@@ -58,8 +59,8 @@ public class ItemsLocalDataSource {
         return entities;
     }
 
-    public PosicionamientoEntity findItemByTid(String tid) {
-        PosicionamientoEntity item = tagItemDao.getItemByTid(tid);
+    public Single<PosicionamientoEntity> findItemByTid(String tid) {
+        Single<PosicionamientoEntity> item = tagItemDao.getItemByTid(tid);
         return item;
     }
 
