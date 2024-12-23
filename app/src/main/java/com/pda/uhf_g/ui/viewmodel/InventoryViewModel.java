@@ -35,11 +35,13 @@ public class InventoryViewModel extends AndroidViewModel {
 
     private final MutableLiveData<ListItem> selectedItem = new MutableLiveData<>();
 
-    private final MutableLiveData<Boolean> downloadedPools = new MutableLiveData<>();
+    // Sync Fragment
+    private final MutableLiveData<Boolean> downloadedPonds = new MutableLiveData<>();
     private final MutableLiveData<Boolean> downloadedCatalog = new MutableLiveData<>();
     private final MutableLiveData<Boolean> downloadedItemsIPSP = new MutableLiveData<>();
     private final MutableLiveData<Boolean> downloadedPosicionamiento = new MutableLiveData<>();
 
+    // Location Fragment
     private final MutableLiveData<List<PondsDao.MegaZoneList>> megazones = new MutableLiveData<>();
     private final MutableLiveData<List<PondsDao.ZoneList>> zones = new MutableLiveData<>();
     private final MutableLiveData<List<PondsDao.SectorList>> sectors = new MutableLiveData<>();
@@ -79,12 +81,12 @@ public class InventoryViewModel extends AndroidViewModel {
         return currentTag;
     }
 
-    public MutableLiveData<Boolean> getDownloadedPools() {
-        return downloadedPools;
+    public MutableLiveData<Boolean> getDownloadedPonds() {
+        return downloadedPonds;
     }
 
-    public void setDownloadedPools(Boolean downloaded) {
-        downloadedPools.setValue(downloaded);
+    public void setDownloadedPonds(Boolean downloaded) {
+        downloadedPonds.setValue(downloaded);
     }
 
     public MutableLiveData<Boolean> getDownloadedPosicionamiento() {
@@ -194,8 +196,8 @@ public class InventoryViewModel extends AndroidViewModel {
         return selectedLocation;
     }
 
-    public void setSelectedLocation(String megazona, String zona, String sector, String piscina) {
-        Location location = new Location(megazona, zona, sector, piscina);
+    public void setSelectedLocation(String megazona, String zona, String sector, String piscina_id, String piscina) {
+        Location location = new Location(megazona, zona, sector, piscina_id, piscina);
         selectedLocation.setValue(location);
     }
     public void setSelectedItem(ListItem item) {
@@ -256,9 +258,7 @@ public class InventoryViewModel extends AndroidViewModel {
     @SuppressLint("CheckResult")
     public void pullData(){
         // Pull Items Locations and Tag
-        String megazone = "CALIFORNIA";
         String zone = "CALIFORNIAA";
-        String zoneId = "Z005";
 
         // Pull Posicionamiento Data from mini PC SIEMAV API
         itemsRepository
@@ -275,8 +275,8 @@ public class InventoryViewModel extends AndroidViewModel {
                 setDownloadedPosicionamiento(false);
             });
 
-        // Pull Pools Data
-        itemsRepository.getPoolsByZone(zone)
+        // Pull Ponds Data
+        itemsRepository.getPondsByZone(zone)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(response -> {
                 // Handle successful insertion (e.g., update UI)
@@ -295,7 +295,7 @@ public class InventoryViewModel extends AndroidViewModel {
                         .subscribe(done -> {
                             Log.d("remote", "Downloaded Ponds data");
                             // Visual indicator for the user
-                            setDownloadedPools(true);
+                            setDownloadedPonds(true);
                         }, error -> {
                             Log.d("remote", "Downloading Ponds error" );
                             Log.d("remote", response.message());

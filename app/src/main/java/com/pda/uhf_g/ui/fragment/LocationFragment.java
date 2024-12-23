@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -160,30 +159,31 @@ public class LocationFragment extends BaseFragment implements AdapterView.OnItem
             PondsDao.MegaZoneList item = (PondsDao.MegaZoneList) selectedItem;
             viewModel.setSelectedLocation(
                     item.getID(), "",
-                    "", "");
+                    "", "", "");
             Log.d("SpinnerAdapter", "Megazone: " + item.getVisualName());
             viewModel.getZonesFromDB(item.getID());
 
         } else if (selectedItem instanceof PondsDao.ZoneList){
             PondsDao.ZoneList item = (PondsDao.ZoneList) selectedItem;
             viewModel.setSelectedLocation(
-                    selectedLocation.getMegaZona(), item.getID(),
-                    "", "");
+                    selectedLocation.getMegaZonaID(), item.getID(),
+                    "", "", "");
             Log.d("SpinnerAdapter", "Zone: " + item.getVisualName());
             viewModel.getSectorsFromDB(item.getID());
 
         } else if (selectedItem instanceof PondsDao.SectorList){
             PondsDao.SectorList item = (PondsDao.SectorList) selectedItem;
             viewModel.setSelectedLocation(
-                    selectedLocation.getMegaZona(), selectedLocation.getZona(),
-                    item.getID(), "");
+                    selectedLocation.getMegaZonaID(), selectedLocation.getZonaID(),
+                    item.getID(), "", "");
             Log.d("SpinnerAdapter", "Sector: " + item.getVisualName());
             viewModel.getPondsFromDB(item.getID());
+
         } else if (selectedItem instanceof PondsDao.PondList){
             PondsDao.PondList item = (PondsDao.PondList) selectedItem;
             viewModel.setSelectedLocation(
-                    selectedLocation.getMegaZona(), selectedLocation.getZona(),
-                    selectedLocation.getSector(), item.getID());
+                    selectedLocation.getMegaZonaID(), selectedLocation.getZonaID(),
+                    selectedLocation.getSectorID(), item.getID(), item.getVisualName());
             Log.d("SpinnerAdapter", "Pond: " + item.getVisualName());
         }
     }

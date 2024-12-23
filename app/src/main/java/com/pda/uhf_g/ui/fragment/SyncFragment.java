@@ -80,7 +80,7 @@ public class SyncFragment extends BaseFragment {
             updateIcon(downloaded, posicionamientoLabel);
         });
 
-        viewModel.getDownloadedPools().observe(getViewLifecycleOwner(), downloaded -> {
+        viewModel.getDownloadedPonds().observe(getViewLifecycleOwner(), downloaded -> {
             updateIcon(downloaded, pondsLabel);
         });
     }

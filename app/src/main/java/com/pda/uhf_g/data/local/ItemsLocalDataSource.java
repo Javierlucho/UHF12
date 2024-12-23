@@ -75,14 +75,14 @@ public class ItemsLocalDataSource {
         for (PondsRemoteDataSource.PondData pond : pondsJson) {
             JsonObject metaData = pond.meta_data;
             PondEntity pondDB = new PondEntity(
-                    metaData.get("Id_Unidad").getAsString(),
+                    pond.uuid,
                     metaData.get("Megazona").getAsString(),
                     metaData.get("Id_Megazona").getAsString(),
                     metaData.get("Zona").getAsString(),
                     metaData.get("Id_Zona").getAsString(),
                     metaData.get("Sector").getAsString(),
                     metaData.get("Id_Sector").getAsString(),
-                    metaData.get("piscina").getAsString());
+                    metaData.get("Sector").getAsString() + metaData.get("Unidad").getAsString());
 
             ponds.add(pondDB);
             pondsDao.insertPond(pondDB);

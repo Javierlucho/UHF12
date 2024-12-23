@@ -104,11 +104,11 @@ public interface PondsDao {
         @NonNull
         @Override
         public String toString() {
-            return getUuid();
+            return getPond();
         }
 
         public String getVisualName(){
-            return getUuid();
+            return getPond();
         }
 
         public String getID(){

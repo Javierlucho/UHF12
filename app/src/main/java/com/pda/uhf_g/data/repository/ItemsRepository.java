@@ -5,7 +5,6 @@ import android.util.Log;
 import com.pda.uhf_g.data.local.ItemsLocalDataSource;
 import com.pda.uhf_g.data.local.dao.PondsDao;
 import com.pda.uhf_g.data.local.entities.ItemEntity;
-import com.pda.uhf_g.data.local.entities.PondEntity;
 import com.pda.uhf_g.data.local.entities.PosicionamientoEntity;
 import com.pda.uhf_g.data.local.entities.TagInfo;
 import com.pda.uhf_g.data.remote.CatalogRemoteDataSource;
@@ -133,7 +132,7 @@ public class ItemsRepository {
                 })
                 .subscribeOn(Schedulers.io()); // Specify the background scheduler
     }
-    public @NonNull Observable<Response<PondsRemoteDataSource.PondsResponse>> getPoolsByZone(String zone){
+    public @NonNull Observable<Response<PondsRemoteDataSource.PondsResponse>> getPondsByZone(String zone){
         String match_key = "meta_data.Zona";
         return Observable.fromCallable(() -> {
                     // Perform database insertion on a background thread
