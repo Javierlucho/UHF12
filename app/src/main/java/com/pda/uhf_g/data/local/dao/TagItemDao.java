@@ -25,16 +25,13 @@ public interface TagItemDao {
     Single<PosicionamientoEntity> getItemByTid(String tid);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertItem(PosicionamientoEntity item);
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
     Completable insertAll(List<PosicionamientoEntity> inventario);
 
-//    @Update
-//    void updateItem(PosicionamientoEntity item);
-//
-//    @Delete
-//    void deleteItem(PosicionamientoEntity item);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    Completable insertItem(PosicionamientoEntity item);
+
+    @Update
+    Completable updateItem(PosicionamientoEntity item);
 
 
 }

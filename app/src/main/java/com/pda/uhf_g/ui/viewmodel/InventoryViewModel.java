@@ -218,7 +218,7 @@ public class InventoryViewModel extends AndroidViewModel {
             .subscribe(itemsFromDB -> {
                     int position = 0;
                     for (ItemEntity item : itemsFromDB) {
-                        items.add(new ListItem(String.valueOf(item.getCid()), item.getDescripcion(), item.getMarca(), item.getSerie(), position));
+                        items.add(new ListItem(String.valueOf(item.getCid()), item.getDescripcion(), item.getMarca(), item.getSerie(), item.getCodigoCampo(), position));
                         position++;
                     }
                 },
@@ -228,7 +228,7 @@ public class InventoryViewModel extends AndroidViewModel {
                 });
     }
     private void fillItems(){
-        items.add(new ListItem( "Item 2", "","", "",1));
+        items.add(new ListItem( "Item 2", "","", "","",1));
     }
 
     public List<ListItem> getItems() {
@@ -378,16 +378,28 @@ public class InventoryViewModel extends AndroidViewModel {
             });
     }
 
+    public void updateLocation() {
+        getCurrentTag().getValue().setUbicacion_actual(
+                getSelectedLocation().getValue().getPiscinaID());
+    }
+
+    public void updateItemIPSP() {
+        getCurrentTag().getValue().setCategoria_id(
+                getSelectedItem().getValue().getTitle());
+    }
+
     public void saveToDatabase(){
         PosicionamientoEntity updatedData = currentTag.getValue();
         // Save new data added to PosicionamientoEntity
         itemsRepository
-                .savePosicionamientoToDB(updatedData)
-                .subscribe(item -> {
-        }, error -> {
-            // Handle insertion error
-            Log.d("db", "Save failed" + updatedData.getTid());
-        });
+            .savePosicionamientoToDB(updatedData)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(() -> {
+                Log.d("db", "Save done" + updatedData.getTid());
+            }, error -> {
+                // Handle insertion error
+                Log.d("db", "Save failed" + updatedData.getTid());
+            });
     }
 
     public void resetDatabase(){

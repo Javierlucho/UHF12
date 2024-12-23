@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import retrofit2.Response;
 
@@ -66,9 +65,6 @@ public class ItemsLocalDataSource {
         return item;
     }
 
-    public void insertNewPosicionamiento(PosicionamientoEntity updatedData) {
-        tagItemDao.insertItem(updatedData);
-    }
 
     public void insertPonds(List<PondsRemoteDataSource.PondData>  pondsJson) {
         List<PondEntity> ponds = new ArrayList<>();
@@ -143,7 +139,11 @@ public class ItemsLocalDataSource {
     }
 
     public Completable insertDownloadedPosicionamientoData(Response<ItemsRemoteDataSource.PosicionamientoRequest> response) {
-        ItemsRemoteDataSource.PosicionamientoRequest downloadedData = response.body();
         return tagItemDao.insertAll(response.body().inventario);
     }
+
+    public Completable updatePosicionamiento(PosicionamientoEntity updatedData) {
+        return tagItemDao.updateItem(updatedData);
+    }
+
 }

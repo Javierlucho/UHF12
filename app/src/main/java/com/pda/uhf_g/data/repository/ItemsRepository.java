@@ -67,13 +67,8 @@ public class ItemsRepository {
 //                .subscribeOn(Schedulers.io()); // Specify the background scheduler
 //    }
 
-    public  Observable<PosicionamientoEntity> savePosicionamientoToDB(PosicionamientoEntity updatedData) {
-        return Observable.fromCallable(() -> {
-                    // Perform database insertion on a background thread
-                    itemsLocalDataSource.insertNewPosicionamiento(updatedData);
-                    return updatedData;
-                })
-                .subscribeOn(Schedulers.io()); // Specify the background scheduler
+    public  Completable savePosicionamientoToDB(PosicionamientoEntity updatedData) {
+        return itemsLocalDataSource.updatePosicionamiento(updatedData).subscribeOn(Schedulers.io());
     }
 
 

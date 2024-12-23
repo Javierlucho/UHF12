@@ -11,15 +11,17 @@ public class ListItem {
     private String description;
     private String brand;
     private String serial;
+    private String farmCode;
 
     private boolean isSelected;
 
-    public ListItem(String title, String description, String marca, String serial, int position) {
+    public ListItem(String title, String description, String marca, String serial, String farmCode, int position) {
         this.setImageResId(R.drawable.button_disenabled_background);
         this.setTitle(title);
         this.setDescription(description);
         this.setBrand(marca);
         this.setSerial(serial);
+        this.setFarmCode(farmCode);
         this.setSelected(false);
         this.setPosition(position);
     }
@@ -79,5 +81,13 @@ public class ListItem {
 
     public void setSerial(String serial) {
         this.serial = serial;
+    }
+
+    public String getFarmCode() {
+        return farmCode;
+    }
+
+    public void setFarmCode(String farmCode) {
+        this.farmCode = farmCode;
     }
 }

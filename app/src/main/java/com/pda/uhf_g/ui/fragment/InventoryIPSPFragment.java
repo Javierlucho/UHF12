@@ -172,7 +172,7 @@ public class InventoryIPSPFragment extends BaseFragment {
             }
         });
         viewModel.getSelectedItem().observe(getViewLifecycleOwner(), item -> {
-            tvName.setText(item.getTitle());
+            tvName.setText(item.getFarmCode());
         });
         viewModel.getSelectedLocation().observe(getViewLifecycleOwner(), location -> {
             tvPiscina.setText(location.getPiscina());

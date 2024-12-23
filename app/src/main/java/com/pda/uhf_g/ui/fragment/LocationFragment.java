@@ -69,6 +69,7 @@ public class LocationFragment extends BaseFragment implements AdapterView.OnItem
         viewModel = new ViewModelProvider(requireActivity()).get(InventoryViewModel.class);
 
         btnSave.setOnClickListener(v -> {
+            viewModel.updateLocation();
             viewModel.saveToDatabase();
             findNavController(this).navigate(R.id.nav_inventory_ipsp);
         });

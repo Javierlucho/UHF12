@@ -50,7 +50,11 @@ public class CatalogFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        btnSave.setOnClickListener( v -> findNavController(this).navigate(R.id.nav_inventory_ipsp));
+        btnSave.setOnClickListener( v -> {
+            viewModel.updateItemIPSP();
+            viewModel.saveToDatabase();
+            findNavController(this).navigate(R.id.nav_inventory_ipsp);
+        });
     }
 
     @Override
@@ -91,9 +95,7 @@ public class CatalogFragment extends BaseFragment {
         myRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
-        btnSave.setOnClickListener( v -> {
-            viewModel.saveToDatabase();
-        });
+
         return view;
     }
 

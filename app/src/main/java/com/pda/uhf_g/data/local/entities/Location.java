@@ -28,7 +28,7 @@ public class Location {
         return sector_id;
     }
     public String getPiscinaID() {
-        return piscina;
+        return piscina_id;
     }
     public String getPiscina() {
         return piscina;
