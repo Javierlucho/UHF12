@@ -36,7 +36,7 @@
             app:drawableStartCompat="@drawable/ic_downloading" />
 
         <TextView
-            android:id="@+id/posicionamiento_status"
+            android:id="@+id/ponds_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -44,7 +44,7 @@
             app:drawableStartCompat="@drawable/ic_downloading" />
 
         <TextView
-            android:id="@+id/ponds_status"
+            android:id="@+id/posicionamiento_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"

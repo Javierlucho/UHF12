@@ -11,6 +11,7 @@ import com.pda.uhf_g.data.local.entities.PosicionamientoEntity;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 
 
@@ -25,6 +26,9 @@ public interface TagItemDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertItem(PosicionamientoEntity item);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    Completable insertAll(List<PosicionamientoEntity> inventario);
 
 //    @Update
 //    void updateItem(PosicionamientoEntity item);

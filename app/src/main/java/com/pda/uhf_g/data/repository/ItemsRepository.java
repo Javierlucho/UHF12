@@ -12,11 +12,13 @@ import com.pda.uhf_g.data.remote.CatalogRemoteDataSource;
 import com.pda.uhf_g.data.remote.ItemsRemoteDataSource;
 import com.pda.uhf_g.data.remote.PondsRemoteDataSource;
 
+import java.io.IOException;
 import java.util.List;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
@@ -45,23 +47,19 @@ public class ItemsRepository {
                 .subscribeOn(Schedulers.io()); // Specify the background scheduler
     }
 
-//    public Observable<PosicionamientoEntity> findPosicionamientoItemFromList(List<TagInfo> itemsToSearch) {
-//        return Observable.fromIterable(itemsToSearch)
-//                .concatMapSingle(tagFound -> {
-////                  String tid = ;
-//                    return itemsLocalDataSource.findItemByTid(tagFound.getTid());
-//                })
-//                .filter(item -> item != null)
-//                .firstOrError()
-//                .flatMapObservable(item -> {
-//                    return item;
-//                })
+    public Single<PosicionamientoEntity> findPosicionamientoItemFromList(List<TagInfo> itemsToSearch) {
+        return Observable.fromIterable(itemsToSearch)
+                .concatMapSingle(tagFound -> itemsLocalDataSource.findItemByTid(tagFound.getTid()))
+                .filter(item -> item != null)
+                .firstOrError()
+                .subscribeOn(Schedulers.io());
+
 //                .onErrorResumeNext(throwable -> {
 //                    // If no item was found, notify
-//                    return Completable.error(new Throwable("Item not found")).toObservable();
+//                    Log.d("tag", "No item found");
+////                    return Completable.error(new Throwable("Item not found")).toObservable();
 //                })
-//                .subscribeOn(Schedulers.io());
-//    }
+    }
 //    public Observable<PosicionamientoEntity> findPosicionamientoItem(String tid) {
 //        return Observable.fromCallable(() -> {
 //                    // Perform database insertion on a background thread
@@ -82,27 +80,31 @@ public class ItemsRepository {
 
     @NonNull
     public Completable getPosicionamientoItems(){
-        try {
-            // TODO: Use itemsRemoteDataSource.downloadItems()
-            List<PosicionamientoEntity> remoteItems = itemsRemoteDataSource.fetchItems();
-            // ... logic to compare and synchronize local and remote data
-            // (e.g., update local database with new/modified items,
-            // upload new local items to server)
-            Log.d("db","Syncronizing with server");
+        return Observable.fromCallable(() -> {
+                // Perform database insertion on a background thread
+                Log.d("remote", "Downloading Posicionamiento data" );
+                return itemsRemoteDataSource.downloadItems().execute();
+            })
+            .subscribeOn(Schedulers.io()) // Specify the background scheduler
+            .flatMapCompletable(itemsLocalDataSource::insertDownloadedPosicionamientoData)
+                .doOnError(throwable -> {
+                    // Log the error
+                    Log.e("remote", "Error during download and insert", throwable);
+                })
+                .onErrorResumeNext(throwable -> {
+                    // Handle the error and return a Completable that completes
+                    // or returns an error
+                    if (throwable instanceof IOException) {
+                        // Handle network related errors
+                        Log.e("remote", "Network error occurred", throwable);
+                        return Completable.error(new Throwable("Network error, please try again later"));
+                    } else {
+                        // Handle other errors
+                        Log.e("remote", throwable.getMessage(), throwable);
+                        return Completable.error(new Throwable("An unexpected error occurred"));
+                    }
+                });
 
-            return Completable.fromCallable(() -> {
-                        for (PosicionamientoEntity localItem : remoteItems) {
-                            itemsLocalDataSource.insertNewPosicionamiento(localItem);
-                        }
-                        return true;
-                    })
-                    .subscribeOn(Schedulers.io());
-
-        } catch (Exception e) {
-            // Handle network or other errors
-            Log.d("db","Save failed "  + e);
-        }
-        return null;
     }
 
     public @NonNull Observable<Response<ItemsRemoteDataSource.PosicionamientoRequest>> publishPosicionamientos(){

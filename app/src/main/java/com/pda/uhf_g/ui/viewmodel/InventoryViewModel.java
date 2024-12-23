@@ -14,12 +14,10 @@ import com.pda.uhf_g.data.local.dao.PondsDao;
 import com.pda.uhf_g.data.local.entities.ItemEntity;
 import com.pda.uhf_g.data.local.entities.ListItem;
 import com.pda.uhf_g.data.local.entities.Location;
-import com.pda.uhf_g.data.local.entities.PondEntity;
 import com.pda.uhf_g.data.local.entities.PosicionamientoEntity;
 import com.pda.uhf_g.data.remote.CatalogRemoteDataSource;
 import com.pda.uhf_g.data.remote.ItemsRemoteDataSource;
 import com.pda.uhf_g.data.gps.GPSInfo;
-import com.pda.uhf_g.data.local.entities.TagData;
 import com.pda.uhf_g.data.local.entities.TagInfo;
 import com.pda.uhf_g.data.remote.PondsRemoteDataSource;
 import com.pda.uhf_g.data.repository.ItemsRepository;
@@ -30,27 +28,27 @@ import java.util.List;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
 public class InventoryViewModel extends AndroidViewModel {
-    private final MutableLiveData<GPSInfo> currentLocation = new MutableLiveData<GPSInfo>();
-    private final MutableLiveData<PosicionamientoEntity> currentTag = new MutableLiveData<PosicionamientoEntity>();
+    private final MutableLiveData<GPSInfo> currentLocation = new MutableLiveData<>();
+    private final MutableLiveData<PosicionamientoEntity> currentTag = new MutableLiveData<>();
 
-    private final MutableLiveData<Location> selectedLocation = new MutableLiveData<Location>();
+    private final MutableLiveData<Location> selectedLocation = new MutableLiveData<>();
 
-    private final MutableLiveData<ListItem> selectedItem = new MutableLiveData<ListItem>();
+    private final MutableLiveData<ListItem> selectedItem = new MutableLiveData<>();
 
-    private final MutableLiveData<Boolean> downloadedPools = new MutableLiveData<Boolean>();
-    private final MutableLiveData<Boolean> downloadedCatalog = new MutableLiveData<Boolean>();
-    private final MutableLiveData<Boolean> downloadedItemsIPSP = new MutableLiveData<Boolean>();
-    private final MutableLiveData<Boolean> downloadedPosicionamiento = new MutableLiveData<Boolean>();
+    private final MutableLiveData<Boolean> downloadedPools = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> downloadedCatalog = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> downloadedItemsIPSP = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> downloadedPosicionamiento = new MutableLiveData<>();
 
-    private final MutableLiveData<List<PondsDao.MegaZoneList>> megazones = new MutableLiveData<List<PondsDao.MegaZoneList>>();
-    private final MutableLiveData<List<PondsDao.ZoneList>> zones = new MutableLiveData<List<PondsDao.ZoneList>>();
-    private final MutableLiveData<List<PondsDao.SectorList>> sectors = new MutableLiveData<List<PondsDao.SectorList>>();
-    private final MutableLiveData<List<PondsDao.PondsList>> ponds = new MutableLiveData<List<PondsDao.PondsList>>();
+    private final MutableLiveData<List<PondsDao.MegaZoneList>> megazones = new MutableLiveData<>();
+    private final MutableLiveData<List<PondsDao.ZoneList>> zones = new MutableLiveData<>();
+    private final MutableLiveData<List<PondsDao.SectorList>> sectors = new MutableLiveData<>();
+    private final MutableLiveData<List<PondsDao.PondsList>> ponds = new MutableLiveData<>();
 
     List<ListItem> items = new ArrayList<>();
 
     private ItemsRepository itemsRepository;
-    private List<TagInfo> tagInfoList;
+    //private List<TagInfo> tagInfoList;
     public InventoryViewModel(@NonNull Application application) {
         super(application);
 
@@ -74,6 +72,7 @@ public class InventoryViewModel extends AndroidViewModel {
     }
 
     public void setCurrentTag(PosicionamientoEntity tag) {
+        Log.d("tag", "Setting tag " + tag.getTid());
         currentTag.setValue(tag);
     }
     public LiveData<PosicionamientoEntity> getCurrentTag() {
@@ -112,42 +111,30 @@ public class InventoryViewModel extends AndroidViewModel {
         downloadedItemsIPSP.setValue(downloaded);
     }
 
+//    public void setTagInfoList(List<TagInfo> tagInfoList) {
+//        this.tagInfoList = tagInfoList;
+//    }
+
+//    public void emptyTagInfoList() {
+//        this.tagInfoList.clear();
+//    }
 
     public void updateScanning(List<TagInfo> tagInfoList) {
-        setTagInfoList(tagInfoList);
-        updateLatestTag();
+        //setTagInfoList();
+        updateLatestTag(tagInfoList);
     }
-
-    public void setTagInfoList(List<TagInfo> tagInfoList) {
-        this.tagInfoList = tagInfoList;
-    }
-
     @SuppressLint("CheckResult")
-    public void updateLatestTag() {
+    public void updateLatestTag(List<TagInfo> tagInfoList) {
         if (tagInfoList != null && !tagInfoList.isEmpty()) {
-//            itemsRepository.findPosicionamientoItemFromList(tagInfoList)
-//                            .observeOn(AndroidSchedulers.mainThread())
-//                            .subscribe(this::setCurrentTag, error -> {
-//                                for (TagInfo tagInfo: tagInfoList) {
-//                                    Log.d("tag", "Finding failed " + tagInfo.getTid());
-//                                }
-//                                Log.d("tag", error.getMessage());
-//                            });
-//            for (TagInfo tag: tagInfoList){
-//                String tid = tag.getTid();
-//                itemsRepository.findPosicionamientoItem(tid)
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(item -> {
-//                        // Handle successful insertion (e.g., update UI)
-//                        Log.d("tag", "Found item " + tid);
-//                        setCurrentTag(item);
-//                    },
-//                    error -> {
-//                        // Handle insertion error
-//                        Log.d("tag", "Finding failed " + tid);
-//                        Log.d("tag", error.getMessage());
-//                    });
-//            }
+            itemsRepository.findPosicionamientoItemFromList(tagInfoList)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::setCurrentTag, error -> {
+                    for (TagInfo tagInfo: tagInfoList) {
+                        Log.d("tag", "Finding failed " + tagInfo.getTid());
+                        setCurrentTag(new PosicionamientoEntity("0", "0", tagInfo.getTid()));
+                    }
+                    Log.d("tag", error.getMessage());
+                });
         }
     }
 
@@ -167,40 +154,40 @@ public class InventoryViewModel extends AndroidViewModel {
     @SuppressLint("CheckResult")
     public void getZonesFromDB(String megazone_id) {
         itemsRepository.getPondsZones(megazone_id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(db_result -> {
-                            Log.d("db", "Obtained megazones from db");
-                            setZones(db_result);
-                        },
-                        error -> {
-                            Log.d("db", error.getMessage());
-                        });
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(db_result -> {
+                    Log.d("db", "Obtained megazones from db");
+                    setZones(db_result);
+                },
+                error -> {
+                    Log.d("db", error.getMessage());
+                });
     }
 
     @SuppressLint("CheckResult")
     public void getSectorsFromDB(String zone_id) {
         itemsRepository.getPondsSectors(zone_id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(db_result -> {
-                            Log.d("db", "Obtained megazones from db");
-                            setSectors(db_result);
-                        },
-                        error -> {
-                            Log.d("db", error.getMessage());
-                        });
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(db_result -> {
+                    Log.d("db", "Obtained megazones from db");
+                    setSectors(db_result);
+                },
+                error -> {
+                    Log.d("db", error.getMessage());
+                });
     }
 
     @SuppressLint("CheckResult")
     public void getPondsFromDB(String sector_id) {
         itemsRepository.getPonds(sector_id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(db_result -> {
-                            Log.d("db", "Obtained megazones from db");
-                            setPonds(db_result);
-                        },
-                        error -> {
-                            Log.d("db", error.getMessage());
-                        });
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(db_result -> {
+                    Log.d("db", "Obtained megazones from db");
+                    setPonds(db_result);
+                },
+                error -> {
+                    Log.d("db", error.getMessage());
+                });
     }
 
     public MutableLiveData<Location> getSelectedLocation() {
@@ -264,7 +251,6 @@ public class InventoryViewModel extends AndroidViewModel {
                 Log.d("remote", "Downloading failed ");
                 Log.d("remote", error.getMessage());
             });
-
     }
 
     @SuppressLint("CheckResult")
@@ -275,27 +261,18 @@ public class InventoryViewModel extends AndroidViewModel {
         String zoneId = "Z005";
 
         // Pull Posicionamiento Data from mini PC SIEMAV API
-        itemsRepository.getPosicionamientoItems().observeOn(AndroidSchedulers.mainThread())
+        itemsRepository
+            .getPosicionamientoItems()
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(() -> {
                 // Handle successful insertion (e.g., update UI)
-                //if(response.isSuccessful()){
-                if(true){
-                    Log.d("remote", "Downloaded Posicionamiento data" );
-                    //CatalogRemoteDataSource.CatalogoResponse responseBody = response.body();
-
-                    // Save downloaded data to database
-                    //itemsRepository.saveCategoriaToDB(responseBody.items);
-
-                    // Visual indicator for the user
-                    setDownloadedPosicionamiento(true);
-                } else {
-                    Log.d("remote", "Downloading Posicionamiento error" );
-                }
+                setDownloadedPosicionamiento(true);
             },
             error -> {
                 // Handle insertion error
                 Log.d("remote", "Downloading Posicionamiento failed ");
                 Log.d("remote", error.getMessage());
+                setDownloadedPosicionamiento(false);
             });
 
         // Pull Pools Data
@@ -307,22 +284,22 @@ public class InventoryViewModel extends AndroidViewModel {
                     Log.d("remote", "Downloading Ponds data" );
                     Log.d("remote", response.raw().request().toString());
                     PondsRemoteDataSource.PondsResponse responseBody = response.body();
-//                    Log.d( "remote", "Items: " + responseBody.payload.items.get(1).meta_data.get("Id_Sector") );
+//                  Log.d( "remote", "Items: " + responseBody.payload.items.get(1).meta_data.get("Id_Sector") );
 
                     // Save downloaded data to database
                     List<PondsRemoteDataSource.PondData> items = responseBody.payload.items;
                     Log.d( "remote", "Items: " + items.size() );
                     itemsRepository
-                            .savePondsToDB(items)
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(done -> {
-                                Log.d("remote", "Downloaded Ponds data");
-                                // Visual indicator for the user
-                                setDownloadedPools(true);
-                            }, error -> {
-                                    Log.d("remote", "Downloading Ponds error" );
-                                   Log.d("remote", response.message());
-                            });
+                        .savePondsToDB(items)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(done -> {
+                            Log.d("remote", "Downloaded Ponds data");
+                            // Visual indicator for the user
+                            setDownloadedPools(true);
+                        }, error -> {
+                            Log.d("remote", "Downloading Ponds error" );
+                            Log.d("remote", response.message());
+                        });
 
                 } else {
                     Log.d("remote", "Downloading Ponds error" );
@@ -348,15 +325,15 @@ public class InventoryViewModel extends AndroidViewModel {
 
                     // Save downloaded data to database
                     itemsRepository
-                            .saveCategoriaToDB(responseBody.items)
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(done -> {
-                               if (done) {
-                                   Log.d("remote", "Downloaded Categorias data");
-                                   // Visual indicator for the user
-                                   setDownloadedCatalog(true);
-                               }
-                            });
+                        .saveCategoriaToDB(responseBody.items)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(done -> {
+                           if (done) {
+                               Log.d("remote", "Downloaded Categorias data");
+                               // Visual indicator for the user
+                               setDownloadedCatalog(true);
+                           }
+                        });
                 } else {
                     Log.d("remote", "Downloading Categorias error" );
                     Log.d("remote", response.message());
@@ -407,14 +384,6 @@ public class InventoryViewModel extends AndroidViewModel {
         itemsRepository
                 .savePosicionamientoToDB(updatedData)
                 .subscribe(item -> {
-                    // If the item doesn't exist do nothing
-            // Else save it as a record in ItemSighting
-            if (item == null) {
-                // Handle the case where the item is not found
-                Log.d("db", "Item not found in DB: "  + updatedData.getTid());
-            } else {
-
-            }
         }, error -> {
             // Handle insertion error
             Log.d("db", "Save failed" + updatedData.getTid());

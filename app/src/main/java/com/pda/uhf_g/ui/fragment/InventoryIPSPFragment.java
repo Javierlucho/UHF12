@@ -44,6 +44,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -157,24 +158,30 @@ public class InventoryIPSPFragment extends BaseFragment {
         viewModel.getCurrentTag().observe(getViewLifecycleOwner(), tagData -> {
             tvAfid.setText(tagData.getAfid());
             tvTid.setText(tagData.getTid());
-            btnCatalog.setEnabled(true);
-            btnLocation.setEnabled(true);
-            Drawable icon = ContextCompat.getDrawable(getContext(), R.drawable.ic_check);
-            imageView.setImageDrawable(icon);
             stopInventory();
+            if (Objects.equals(tagData.getAfid(), "0")){
+                Drawable unknownIcon = ContextCompat.getDrawable(getContext(), R.drawable.indeterminate);
+                imageView.setImageDrawable(unknownIcon);
+                btnCatalog.setEnabled(false);
+                btnLocation.setEnabled(false);
+            } else {
+                Drawable icon = ContextCompat.getDrawable(getContext(), R.drawable.ic_check);
+                imageView.setImageDrawable(icon);
+                btnCatalog.setEnabled(true);
+                btnLocation.setEnabled(true);
+            }
+        });
+        viewModel.getSelectedItem().observe(getViewLifecycleOwner(), item -> {
+            tvName.setText(item.getTitle());
+        });
+        viewModel.getSelectedLocation().observe(getViewLifecycleOwner(), location -> {
+            tvPiscina.setText(location.getPiscina());
         });
         btnLocation.setOnClickListener( v -> {
             findNavController(this).navigate(R.id.action_inventoryIPSPFragment_to_locationFragment);
         });
         btnCatalog.setOnClickListener( v -> {
             findNavController(this).navigate(R.id.action_inventoryIPSPFragment_to_catalogFragment);
-        });
-        viewModel.getSelectedItem().observe(getViewLifecycleOwner(), item -> {
-            tvName.setText(item.getTitle());
-        });
-
-        viewModel.getSelectedLocation().observe(getViewLifecycleOwner(), location -> {
-            tvPiscina.setText(location.getPiscina());
         });
 
     }
@@ -206,9 +213,11 @@ public class InventoryIPSPFragment extends BaseFragment {
         @Override
         public void run() {
             LogUtil.e("inventoryThread is running");
+            // Reset variables before scanning
             List<Reader.TAGINFO> listTag = null;
             btnCatalog.setEnabled(false);
             btnLocation.setEnabled(false);
+
             Drawable icon = ContextCompat.getDrawable(getContext(), R.drawable.ic_scan);
             imageView.setImageDrawable(icon);
             //6C
@@ -221,6 +230,7 @@ public class InventoryIPSPFragment extends BaseFragment {
             if (listTag != null && !listTag.isEmpty()) {
                 LogUtil.e("inventory listTag size = " + listTag.size());
                 UtilSound.play(1,0);
+                tagInfoMap.clear();
                 for (Reader.TAGINFO taginfo : listTag) {
                     Map<String, TagInfo> infoMap = pooled6cData(taginfo);
                     tagInfoList.clear();

@@ -13,6 +13,18 @@ public class Location {
         this.piscina = piscina;
     }
 
+    public String getMegaZona() {
+        return mega_zona;
+    }
+
+    public String getZona() {
+        return zona;
+    }
+
+    public String getSector() {
+        return sector;
+    }
+
     public String getPiscina() {
         return piscina;
     }

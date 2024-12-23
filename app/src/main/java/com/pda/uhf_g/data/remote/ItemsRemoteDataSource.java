@@ -66,7 +66,7 @@ public class ItemsRemoteDataSource {
         return api.upload(requestData);
     }
 
-    public Call<PosicionamientoRequest> downloadItems(List<PosicionamientoEntity> items){
+    public Call<PosicionamientoRequest> downloadItems(){
         return api.download();
     }
 

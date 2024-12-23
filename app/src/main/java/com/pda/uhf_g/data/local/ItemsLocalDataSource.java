@@ -9,6 +9,7 @@ import com.pda.uhf_g.data.local.entities.ItemEntity;
 import com.pda.uhf_g.data.local.entities.PondEntity;
 import com.pda.uhf_g.data.local.entities.PosicionamientoEntity;
 import com.pda.uhf_g.data.remote.CatalogRemoteDataSource;
+import com.pda.uhf_g.data.remote.ItemsRemoteDataSource;
 import com.pda.uhf_g.data.remote.PondsRemoteDataSource;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.List;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
+import retrofit2.Response;
 
 public class ItemsLocalDataSource {
 
@@ -138,5 +140,10 @@ public class ItemsLocalDataSource {
             return true;
         });
         //return resetDao.clearPrimaryKeyIndex();
+    }
+
+    public Completable insertDownloadedPosicionamientoData(Response<ItemsRemoteDataSource.PosicionamientoRequest> response) {
+        ItemsRemoteDataSource.PosicionamientoRequest downloadedData = response.body();
+        return tagItemDao.insertAll(response.body().inventario);
     }
 }
