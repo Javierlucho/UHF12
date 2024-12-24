@@ -7,16 +7,25 @@ import androidx.room.PrimaryKey;
 public class CategoriaEntity {
     @PrimaryKey(autoGenerate = false)
     public int idCategoria;
-    public String nombre;
+    private String nombre;
     public String nomenclatura;
     public String codigoHexadecimal;
     public String estado;
 
     public CategoriaEntity(int idCategoria, String nombre, String nomenclatura, String codigoHexadecimal, String estado) {
         this.idCategoria = idCategoria;
-        this.nombre = nombre;
+        this.setNombre(nombre);
         this.nomenclatura = nomenclatura;
         this.codigoHexadecimal = codigoHexadecimal;
         this.estado = estado;
+    }
+
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 }

@@ -2,6 +2,8 @@ package com.pda.uhf_g.data.local;
 
 import android.content.Context;
 
+import androidx.room.Query;
+
 import com.google.gson.JsonObject;
 import com.pda.uhf_g.data.local.dao.PondsDao;
 import com.pda.uhf_g.data.local.entities.CategoriaEntity;
@@ -149,5 +151,13 @@ public class ItemsLocalDataSource {
 
     public Observable<PondsDao.PondsList> getPondByID(String pondID) {
         return pondsDao.getPondByID(pondID);
+    }
+
+    public Observable<CategoriaEntity> getCategoryByID(String pondID) {
+        return catalogDao.getCategoryByID(pondID);
+    }
+
+    public Observable<ItemEntity> getItemByID(String cid) {
+        return itemsDao.getItemByID(cid);
     }
 }

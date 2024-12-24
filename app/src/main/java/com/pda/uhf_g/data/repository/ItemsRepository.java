@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.pda.uhf_g.data.local.ItemsLocalDataSource;
 import com.pda.uhf_g.data.local.dao.PondsDao;
+import com.pda.uhf_g.data.local.entities.CategoriaEntity;
 import com.pda.uhf_g.data.local.entities.ItemEntity;
 import com.pda.uhf_g.data.local.entities.PosicionamientoEntity;
 import com.pda.uhf_g.data.local.entities.TagInfo;
@@ -196,6 +197,10 @@ public class ItemsRepository {
         return Observable.fromCallable(itemsLocalDataSource::getAllItemsIPSP)
                 .subscribeOn(Schedulers.io()); // Specify the background scheduler
     }
+
+    public @NonNull Observable<ItemEntity> getItemByID(String cid) {
+        return itemsLocalDataSource.getItemByID(cid).subscribeOn(Schedulers.io());
+    }
     // ------------------------------------ ITEMS END --------------------------------------------//
 
 
@@ -215,6 +220,10 @@ public class ItemsRepository {
                 return catalogRemoteDataSource.getCatalogoItems().execute();
             })
             .subscribeOn(Schedulers.io()); // Specify the background scheduler
+    }
+
+    public @NonNull Observable<CategoriaEntity> findCategoryByID(String categoryID) {
+        return itemsLocalDataSource.getCategoryByID(categoryID).subscribeOn(Schedulers.io());
     }
 
 

@@ -87,6 +87,9 @@ public class InventoryIPSPFragment extends BaseFragment {
     @BindView(R.id.my_image_view)
     ImageView imageView;
 
+    @BindView(R.id.item_type)
+    TextView tvCategory;
+
 
     private final Map<String, TagInfo> tagInfoMap = new LinkedHashMap<>();//
     private final List<TagInfo> tagInfoList = new ArrayList<>();//
@@ -179,6 +182,9 @@ public class InventoryIPSPFragment extends BaseFragment {
         });
         viewModel.getSelectedLocation().observe(getViewLifecycleOwner(), location -> {
             tvPiscina.setText(location.getPiscina());
+        });
+        viewModel.getGrantedCategory().observe(getViewLifecycleOwner(), category -> {
+            tvCategory.setText(category.getNombre());
         });
         btnLocation.setOnClickListener( v -> {
             findNavController(this).navigate(R.id.action_inventoryIPSPFragment_to_locationFragment);

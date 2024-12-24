@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData;
 
 import com.pda.uhf_g.data.local.ItemsLocalDataSource;
 import com.pda.uhf_g.data.local.dao.PondsDao;
+import com.pda.uhf_g.data.local.entities.CategoriaEntity;
 import com.pda.uhf_g.data.local.entities.ItemEntity;
 import com.pda.uhf_g.data.local.entities.ListItem;
 import com.pda.uhf_g.data.local.entities.Location;
@@ -34,6 +35,7 @@ public class InventoryViewModel extends AndroidViewModel {
     private final MutableLiveData<Location> selectedLocation = new MutableLiveData<>();
 
     private final MutableLiveData<ListItem> selectedItem = new MutableLiveData<>();
+    private final MutableLiveData<CategoriaEntity> grantedCategory = new MutableLiveData<>();
 
     // Sync Fragment
     private final MutableLiveData<Boolean> downloadedPonds = new MutableLiveData<>();
@@ -65,7 +67,13 @@ public class InventoryViewModel extends AndroidViewModel {
         //fillItems();
         fillItemsFromDB();
     }
+    public LiveData<CategoriaEntity> getGrantedCategory() {
+        return grantedCategory;
+    }
 
+    public void setGrantedCategory(CategoriaEntity category) {
+        grantedCategory.setValue(category);
+    }
     public void setCurrentLocation(GPSInfo gpsInfo) {
         currentLocation.setValue(gpsInfo);
     }
@@ -144,11 +152,32 @@ public class InventoryViewModel extends AndroidViewModel {
                                     );
                                 }
                             );
+                    itemsRepository.findCategoryByID(foundTag.getCid())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe( (foundCategory) -> {
+                                    setGrantedCategory(foundCategory);
+                                }
+                            );
+                    itemsRepository.getItemByID(foundTag.getCategoria_id())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe( (itemFound) -> {
+                                        setSelectedItem(new ListItem(
+                                                String.valueOf(itemFound.getCid()),
+                                                itemFound.getDescripcion(),
+                                                itemFound.getMarca(),
+                                                itemFound.getSerie(),
+                                                itemFound.getCodigoCampo(),
+                                                -1
+                                        ));
+                                    }
+                            );
                 }, error -> {
                     for (TagInfo tagInfo: tagInfoList) {
                         Log.d("tag", "Finding failed " + tagInfo.getTid());
                         setCurrentTag(new PosicionamientoEntity("0", "0", tagInfo.getTid()));
                         setSelectedLocation("", "", "", "", "...");
+                        setGrantedCategory( new CategoriaEntity(0, "0", "0", "0", "0"));
+                        setSelectedItem(new ListItem("", "...", "...", "...", "...", -1));
                     }
                     Log.d("tag", error.getMessage());
                 });
@@ -456,6 +485,7 @@ public class InventoryViewModel extends AndroidViewModel {
     public MutableLiveData<List<PondsDao.PondsList>> getPonds() {
         return ponds;
     }
+
 
 }
 
