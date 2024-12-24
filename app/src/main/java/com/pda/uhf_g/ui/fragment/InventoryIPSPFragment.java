@@ -159,6 +159,9 @@ public class InventoryIPSPFragment extends BaseFragment {
             tvAfid.setText(tagData.getAfid());
             tvTid.setText(tagData.getTid());
             stopInventory();
+
+            //viewModel.setSelectedLocation();
+            //viewModel.setSelectedItem();
             if (Objects.equals(tagData.getAfid(), "0")){
                 Drawable unknownIcon = ContextCompat.getDrawable(getContext(), R.drawable.indeterminate);
                 imageView.setImageDrawable(unknownIcon);

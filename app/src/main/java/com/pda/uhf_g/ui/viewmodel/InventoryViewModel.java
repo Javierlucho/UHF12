@@ -121,19 +121,34 @@ public class InventoryViewModel extends AndroidViewModel {
 //        this.tagInfoList.clear();
 //    }
 
-    public void updateScanning(List<TagInfo> tagInfoList) {
-        //setTagInfoList();
-        updateLatestTag(tagInfoList);
-    }
+//    public void updateScanning(List<TagInfo> tagInfoList) {
+//        //setTagInfoList();
+//        updateLatestTag(tagInfoList);
+//    }
     @SuppressLint("CheckResult")
-    public void updateLatestTag(List<TagInfo> tagInfoList) {
+    public void updateScanning(List<TagInfo> tagInfoList) {
         if (tagInfoList != null && !tagInfoList.isEmpty()) {
             itemsRepository.findPosicionamientoItemFromList(tagInfoList)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::setCurrentTag, error -> {
+                .subscribe( (foundTag) -> {
+                    setCurrentTag(foundTag);
+                    itemsRepository.findLocationByPondID(foundTag.getUbicacion_actual())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe( (foundLocation) -> {
+                                setSelectedLocation(
+                                    foundLocation.getMegazone_id(),
+                                    foundLocation.getZone_id(),
+                                    foundLocation.getSector_id(),
+                                    foundLocation.getUuid(),
+                                    foundLocation.getPond()
+                                    );
+                                }
+                            );
+                }, error -> {
                     for (TagInfo tagInfo: tagInfoList) {
                         Log.d("tag", "Finding failed " + tagInfo.getTid());
                         setCurrentTag(new PosicionamientoEntity("0", "0", tagInfo.getTid()));
+                        setSelectedLocation("", "", "", "", "...");
                     }
                     Log.d("tag", error.getMessage());
                 });
@@ -145,12 +160,12 @@ public class InventoryViewModel extends AndroidViewModel {
         itemsRepository.getPondsMegazones()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(db_result -> {
-                    Log.d("db", "Obtained megazones from db");
-                    setMegazones(db_result);
-                },
-                error -> {
-                    Log.d("db", error.getMessage());
-                });
+                Log.d("db", "Obtained megazones from db");
+                setMegazones(db_result);
+            },
+            error -> {
+                Log.d("db", error.getMessage());
+            });
     }
 
     @SuppressLint("CheckResult")

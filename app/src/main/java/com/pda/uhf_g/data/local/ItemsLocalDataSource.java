@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import retrofit2.Response;
 
@@ -146,4 +147,7 @@ public class ItemsLocalDataSource {
         return tagItemDao.updateItem(updatedData);
     }
 
+    public Observable<PondsDao.PondsList> getPondByID(String pondID) {
+        return pondsDao.getPondByID(pondID);
+    }
 }

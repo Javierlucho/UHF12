@@ -165,6 +165,9 @@ public class ItemsRepository {
         }).subscribeOn(Schedulers.io()); // Specify the background scheduler
     }
 
+    public @NonNull Observable<PondsDao.PondsList> findLocationByPondID(String pondID) {
+        return itemsLocalDataSource.getPondByID(pondID).subscribeOn(Schedulers.io());
+    }
     // ------------------------------------ PONDS END -------------------------------------------//
 
     // ------------------------------------ ITEMS -----------------------------------------------//

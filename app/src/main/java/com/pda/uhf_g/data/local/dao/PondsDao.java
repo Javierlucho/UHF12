@@ -12,10 +12,13 @@ import com.pda.uhf_g.data.local.entities.PondEntity;
 import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Observable;
 
 
 @Dao
 public interface PondsDao {
+
+
 
     abstract interface PondList {
 
@@ -141,5 +144,8 @@ public interface PondsDao {
     @ColumnInfo()
     @Query("SELECT * FROM ponds WHERE sector_id = :sector_id")
     List<PondsList> getPondsBySector(String sector_id);
+
+    @Query("SELECT * FROM ponds WHERE uuid = :pond_id")
+    Observable<PondsList> getPondByID(String pond_id);
 
 }
