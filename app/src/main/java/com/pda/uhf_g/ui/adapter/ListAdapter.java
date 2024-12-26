@@ -14,6 +14,8 @@ import com.pda.uhf_g.R;
 import com.pda.uhf_g.data.local.entities.ListItem;
 import com.pda.uhf_g.ui.viewmodel.InventoryViewModel;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
@@ -44,6 +46,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         private final TextView description;
         private final TextView brand;
         private final TextView serial_number;
+        private final TextView codigo_campo;
 
         public ViewHolder(View view) {
             super(view);
@@ -54,6 +57,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             description = (TextView) view.findViewById(R.id.item_description);
             brand = (TextView) view.findViewById(R.id.item_brand);
             serial_number = (TextView) view.findViewById(R.id.item_serial_number);
+            codigo_campo = (TextView) view.findViewById(R.id.item_codigo_campo);
 
         }
 
@@ -71,6 +75,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         }
         public TextView getSerial() {
             return serial_number;
+        }
+        public TextView getCodigoCampo() {
+            return codigo_campo;
         }
 
     }
@@ -109,6 +116,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         viewHolder.getDescription().setText(item.getDescription());
         viewHolder.getBrand().setText(item.getBrand());
         viewHolder.getSerial().setText(item.getSerial());
+        viewHolder.getCodigoCampo().setText(item.getFarmCode());
 
         viewHolder.itemView.setOnClickListener( v -> {
 

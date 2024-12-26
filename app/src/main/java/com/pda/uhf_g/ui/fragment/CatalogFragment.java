@@ -94,8 +94,6 @@ public class CatalogFragment extends BaseFragment {
         myRecyclerView.setAdapter(adapter);
         myRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
-
         return view;
     }
 
