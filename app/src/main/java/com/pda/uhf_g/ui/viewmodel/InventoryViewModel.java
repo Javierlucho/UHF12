@@ -35,6 +35,7 @@ public class InventoryViewModel extends AndroidViewModel {
     private final MutableLiveData<Location> selectedLocation = new MutableLiveData<>();
 
     private final MutableLiveData<ListItem> selectedItem = new MutableLiveData<>();
+    private ListItem potentialSelectedItem;
     private final MutableLiveData<CategoriaEntity> grantedCategory = new MutableLiveData<>();
 
     // Sync Fragment
@@ -174,7 +175,8 @@ public class InventoryViewModel extends AndroidViewModel {
                 }, error -> {
                     for (TagInfo tagInfo: tagInfoList) {
                         Log.d("tag", "Finding failed " + tagInfo.getTid());
-                        setCurrentTag(new PosicionamientoEntity("0", "0", tagInfo.getTid()));
+                        setCurrentTag(new PosicionamientoEntity("0", "0", tagInfo.getTid(),
+                                "", "", 0, 0));
                         setSelectedLocation("", "", "", "", "...");
                         setGrantedCategory( new CategoriaEntity(0, "0", "0", "0", "0"));
                         setSelectedItem(new ListItem("", "...", "...", "...", "...", -1));
@@ -253,7 +255,7 @@ public class InventoryViewModel extends AndroidViewModel {
     }
 
     public void deselectItem() {
-        selectedItem.setValue(null);
+        setPotentialSelectedItem(new ListItem("", "...", "...", "...", "...", -1));
     }
 
     public void fillItemsFromDB() {
@@ -281,20 +283,27 @@ public class InventoryViewModel extends AndroidViewModel {
 
     public void pushToServer() {
         Log.d("db", "Pushing to server");
-        itemsRepository.publishPosicionamientos().observeOn(AndroidSchedulers.mainThread())
-            .subscribe(response -> {
+        itemsRepository
+            .getItemsWithLocationsIDs()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(items -> {
                 // Handle successful insertion (e.g., update UI)
-                if(response.isSuccessful()){
-                    Log.d("remote", "Downloaded pool data" );
-                    resetDatabase();
-                } else {
-                    Log.d("remote", "Downloading error" );
-                    Log.d("remote", response.message());
-                }
+                itemsRepository
+                    .publishPosicionamientos(items)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe((response) -> {
+                        if(response.isSuccessful()){
+                            Log.d("remote", "Uploaded posicionamiento" );
+                            //resetDatabase();
+                        } else {
+                            Log.d("remote", "Uploading posicionamiento failed" );
+                            Log.d("remote", response.message());
+                        }}, error -> {}
+                    );
             },
             error -> {
                 // Handle insertion error
-                Log.d("remote", "Downloading failed ");
+                Log.d("remote", "Getting posicionamiento failed");
                 Log.d("remote", error.getMessage());
             });
     }
@@ -351,9 +360,11 @@ public class InventoryViewModel extends AndroidViewModel {
                 }
             },
             error -> {
+                setDownloadedPonds(false);
                 // Handle insertion error
                 Log.d("remote", "Downloading Ponds failed ");
                 Log.d("remote", error.getMessage());
+
             });
 
         // Pull IPSP Inventory Catalog
@@ -387,6 +398,7 @@ public class InventoryViewModel extends AndroidViewModel {
                 // Handle insertion error
                 Log.d("remote", "Downloading Categorias failed ");
                 Log.d("remote", error.getMessage());
+                setDownloadedCatalog(false);
             });
 
         // Pull IPSP Items
@@ -419,6 +431,7 @@ public class InventoryViewModel extends AndroidViewModel {
                 // Handle insertion error
                 Log.d("remote", "Downloading Items IPSP failed ");
                 Log.d("remote", error.getMessage());
+                setDownloadedItemsIPSP(false);
             });
     }
 
@@ -439,6 +452,7 @@ public class InventoryViewModel extends AndroidViewModel {
             .savePosicionamientoToDB(updatedData)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(() -> {
+
                 Log.d("db", "Save done" + updatedData.getTid());
             }, error -> {
                 // Handle insertion error
@@ -486,6 +500,70 @@ public class InventoryViewModel extends AndroidViewModel {
         return ponds;
     }
 
+    public void isDataOnDevice(){
+        itemsRepository.pondsApiIsLoaded()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+            (isLoaded) -> {
+                Log.d("db", "isDataOnDevice " + isLoaded);
+                setDownloadedPonds(isLoaded);
+            },
+            (error) -> {
+                Log.d("db", "isDataOnDevice failed");
+                Log.d("db", error.getMessage());
+                setDownloadedPonds(false);
+            }
+        );
 
+        itemsRepository.posicionamientoApiIsLoaded()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                (isLoaded) -> {
+                    Log.d("db", "isDataOnDevice " + isLoaded);
+                    setDownloadedPosicionamiento(isLoaded);
+                },
+                (error) -> {
+                    Log.d("db", "isDataOnDevice failed");
+                    Log.d("db", error.getMessage());
+                    setDownloadedPosicionamiento(false);
+                }
+            );
+
+        itemsRepository.itemsApiIsLoaded()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                (isLoaded) -> {
+                    Log.d("db", "isDataOnDevice " + isLoaded);
+                    setDownloadedItemsIPSP(isLoaded);
+                },
+                (error) -> {
+                    Log.d("db", "isDataOnDevice failed");
+                    Log.d("db", error.getMessage());
+                    setDownloadedItemsIPSP(false);
+                }
+            );
+
+        itemsRepository.categoriesApiIsLoaded()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                (isLoaded) -> {
+                    Log.d("db", "isDataOnDevice " + isLoaded);
+                    setDownloadedCatalog(isLoaded);
+                },
+                (error) -> {
+                    Log.d("db", "isDataOnDevice failed");
+                    Log.d("db", error.getMessage());
+                    setDownloadedCatalog(false);
+                }
+            );
+    }
+
+    public ListItem getPotentialSelectedItem() {
+        return potentialSelectedItem;
+    }
+
+    public void setPotentialSelectedItem(ListItem potentialSelectedItem) {
+        this.potentialSelectedItem = potentialSelectedItem;
+    }
 }
 

@@ -13,6 +13,7 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 
 
 @Dao
@@ -32,5 +33,8 @@ public interface ItemsDao {
 
     @Query("SELECT * FROM items WHERE cid = :id")
     Observable<ItemEntity> getItemByID(String id);
+
+    @Query("SELECT EXISTS (SELECT 1 FROM items)")
+    Single<Boolean> hasData();
 
 }

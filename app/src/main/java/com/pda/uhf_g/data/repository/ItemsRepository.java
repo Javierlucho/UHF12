@@ -4,8 +4,10 @@ import android.util.Log;
 
 import com.pda.uhf_g.data.local.ItemsLocalDataSource;
 import com.pda.uhf_g.data.local.dao.PondsDao;
+import com.pda.uhf_g.data.local.dao.TagItemDao;
 import com.pda.uhf_g.data.local.entities.CategoriaEntity;
 import com.pda.uhf_g.data.local.entities.ItemEntity;
+import com.pda.uhf_g.data.local.entities.PondEntity;
 import com.pda.uhf_g.data.local.entities.PosicionamientoEntity;
 import com.pda.uhf_g.data.local.entities.TagInfo;
 import com.pda.uhf_g.data.remote.CatalogRemoteDataSource;
@@ -13,6 +15,7 @@ import com.pda.uhf_g.data.remote.ItemsRemoteDataSource;
 import com.pda.uhf_g.data.remote.PondsRemoteDataSource;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -102,14 +105,41 @@ public class ItemsRepository {
 
     }
 
-    public @NonNull Observable<Response<ItemsRemoteDataSource.PosicionamientoRequest>> publishPosicionamientos(){
+
+    public Observable<List<TagItemDao.PondWithLocation>> getItemsWithLocationsIDs(){
+        return itemsLocalDataSource.getAllItemsWithLocationIDs();
+    }
+
+    public @NonNull Observable<Response<ItemsRemoteDataSource.PosicionamientoPost>> publishPosicionamientos(List<TagItemDao.PondWithLocation> items){
         return Observable.fromCallable(() -> {
-                List<PosicionamientoEntity> items = itemsLocalDataSource.getAllItems();
-                return itemsRemoteDataSource.upload(items).execute();
+                List<ItemsRemoteDataSource.InventarioItem> inventario = new ArrayList<>();
+                for ( TagItemDao.PondWithLocation item : items ){
+                    ItemsRemoteDataSource.InventarioItem ItemtoUpload = getInventarioItem(item);
+                    inventario.add(ItemtoUpload);
+                }
+                return itemsRemoteDataSource.upload(inventario).execute();
             })
             .subscribeOn(Schedulers.io()); // Specify the background scheduler
     }
 
+    private static ItemsRemoteDataSource.InventarioItem getInventarioItem(TagItemDao.PondWithLocation item) {
+        ItemsRemoteDataSource.Ubicacion ubicacion = new ItemsRemoteDataSource.Ubicacion(
+                item.getMegazoneId(), item.getZoneId(), item.getSectorId(), item.getUuid());
+        ItemsRemoteDataSource.GPS gps = new ItemsRemoteDataSource.GPS(item.getLatitude(), item.getLongitude());
+        ItemsRemoteDataSource.InventarioItem ItemtoUpload = new ItemsRemoteDataSource.InventarioItem(
+                item.getCid(),
+                item.getAfid(),
+                item.getCategoriaId(),
+                "",
+                item.getTid(),
+                ubicacion,
+                gps
+        );
+        return ItemtoUpload;
+    }
+    public Single<Boolean> posicionamientoApiIsLoaded(){
+        return itemsLocalDataSource.hasPosicionamientosInDB().subscribeOn(Schedulers.io());
+    }
     // ------------------------------- POSICIONAMIENTO END ---------------------------------------//
 
     // ------------------------------------ PONDS -----------------------------------------------//
@@ -169,6 +199,10 @@ public class ItemsRepository {
     public @NonNull Observable<PondsDao.PondsList> findLocationByPondID(String pondID) {
         return itemsLocalDataSource.getPondByID(pondID).subscribeOn(Schedulers.io());
     }
+
+    public Single<Boolean> pondsApiIsLoaded(){
+        return itemsLocalDataSource.hasPondsInDB().subscribeOn(Schedulers.io());
+    }
     // ------------------------------------ PONDS END -------------------------------------------//
 
     // ------------------------------------ ITEMS -----------------------------------------------//
@@ -201,6 +235,9 @@ public class ItemsRepository {
     public @NonNull Observable<ItemEntity> getItemByID(String cid) {
         return itemsLocalDataSource.getItemByID(cid).subscribeOn(Schedulers.io());
     }
+    public Single<Boolean> itemsApiIsLoaded(){
+        return itemsLocalDataSource.hasItemsInDB().subscribeOn(Schedulers.io());
+    }
     // ------------------------------------ ITEMS END --------------------------------------------//
 
 
@@ -226,7 +263,9 @@ public class ItemsRepository {
         return itemsLocalDataSource.getCategoryByID(categoryID).subscribeOn(Schedulers.io());
     }
 
-
+    public Single<Boolean> categoriesApiIsLoaded(){
+        return itemsLocalDataSource.hasCategoriesInDB().subscribeOn(Schedulers.io());
+    }
     // -------------------------------- CATEGORIA END --------------------------------------------//
 
 

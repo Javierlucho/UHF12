@@ -6,6 +6,7 @@ import androidx.room.Query;
 
 import com.google.gson.JsonObject;
 import com.pda.uhf_g.data.local.dao.PondsDao;
+import com.pda.uhf_g.data.local.dao.TagItemDao;
 import com.pda.uhf_g.data.local.entities.CategoriaEntity;
 import com.pda.uhf_g.data.local.entities.ItemEntity;
 import com.pda.uhf_g.data.local.entities.PondEntity;
@@ -141,8 +142,22 @@ public class ItemsLocalDataSource {
         //return resetDao.clearPrimaryKeyIndex();
     }
 
-    public Completable insertDownloadedPosicionamientoData(Response<ItemsRemoteDataSource.PosicionamientoRequest> response) {
-        return tagItemDao.insertAll(response.body().inventario);
+    public Completable insertDownloadedPosicionamientoData(Response<ItemsRemoteDataSource.PosicionamientoGet> response) {
+        List<PosicionamientoEntity> itemsToInsert = new ArrayList<>();
+        List<ItemsRemoteDataSource.InventarioItemAlt> inventario = response.body().inventario;
+        for (ItemsRemoteDataSource.InventarioItemAlt inventarioItemAlt : inventario) {
+            PosicionamientoEntity item = new PosicionamientoEntity(
+                    inventarioItemAlt.cid,
+                    inventarioItemAlt.afid,
+                    inventarioItemAlt.tid,
+                    inventarioItemAlt.tipoId,
+                    inventarioItemAlt.ubicacion_prevista.piscina,
+                    inventarioItemAlt.gps.latitud,
+                    inventarioItemAlt.gps.longitud
+                    );
+            itemsToInsert.add(item);
+        }
+        return tagItemDao.insertAll(itemsToInsert);
     }
 
     public Completable updatePosicionamiento(PosicionamientoEntity updatedData) {
@@ -160,4 +175,24 @@ public class ItemsLocalDataSource {
     public Observable<ItemEntity> getItemByID(String cid) {
         return itemsDao.getItemByID(cid);
     }
+
+    public Observable<List<TagItemDao.PondWithLocation>> getAllItemsWithLocationIDs(){
+        return tagItemDao.getAllItemsIPSPWithLocation();
+    }
+
+    public Single<Boolean> hasPondsInDB(){
+        return pondsDao.hasData();
+    }
+
+    public Single<Boolean> hasPosicionamientosInDB(){
+        return tagItemDao.hasData();
+    }
+
+    public Single<Boolean> hasItemsInDB(){
+        return itemsDao.hasData();
+    }
+    public Single<Boolean> hasCategoriesInDB(){
+        return catalogDao.hasData();
+    }
+
 }

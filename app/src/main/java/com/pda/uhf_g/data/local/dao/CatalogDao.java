@@ -11,6 +11,7 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 
 
 @Dao
@@ -23,4 +24,7 @@ public interface CatalogDao {
 
     @Query("SELECT * FROM catalogo_tipo WHERE idCategoria = :id")
     Observable<CategoriaEntity> getCategoryByID(String id);
+
+    @Query("SELECT EXISTS (SELECT 1 FROM catalogo_tipo)")
+    Single<Boolean> hasData();
 }

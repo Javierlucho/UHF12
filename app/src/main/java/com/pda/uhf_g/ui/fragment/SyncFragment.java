@@ -60,12 +60,13 @@ public class SyncFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        btnPush.setOnClickListener( v -> {
-            viewModel.pushToServer();
+        btnPull.setOnClickListener( v -> {
+            resetUI();
+            viewModel.pullData();
         });
 
-        btnPull.setOnClickListener( v -> {
-            viewModel.pullData();
+        btnPush.setOnClickListener( v -> {
+            viewModel.pushToServer();
         });
 
         viewModel.getDownloadedCatalog().observe(getViewLifecycleOwner(), downloaded -> {
@@ -83,6 +84,8 @@ public class SyncFragment extends BaseFragment {
         viewModel.getDownloadedPonds().observe(getViewLifecycleOwner(), downloaded -> {
             updateIcon(downloaded, pondsLabel);
         });
+
+        viewModel.isDataOnDevice();
     }
 
     @Override
@@ -129,5 +132,12 @@ public class SyncFragment extends BaseFragment {
     }
     public void setNotOkDrawable(TextView textView) {
         textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_sync, 0, 0, 0);
+    }
+
+    public void resetUI(){
+        categoriaLabel.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_downloading, 0, 0, 0);
+        itemsLabel.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_downloading, 0, 0, 0);
+        posicionamientoLabel.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_downloading, 0, 0, 0);
+        pondsLabel.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_downloading, 0, 0, 0);
     }
 }

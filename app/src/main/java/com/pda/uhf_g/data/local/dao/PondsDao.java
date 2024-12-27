@@ -13,6 +13,7 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Single;
 
 
 @Dao
@@ -147,5 +148,8 @@ public interface PondsDao {
 
     @Query("SELECT * FROM ponds WHERE uuid = :pond_id")
     Observable<PondsList> getPondByID(String pond_id);
+
+    @Query("SELECT EXISTS (SELECT 1 FROM ponds)")
+    Single<Boolean> hasData();
 
 }

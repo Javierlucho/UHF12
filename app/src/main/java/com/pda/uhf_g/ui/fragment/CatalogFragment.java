@@ -51,6 +51,7 @@ public class CatalogFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
 
         btnSave.setOnClickListener( v -> {
+            viewModel.setSelectedItem(viewModel.getPotentialSelectedItem());
             viewModel.updateItemIPSP();
             viewModel.saveToDatabase();
             findNavController(this).navigate(R.id.nav_inventory_ipsp);

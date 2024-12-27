@@ -193,6 +193,7 @@ public class InventoryIPSPFragment extends BaseFragment {
             findNavController(this).navigate(R.id.action_inventoryIPSPFragment_to_catalogFragment);
         });
 
+
     }
 
     @Override

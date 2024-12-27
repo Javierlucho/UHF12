@@ -69,6 +69,12 @@ public class LocationFragment extends BaseFragment implements AdapterView.OnItem
         viewModel = new ViewModelProvider(requireActivity()).get(InventoryViewModel.class);
 
         btnSave.setOnClickListener(v -> {
+            viewModel.setSelectedLocation(
+                    ((PondsDao.MegaZoneList) spinnerMegazone.getSelectedItem()).getID(),
+                    ((PondsDao.ZoneList) spinnerZone.getSelectedItem()).getID(),
+                    ((PondsDao.SectorList) spinnerSector.getSelectedItem()).getID(),
+                    ((PondsDao.PondList) spinnerPiscina.getSelectedItem()).getID(),
+                    ((PondsDao.PondList) spinnerPiscina.getSelectedItem()).getVisualName() );
             viewModel.updateLocation();
             viewModel.saveToDatabase();
             findNavController(this).navigate(R.id.nav_inventory_ipsp);
@@ -158,33 +164,33 @@ public class LocationFragment extends BaseFragment implements AdapterView.OnItem
         Location selectedLocation = viewModel.getSelectedLocation().getValue();
         if (selectedItem instanceof PondsDao.MegaZoneList){
             PondsDao.MegaZoneList item = (PondsDao.MegaZoneList) selectedItem;
-            viewModel.setSelectedLocation(
-                    item.getID(), "",
-                    "", "", "");
+//            viewModel.setSelectedLocation(
+//                    item.getID(), "",
+//                    "", "", "");
             Log.d("SpinnerAdapter", "Megazone: " + item.getVisualName());
             viewModel.getZonesFromDB(item.getID());
 
         } else if (selectedItem instanceof PondsDao.ZoneList){
             PondsDao.ZoneList item = (PondsDao.ZoneList) selectedItem;
-            viewModel.setSelectedLocation(
-                    selectedLocation.getMegaZonaID(), item.getID(),
-                    "", "", "");
+//            viewModel.setSelectedLocation(
+//                    selectedLocation.getMegaZonaID(), item.getID(),
+//                    "", "", "");
             Log.d("SpinnerAdapter", "Zone: " + item.getVisualName());
             viewModel.getSectorsFromDB(item.getID());
 
         } else if (selectedItem instanceof PondsDao.SectorList){
             PondsDao.SectorList item = (PondsDao.SectorList) selectedItem;
-            viewModel.setSelectedLocation(
-                    selectedLocation.getMegaZonaID(), selectedLocation.getZonaID(),
-                    item.getID(), "", "");
+//            viewModel.setSelectedLocation(
+//                    selectedLocation.getMegaZonaID(), selectedLocation.getZonaID(),
+//                    item.getID(), "", "");
             Log.d("SpinnerAdapter", "Sector: " + item.getVisualName());
             viewModel.getPondsFromDB(item.getID());
 
         } else if (selectedItem instanceof PondsDao.PondList){
             PondsDao.PondList item = (PondsDao.PondList) selectedItem;
-            viewModel.setSelectedLocation(
-                    selectedLocation.getMegaZonaID(), selectedLocation.getZonaID(),
-                    selectedLocation.getSectorID(), item.getID(), item.getVisualName());
+//            viewModel.setSelectedLocation(
+//                    selectedLocation.getMegaZonaID(), selectedLocation.getZonaID(),
+//                    selectedLocation.getSectorID(), item.getID(), item.getVisualName());
             Log.d("SpinnerAdapter", "Pond: " + item.getVisualName());
         }
     }

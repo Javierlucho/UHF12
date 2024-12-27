@@ -18,10 +18,21 @@ public class PosicionamientoEntity {
     private double latitude; // Latitude
     private double longitude; // Longitude
 
-    public PosicionamientoEntity(@NonNull String cid, String afid, String tid) {
+//    public PosicionamientoEntity(@NonNull String cid, String afid, String tid) {
+//        this.cid = cid;
+//        this.afid = afid;
+//        this.tid = tid;
+//    }
+
+    public PosicionamientoEntity(@NonNull String cid, String afid, String tid, String categoria_id,
+                                 String ubicacion_actual, double latitude, double longitude) {
         this.cid = cid;
         this.afid = afid;
         this.tid = tid;
+        this.categoria_id = categoria_id;
+        this.ubicacion_actual = ubicacion_actual;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public String getTid() {

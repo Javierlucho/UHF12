@@ -127,13 +127,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
             } else {
                 Log.e("touch", "Selected");
 
-                ListItem old_selected = viewModel.getSelectedItem().getValue();
+                ListItem old_selected = viewModel.getPotentialSelectedItem();
                 if (old_selected != null) {
                     deselectItem(old_selected);
                     notifyItemChanged(old_selected.getPosition());
                 }
                 selectItem(item);
-                viewModel.setSelectedItem(item);
+                viewModel.setPotentialSelectedItem(item);
+
             }
             notifyItemChanged(position);
 
