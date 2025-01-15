@@ -85,18 +85,18 @@
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_marginTop="152dp"
-        android:textAlignment="center"
         android:contentDescription="@string/push_button"
-        app:fabCustomSize="160dp"
-        app:maxImageSize="120dp"
-        app:srcCompat="@drawable/ic_upload"
         android:enabled="true"
+        android:textAlignment="center"
+        app:fabCustomSize="160dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.936"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pull_button"
-        app:layout_constraintVertical_bias="0.508" />
+        app:layout_constraintVertical_bias="0.66"
+        app:maxImageSize="120dp"
+        app:srcCompat="@drawable/ic_upload" />
 
     <TextView
         android:layout_width="wrap_content"

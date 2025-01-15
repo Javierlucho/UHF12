@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.CatalogFragment">
+
+    <!-- Contenido principal -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Botón de menú -->
+        <TextView
+            android:id="@+id/menu_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:drawableLeft="@drawable/jam_menu"
+            android:gravity="center"
+            android:layout_margin="20dp"
+            android:textColor="#142444"
+            android:textSize="12sp" />
+
+        <!-- Texto de encabezado -->
+        <TextView
+            android:id="@+id/header_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="@string/select_item_8"
+            android:textColor="#142444"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <!-- Botón de retroceso -->
+        <TextView
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="30dp"
+            android:drawableLeft="@drawable/typcn_arrow_back_outline"
+            android:gravity="center"
+            android:text="@string/select_item_13"
+            android:textColor="#142444"
+            android:textSize="12sp" />
+
+        <!-- Sección de contenido -->
+        <FrameLayout
+            android:id="@+id/my_frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="25dp"
+            android:background="@drawable/border_img"
+            android:elevation="4dp"
+            android:padding="15dp">
+
+            <!-- Formulario con spinners -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/label_mega_zona"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="@string/megazona"
+                    android:textColor="#142444"
+                    android:textSize="14sp" />
+
+                <Spinner
+                    android:id="@+id/spinner_mega_zona"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/redondear_boton_3"
+                    android:entries="@array/mega_zona_array" />
+
+                <TextView
+                    android:id="@+id/label_zona"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="@string/zona"
+                    android:textColor="#142444"
+                    android:textSize="14sp" />
+
+                <Spinner
+                    android:id="@+id/spinner_zona"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/redondear_boton_3"
+                    android:entries="@array/zona_array" />
+
+                <TextView
+                    android:id="@+id/label_sector"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="@string/sector"
+                    android:textColor="#142444"
+                    android:textSize="14sp" />
+
+                <Spinner
+                    android:id="@+id/spinner_sector"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/redondear_boton_3"
+                    android:entries="@array/sector_array" />
+
+                <TextView
+                    android:id="@+id/label_piscina"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="@string/piscina"
+                    android:textColor="#142444"
+                    android:textSize="14sp" />
+
+                <Spinner
+                    android:id="@+id/spinner_piscina"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/redondear_boton_3"
+                    android:entries="@array/piscina_array" />
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <!-- Botón SCANEAR -->
+        <Button
+            android:id="@+id/scan_button"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="26dp"
+            android:background="@drawable/redondear_boton"
+            android:drawableLeft="@drawable/fluent_save_24_filled"
+            android:drawableTint="#142444"
+            android:enabled="false"
+            android:text="@string/select_item_12"
+            android:textColor="#142444"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+    <!-- Imagen flotante -->
+    <ImageView
+        android:id="@+id/floating_image"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="start|bottom"
+        android:layout_margin="16dp"
+        android:src="@drawable/logo"
+        android:elevation="10dp" />
+
+</FrameLayout>

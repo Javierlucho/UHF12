@@ -67,7 +67,7 @@
         android:id="@+id/nav_inventory_ipsp"
         android:name="com.pda.uhf_g.ui.fragment.InventoryIPSPFragment"
         android:label="Inventario"
-        tools:layout="@layout/fragment_inventory_ipsp">
+        tools:layout="@layout/page1_nav_inventory">
         <action
             android:id="@+id/action_inventoryIPSPFragment_to_catalogFragment"
             app:destination="@id/nav_catalog"

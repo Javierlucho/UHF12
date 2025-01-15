@@ -13,6 +13,38 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="select_item_1">Ubicar</string>
+    <string name="select_item_2">Asociar</string>
+    <string name="select_item_3">Scanear</string>
+    <string name="select_item_4">1234567</string>
+    <string name="select_item_5">Latitud</string>
+    <string name="select_item_6">Longitud</string>
+    <string name="select_item_7">123456789011121314181920</string>
+    <string name="select_item_8">Inventario</string>
+    <string name="select_item_9">AIREADOR MECÁNICO</string>
+    <string name="select_item_10">-79.9316605465341</string>
+    <string name="select_item_11">-2.1523189788256</string>
+    <string name="select_item_12">Guardar</string>
+    <string name="select_item_13">Volver</string>
+    <string name="select_item_14">Asociar con item</string>
+    <string name="select_item_15">AFid</string>
+    <string name="select_item_16">Escanea para buscar un tag</string>
+    <string name="select_item_17">Detalle del item 1</string>
+    <string name="select_item_18">Detalle del item 2</string>
+    <string name="select_item_19">Detalle del item 3</string>
+    <string name="select_item_20">Detalle del item 4</string>
+    <string name="select_item_21">Detalle del item 5</string>
+    <string name="select_item_22">Detalle del item 6</string>
+    <string name="select_item_23">Item 1</string>
+    <string name="select_item_24">Item 2</string>
+    <string name="select_item_25">Item 3</string>
+    <string name="select_item_26">Item 4</string>
+    <string name="select_item_27">Item 5</string>
+    <string name="select_item_28">Item 6</string>
+    <string name="select_item_29">Content img</string>
+
+
+
 
     <string name="invenroty">Inventory</string>
     <string name="frequency_settings">Frequency Settings</string>
@@ -137,7 +169,7 @@
     <string name="getstr">Get</string>
     <string name="setstr">Set</string>
     <string name="zona">Zona</string>
-    <string name="megazona">Mega Zona</string>
+    <string name="megazona">Megazona</string>
     <string name="sector">Sector</string>
     <string name="piscina">Piscina</string>
     <string name="sync">Sincronizar</string>

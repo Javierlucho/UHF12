@@ -30,7 +30,6 @@ import com.pda.uhf_g.MainActivity;
 import com.pda.uhf_g.R;
 
 import com.pda.uhf_g.data.local.entities.TagInfo;
-import com.pda.uhf_g.data.remote.CatalogRemoteDataSource;
 import com.pda.uhf_g.ui.base.BaseFragment;
 import com.pda.uhf_g.ui.viewmodel.InventoryViewModel;
 import com.pda.uhf_g.util.LogUtil;
@@ -367,7 +366,7 @@ public class InventoryIPSPFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_inventory_ipsp, container, false) ;
+        View view = inflater.inflate(R.layout.page1_nav_inventory, container, false) ;
         ButterKnife.bind(this, view);
         LogUtil.e("onCreateView()");
         sharedUtil = new SharedUtil(mainActivity);

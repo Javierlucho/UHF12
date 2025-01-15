@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.CatalogFragment">
+
+    <!-- Contenido principal -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/button_catalog10"
+            android:layout_width="20dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="365dp"
+            android:drawableStart="@drawable/jam_menu"
+            android:gravity="center"
+            android:minHeight="@dimen/min_height_60dp"
+            android:textColor="#142444"
+            android:layout_marginTop="20dp"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_catalog8" />
+
+        <!-- Recuadro principal -->
+        <TextView
+            android:id="@+id/button_catalog8"
+            android:layout_width="120dp"
+            android:layout_height="18dp"
+
+            android:layout_marginStart="150dp"
+            android:gravity="center"
+            android:minHeight="@dimen/min_height_60dp"
+            android:text="@string/select_item_14"
+            android:textColor="#142444"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_catalog8" />
+
+        <TextView
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="25dp"
+            android:drawableStart="@drawable/typcn_arrow_back_outline"
+            android:gravity="center"
+            android:text="@string/select_item_13"
+            android:textColor="#142444"
+            android:textSize="12sp" />
+
+        <FrameLayout
+            android:id="@+id/main_frame_layout"
+            android:layout_width="376dp"
+            android:layout_height="610dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/redondear_boton"
+            android:padding="13dp">
+
+            <!-- Contenido dentro del recuadro principal -->
+            <FrameLayout
+                android:id="@+id/inner_frame_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="1dp">
+
+                <!-- Contenido existente (imagen, texto, botón) -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/redondear_boton"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <!-- Imagen a la izquierda -->
+                    <ImageView
+                        android:id="@+id/item_image_1"
+                        android:layout_width="50dp"
+                        android:contentDescription="@string/select_item_29"
+                        android:layout_height="50dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/folder" />
+
+                    <!-- Contenedor de texto (TextViews) -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <!-- Primer TextView -->
+                        <TextView
+                            android:id="@+id/item_text_1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="1dp"
+                            android:layout_marginTop="1dp"
+                            android:layout_gravity="start"
+                            android:padding="1dp"
+                            android:text="@string/select_item_23"
+                            android:textColor="#142444"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <!-- Segundo TextView -->
+                        <TextView
+                            android:id="@+id/item_text1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="1dp"
+                            android:layout_marginTop="1dp"
+                            android:padding="1dp"
+                            android:layout_gravity="start"
+                            android:text="@string/select_item_17"
+                            android:textColor="#142444"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Botón a la derecha -->
+                    <Button
+                        android:id="@+id/item_button_1"
+                        android:layout_width="90dp"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginEnd="4dp"
+                        android:backgroundTint="@color/colorWhiteNew"
+                        android:padding="5dp"
+                        android:text="@string/select_item_2"
+                        android:textColor="@color/colorBlueNew"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- Contenido existente (imagen, texto, botón) -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="100dp"
+                    android:background="@drawable/redondear_boton"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <!-- Imagen a la izquierda -->
+                    <ImageView
+                        android:id="@+id/item_image_2"
+                        android:layout_width="50dp"
+                        android:contentDescription="@string/select_item_29"
+                        android:layout_height="50dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/folder" />
+
+                    <!-- Contenedor de texto (TextViews) -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <!-- Primer TextView -->
+                        <TextView
+                            android:id="@+id/item_text_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="1dp"
+                            android:layout_marginTop="1dp"
+                            android:padding="1dp"
+                            android:layout_gravity="start"
+                            android:text="@string/select_item_24"
+                            android:textColor="#142444"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <!-- Segundo TextView -->
+                        <TextView
+                            android:id="@+id/item_text2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="1dp"
+                            android:layout_gravity="start"
+                            android:layout_marginTop="1dp"
+                            android:padding="1dp"
+                            android:text="@string/select_item_18"
+                            android:textColor="#142444"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Botón a la derecha -->
+                    <Button
+                        android:id="@+id/item_button_2"
+                        android:layout_width="90dp"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginEnd="4dp"
+                        android:backgroundTint="@color/colorWhiteNew"
+                        android:padding="5dp"
+                        android:text="@string/select_item_2"
+                        android:textColor="@color/colorBlueNew"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- Contenido existente (imagen, texto, botón) -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="200dp"
+                    android:background="@drawable/redondear_boton"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <!-- Imagen a la izquierda -->
+                    <ImageView
+                        android:id="@+id/item_image_3"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:contentDescription="@string/select_item_29"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/folder" />
+
+                    <!-- Contenedor de texto (TextViews) -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <!-- Primer TextView -->
+                        <TextView
+                            android:id="@+id/item_text_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="1dp"
+                            android:layout_marginTop="1dp"
+                            android:padding="1dp"
+                            android:layout_gravity="start"
+                            android:text="@string/select_item_25"
+                            android:textColor="#142444"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <!-- Segundo TextView -->
+                        <TextView
+                            android:id="@+id/item_text3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="1dp"
+                            android:layout_gravity="start"
+                            android:layout_marginTop="1dp"
+                            android:padding="1dp"
+                            android:text="@string/select_item_19"
+                            android:textColor="#142444"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Botón a la derecha -->
+                    <Button
+                        android:id="@+id/item_button_3"
+                        android:layout_width="90dp"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginEnd="4dp"
+                        android:backgroundTint="@color/colorWhiteNew"
+                        android:padding="5dp"
+                        android:text="@string/select_item_2"
+                        android:textColor="@color/colorBlueNew"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- Contenido existente (imagen, texto, botón) -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="300dp"
+                    android:background="@drawable/redondear_boton"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <!-- Imagen a la izquierda -->
+                    <ImageView
+                        android:id="@+id/item_image_4"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:contentDescription="@string/select_item_29"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/folder" />
+
+                    <!-- Contenedor de texto (TextViews) -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <!-- Primer TextView -->
+                        <TextView
+                            android:id="@+id/item_text_4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="1dp"
+                            android:layout_marginTop="1dp"
+                            android:padding="1dp"
+                            android:layout_gravity="start"
+                            android:text="@string/select_item_26"
+                            android:textColor="#142444"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <!-- Segundo TextView -->
+                        <TextView
+                            android:id="@+id/item_text4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="1dp"
+                            android:layout_gravity="start"
+                            android:layout_marginTop="1dp"
+                            android:padding="1dp"
+                            android:text="@string/select_item_20"
+                            android:textColor="#142444"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Botón a la derecha -->
+                    <Button
+                        android:id="@+id/item_button_4"
+                        android:layout_width="90dp"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginEnd="4dp"
+                        android:backgroundTint="@color/colorWhiteNew"
+                        android:padding="5dp"
+                        android:text="@string/select_item_2"
+                        android:textColor="@color/colorBlueNew"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- Contenido existente (imagen, texto, botón) -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="400dp"
+                    android:background="@drawable/redondear_boton"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <!-- Imagen a la izquierda -->
+                    <ImageView
+                        android:id="@+id/item_image_5"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginEnd="10dp"
+                        android:contentDescription="@string/select_item_29"
+                        android:src="@drawable/folder" />
+
+                    <!-- Contenedor de texto (TextViews) -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <!-- Primer TextView -->
+                        <TextView
+                            android:id="@+id/item_text_5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="1dp"
+                            android:layout_marginTop="1dp"
+                            android:padding="1dp"
+                            android:layout_gravity="start"
+                            android:text="@string/select_item_27"
+                            android:textColor="#142444"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <!-- Segundo TextView -->
+                        <TextView
+                            android:id="@+id/item_text5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="1dp"
+                            android:layout_marginTop="1dp"
+                            android:padding="1dp"
+                            android:layout_gravity="start"
+                            android:text="@string/select_item_21"
+                            android:textColor="#142444"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Botón a la derecha -->
+                    <Button
+                        android:id="@+id/item_button_5"
+                        android:layout_width="90dp"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginEnd="4dp"
+                        android:backgroundTint="@color/colorWhiteNew"
+                        android:padding="5dp"
+                        android:text="@string/select_item_2"
+                        android:textColor="@color/colorBlueNew"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- Contenido existente (imagen, texto, botón) -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="500dp"
+                    android:background="@drawable/redondear_boton"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <!-- Imagen a la izquierda -->
+                    <ImageView
+                        android:id="@+id/item_image_6"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@color/colorWhite"
+                        android:contentDescription="@string/select_item_29"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/folder" />
+
+                    <!-- Contenedor de texto (TextViews) -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <!-- Primer TextView -->
+                        <TextView
+                            android:id="@+id/item_text_6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="1dp"
+                            android:layout_marginTop="1dp"
+                            android:padding="1dp"
+                            android:layout_gravity="start"
+                            android:text="@string/select_item_28"
+                            android:textColor="#142444"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <!-- Segundo TextView -->
+                        <TextView
+                            android:id="@+id/item_text6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="1dp"
+                            android:layout_marginTop="1dp"
+                            android:padding="1dp"
+                            android:layout_gravity="start"
+                            android:text="@string/select_item_22"
+                            android:textColor="#142444"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Botón a la derecha -->
+                    <Button
+                        android:id="@+id/item_button_6"
+                        android:layout_width="90dp"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginEnd="4dp"
+                        android:backgroundTint="@color/colorWhiteNew"
+                        android:padding="5dp"
+                        android:text="@string/select_item_2"
+                        android:textColor="@color/colorBlueNew"
+                        android:textSize="11sp" />
+                </LinearLayout>
+            </FrameLayout>
+        </FrameLayout>
+    </RelativeLayout>
+    <Button
+        android:id="@+id/button_catalog2"
+        android:layout_width="330dp"
+        android:layout_height="48dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/redondear_boton"
+        android:drawableLeft="@drawable/fluent_save_24_filled"
+        android:enabled="true"
+        android:minHeight="@dimen/min_height_60dp"
+        android:text="@string/select_item_12"
+        android:textColor="#142444"
+        android:textSize="11sp"
+        android:translationY="662dp"
+        android:translationX="30dp"/>
+
+
+
+

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.CatalogFragment">
+
+    <!-- Contenido principal -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="top">
+
+        <TextView
+            android:id="@+id/button_catalog8"
+            android:layout_width="20dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="365dp"
+            android:drawableLeft="@drawable/jam_menu"
+            android:gravity="center"
+            android:minHeight="@dimen/min_height_60dp"
+            android:textColor="#142444"
+            android:layout_marginTop="20dp"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_catalog8" />
+
+        <TextView
+            android:id="@+id/button_catalog8"
+            android:layout_width="70dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="170dp"
+            android:gravity="center"
+            android:minHeight="@dimen/min_height_60dp"
+            android:text="@string/select_item_8"
+            android:textColor="#142444"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_catalog8" />
+
+    </LinearLayout>
+
+    <?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        tools:context=".MainActivity">
+
+        <!-- FrameLayout 1 -->
+
+        <!-- FrameLayout 2 -->
+        <FrameLayout
+            android:layout_width="363dp"
+            android:layout_height="405dp"
+            android:layout_gravity="center"
+            android:layout_margin="65dp"
+            android:background="@drawable/border_img"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+
+        </FrameLayout>
+
+        <!-- ImageView -->
+        <ImageView
+            android:id="@+id/my_image_view"
+            android:layout_width="320dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="90dp"
+            android:background="@drawable/redondear_boton"
+            android:padding="8dp"
+            android:src="@drawable/fondo_logo_lupa"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- TextView 2 -->
+        <TextView
+            android:id="@+id/button_catalog5"
+            android:layout_width="302dp"
+            android:layout_height="33dp"
+            android:gravity="center"
+            android:minHeight="@dimen/min_height_60dp"
+            android:padding="4dp"
+            android:text="@string/select_item_16"
+            android:textColor="#142444"
+            android:textSize="12sp"
+            app:layout_constraintTop_toBottomOf="@id/my_image_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="-35dp"/>
+        <!-- Button 1 -->
+        <Button
+            android:id="@+id/button_catalog7"
+            android:layout_width="302dp"
+            android:layout_height="33dp"
+            android:background="@drawable/redondear_boton"
+            android:drawableLeft="@drawable/code_scan_rfid"
+            android:drawableTint="#142444"
+            android:gravity="left"
+            android:minHeight="@dimen/min_height_60dp"
+            android:padding="4dp"
+            android:text="@string/select_item_15"
+            android:textStyle="bold"
+            android:textColor="#142444"
+            android:textSize="12sp"
+            app:layout_constraintTop_toBottomOf="@id/button_catalog5"
+            android:layout_marginTop="26dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.38"/>
+
+
+
+        <!-- Button 2 -->
+        <Button
+            android:id="@+id/button_catalog"
+            android:layout_width="147dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="26dp"
+            android:background="@drawable/redondear_boton"
+            android:drawableLeft="@drawable/hugeicons_latitude"
+            android:drawableTint="#142444"
+            android:gravity="left"
+            android:minHeight="@dimen/min_height_60dp"
+            android:padding="4dp"
+            android:text="@string/select_item_5"
+            android:textStyle="bold"
+            android:textColor="#142444"
+            android:textSize="10sp"
+            app:layout_constraintTop_toBottomOf="@id/button_catalog7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.160"/>
+
+        <!-- Button 3 -->
+        <Button
+            android:id="@+id/button_catalog1"
+            android:layout_width="147dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="26dp"
+            android:background="@drawable/redondear_boton"
+            android:drawableLeft="@drawable/hugeicons_latitude"
+            android:drawableTint="#142444"
+            android:gravity="left"
+            android:minHeight="@dimen/min_height_60dp"
+            android:padding="4dp"
+            android:text="@string/select_item_5"
+            android:textStyle="bold"
+            android:textColor="#142444"
+            android:textSize="10sp"
+            app:layout_constraintTop_toBottomOf="@id/button_catalog7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.743"/> <!-- Mueve el botón hacia la derecha -->
+
+        <!-- Button ASOCIAR -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center"
+            android:padding="26dp"
+            android:layout_marginTop="470dp">
+
+            <!-- Botón SCANEAR -->
+            <Button
+                android:id="@+id/button_catalog3"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="26dp"
+                android:background="@drawable/redondear_boton"
+                android:drawableLeft="@drawable/icon_principal"
+                android:drawableTint="#142444"
+                android:enabled="true"
+                android:minHeight="@dimen/min_height_60dp"
+                android:text="@string/select_item_1"
+                android:textColor="#142444"
+                android:textSize="10sp" />
+
+            <!-- Botón UBICAR -->
+            <Button
+                android:id="@+id/button_catalog4"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="26dp"
+                android:background="@drawable/redondear_boton"
+                android:drawableLeft="@drawable/car_tag_sombreado"
+                android:drawableTint="#142444"
+                android:enabled="true"
+                android:minHeight="@dimen/min_height_60dp"
+                android:text="@string/select_item_2"
+                android:textColor="#142444"
+                android:textSize="10sp" />
+
+            <!-- Botón EXTRA -->
+            <Button
+                android:id="@+id/button_catalog2"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/redondear_boton"
+                android:drawableLeft="@drawable/healthicons__ultrasound_scanner"
+                android:drawableTint="#142444"
+                android:enabled="true"
+                android:minHeight="@dimen/min_height_60dp"
+                android:text="@string/select_item_3"
+                android:textColor="#142444"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!-- Imagen flotante sobre el contenido -->
+
+</FrameLayout>

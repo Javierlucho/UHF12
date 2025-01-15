@@ -42,6 +42,14 @@ import androidx.appcompat.widget.Toolbar;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.UnderlineSpan;
+import android.text.style.StyleSpan;
+import android.graphics.Typeface;
+import android.widget.TextView;
+
 public class MainActivity extends AppCompatActivity implements IBaseGpsListener, NavigationView. OnNavigationItemSelectedListener{
 
     private InventoryViewModel viewModel;
@@ -355,7 +363,7 @@ public class MainActivity extends AppCompatActivity implements IBaseGpsListener,
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Log.e("pang", "item = " + item.getItemId());
+        Log.e("pang", "hol = " + item.getItemId());
         return false;
     }
 
@@ -391,5 +399,4 @@ public class MainActivity extends AppCompatActivity implements IBaseGpsListener,
     public void onProviderDisabled(String provider) {
         // nothing
     }
-
 }
