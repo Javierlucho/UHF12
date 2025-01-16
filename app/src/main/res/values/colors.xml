@@ -11,5 +11,7 @@
     <color name="colorSpinnerText">#FF000000</color>
     <color name="colorBlueNew">#142444</color>
     <color name="colorWhiteNew">#f4f4f4</color>
+    <color name="colorBlueNew2">#6495ED</color>
+
 
 </resources>
